@@ -1,12 +1,14 @@
 {
-    "type": "module",
     "name": "revolt-reject.js",
     "version": "1.0.4",
     "description": "Converts Discord.js API calls into Revolt.js API calls",
     "author": "V3L0C1T13S",
     "main": "dist/index.js",
+    "module": "esm/index.js",
+    "typings": "dist/index.d.ts",
     "files": [
-        "dist/**/*"
+        "dist",
+        "esm"
     ],
     "license": "MIT",
     "keywords": [
@@ -16,9 +18,9 @@
         "compatibility"
     ],
     "scripts": {
-        "build": "tsc",
+        "build": "tsc && tsc -p tsconfig.cjs.json",
         "watch": "tsc -w",
-        "clean": "rimraf dist && rimraf tsconfig.tsbuildinfo",
+        "clean": "rimraf dist esm tsconfig.tsbuildinfo",
         "prepare": "npm run clean && npm run build",
         "version": "git add -A src",
         "postversion": "git push && git push --tags"
