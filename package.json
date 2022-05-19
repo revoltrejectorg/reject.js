@@ -1,6 +1,6 @@
 {
     "type": "module",
-    "name": "reject.js",
+    "name": "revolt-reject.js",
     "version": "1.0.3",
     "description": "Converts Discord.js API calls into Revolt.js API calls",
     "author": "V3L0C1T13S",
