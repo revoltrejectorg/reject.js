@@ -23,6 +23,10 @@
         "version": "git add -A src",
         "postversion": "git push && git push --tags"
     },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/V3L0C1T13S/reject.js.git"
+    },
     "dependencies": {
         "discord.js": "^13.7.0",
         "revolt.js": "^6.0.0-2"
