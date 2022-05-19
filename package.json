@@ -1,13 +1,20 @@
 {
     "type": "module",
     "name": "reject.js",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Converts Discord.js API calls into Revolt.js API calls",
     "author": "V3L0C1T13S",
     "main": "dist/index.js",
-    "files": ["dist/**/*"],
+    "files": [
+        "dist/**/*"
+    ],
     "license": "MIT",
-    "keywords": ["revolt.js", "revolt.chat", "revolt", "compatibility"],
+    "keywords": [
+        "revolt.js",
+        "revolt.chat",
+        "revolt",
+        "compatibility"
+    ],
     "scripts": {
         "build": "tsc",
         "watch": "tsc -w",
