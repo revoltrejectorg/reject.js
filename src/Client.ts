@@ -3,7 +3,7 @@ import { Client as DiscordClient, ClientApplication as DiscordClientApp, ImageUR
 import { missingEquiv } from "./Utils/Logger";
 import User from "./DiscordAPI_Stubs/User";
 import { baseClass } from "./DiscordAPI_Stubs/Base";
-import GuildManager from "./DiscordAPI_Stubs/Managers/GuildManager";
+import { GuildManager } from "./DiscordAPI_Stubs/Managers/GuildManager";
 
 export class ClientApplication extends baseClass {
   private revoltClient: revoltClient;

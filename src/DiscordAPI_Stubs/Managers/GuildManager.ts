@@ -3,7 +3,7 @@ import { fixme } from "../../Utils/Logger";
 import { Collection } from "../DiscordJS_Stubs";
 import { Guild } from "../Guild";
 
-export default class GuildManager<K, V> extends Collection<K, V> {
+export class GuildManager<K, V> extends Collection<K, V> {
   private revoltServers: Servers;
 
   constructor(revoltServers: Servers) {
