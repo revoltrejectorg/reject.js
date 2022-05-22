@@ -25,6 +25,9 @@ export class MessageMentions {
   }
 }
 
+/**
+ * @reference https://discord.js.org/#/docs/discord.js/stable/class/Message
+ */
 export class Message extends baseClass {
   private revoltMsg: revoltMessage;
 
@@ -128,5 +131,9 @@ export class Message extends baseClass {
 
   async fetchWebhook() {
     fixme("fetchWebhook stub");
+  }
+
+  toString() {
+    return this.revoltMsg.content?.toString() ?? "FIXME";
   }
 }

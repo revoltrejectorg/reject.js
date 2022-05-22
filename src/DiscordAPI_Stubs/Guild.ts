@@ -64,12 +64,12 @@ export class BaseGuild extends baseClass implements discordBaseGuild {
   // @ts-ignore
   get client() { return new Client(this.revoltServer.client); }
 
-  public toString(): string {
+  toString(): string {
     return this.name;
   }
 
-  public valueOf(): string {
-    throw new Error('Method not implemented.');
+  valueOf(): string {
+    return "FIXME";
   }
 
   constructor(rServer: revoltServer) {
@@ -78,6 +78,9 @@ export class BaseGuild extends baseClass implements discordBaseGuild {
   }
 }
 
+/**
+ * @reference https://discord.js.org/#/docs/discord.js/stable/class/Guild
+ */
 export class Guild extends BaseGuild {
   /** None of these types have a revolt equivalent. */
   readonly afkChannel?: revoltChannel;

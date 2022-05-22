@@ -11,6 +11,9 @@ import { Client } from '../Client';
 import { fixme } from '../Utils/Logger';
 import { baseClass } from './Base';
 
+/**
+ * @reference https://discord.js.org/#/docs/discord.js/stable/class/User
+ */
 export default class User extends baseClass implements DiscordUser {
   private revoltUser: revoltUser;
 

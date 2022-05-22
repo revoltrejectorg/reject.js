@@ -2,6 +2,7 @@ import { Member as revoltMember } from 'revolt.js/dist/maps/Members';
 import { baseClass } from './Base';
 import User from './User';
 import { Guild } from './Guild';
+import { UserMention as DiscordUserMention } from 'discord.js';
 
 export class Permissions extends baseClass {
   private revoltPermissions: Array<string>;
@@ -86,5 +87,9 @@ export class Member extends baseClass {
   async ban() {
     if (!this.id) return;
     this.revoltMember.server?.banUser(this.id, { reason: 'Banned by discord.js' });
+  }
+
+  toString(): DiscordUserMention {
+    return `<@${this.id}>`;
   }
 }

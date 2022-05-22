@@ -96,17 +96,21 @@ export class Channel extends baseClass {
     return this;
   }
 
-  async isThread() {
+  isThread() {
     return false;
   }
 
-  async isText() {
+  isText() {
     const type = this.revoltChannel.channel_type;
     return (type === "TextChannel" || type === "DirectMessage" || type === "Group");
   }
 
-  async isVoice() {
+  isVoice() {
     return this.revoltChannel.channel_type === "VoiceChannel";
+  }
+
+  isDirectory() {
+    return false;
   }
 
   toString() {
