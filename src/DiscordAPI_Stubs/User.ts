@@ -1,4 +1,10 @@
-import { ClientPresence, DMChannel, ImageURLOptions, PresenceData, User as DiscordUser } from 'discord.js';
+import {
+  ClientPresence,
+  ImageURLOptions,
+  PresenceData,
+  User as DiscordUser,
+  UserMention as DiscordUserMention
+} from "discord.js";
 import { User as revoltUser } from 'revolt.js/dist/maps/Users';
 import { toDiscordStatus, toRevoltStatus } from '../Utils/DiscordAPI';
 import { Client } from '../Client';
@@ -123,5 +129,9 @@ export default class User extends baseClass implements DiscordUser {
     fixme("bot's cant delete dms yet, please catch the error below!");
 
     throw new Error();
+  }
+
+  toString(): DiscordUserMention {
+    return `<@${this.id}>`;
   }
 }
