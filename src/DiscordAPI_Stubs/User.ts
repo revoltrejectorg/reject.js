@@ -10,6 +10,7 @@ import { toDiscordStatus, toRevoltStatus } from '../Utils/DiscordAPI';
 import { Client } from '../Client';
 import { fixme } from '../Utils/Logger';
 import { baseClass } from './Base';
+import { DMChannel } from "./Channel";
 
 /**
  * @reference https://discord.js.org/#/docs/discord.js/stable/class/User
@@ -117,21 +118,18 @@ export default class User extends baseClass implements DiscordUser {
   // @ts-ignore
   send = () => this.createDM();
 
-  openDM = () => this.createDM();
-
-  /** FIXME: Revolt won't let bots create DMs. insert pls fix. */
   // @ts-ignore
   async createDM(force?: boolean) {
-    fixme("bot's cant create dms yet, please catch the error below!");
-
-    throw new Error("please catch this error as bot's cant create dms yet!");
+    const dm = await this.revoltUser.openDM();
+    return new DMChannel(dm);
   }
 
   // @ts-ignore
   async deleteDM() {
-    fixme("bot's cant delete dms yet, please catch the error below!");
+    const dm = await this.revoltUser.openDM();
+    fixme("delete dm stub");
 
-    throw new Error();
+    return new DMChannel(dm);
   }
 
   toString(): DiscordUserMention {

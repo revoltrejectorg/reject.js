@@ -201,7 +201,7 @@ export class BaseGuildTextChannel extends GuildChannel {
   }
 }
 
-export class DMChannel extends Channel implements DiscordDMChannel {
+export class DMChannel extends BaseGuildTextChannel implements DiscordDMChannel {
   // @ts-ignore
   get messages() {
     fixme("no message history support yet");
