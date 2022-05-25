@@ -1,10 +1,10 @@
-import { Channel as revoltChannel } from 'revolt.js/dist/maps/Channels';
-import { Server as revoltServer } from 'revolt.js/dist/maps/Servers';
-import { BanOptions, BaseGuild as discordBaseGuild, Guild as DiscordGuild } from 'discord.js';
-import { baseClass } from './Base';
-import { Member } from './Member';
-import { Channel } from './Channel';
-import { Client } from '../Client';
+import { Channel as revoltChannel } from "revolt.js/dist/maps/Channels";
+import { Server as revoltServer } from "revolt.js/dist/maps/Servers";
+import { BanOptions, BaseGuild as discordBaseGuild, Guild as DiscordGuild } from "discord.js";
+import { baseClass } from "./Base";
+import { Member } from "./Member";
+import { Channel } from "./Channel";
+import { Client } from "../Client";
 
 export class GuildMemberManager extends baseClass {
   private revoltMembers: Array<Member>;
@@ -17,7 +17,7 @@ export class GuildMemberManager extends baseClass {
   /** FIXME: using any type since type checking needs to STFU (this is legal code btw) */
   async ban(user: any, options: BanOptions) {
     const member = this.revoltMembers.find((m) => m.user?.id === user.id);
-    if (!member) throw new Error('User not in guild');
+    if (!member) throw new Error("User not in guild");
     member.ban();
   }
 }
@@ -46,9 +46,9 @@ export class BaseGuild extends baseClass implements discordBaseGuild {
 
   get name() { return this.revoltServer.name; }
 
-  get nameAcronym() { return this.name.split(' ').map((word) => word[0]).join(''); }
+  get nameAcronym() { return this.name.split(" ").map((word) => word[0]).join(""); }
 
-  nsfwLevel = 'DEFAULT';
+  nsfwLevel = "DEFAULT";
 
   /** Cant figure out how to get if server
    * is in discovery. insert pls fix
@@ -162,7 +162,7 @@ export class Guild extends BaseGuild {
     return new GuildMemberManager(rejectMembers);
   }
 
-  mfaLevel = 'NONE';
+  mfaLevel = "NONE";
 
   /**  I *think* this works, but I'm not 100% sure. */
   get ownerId() { return this.revoltServer.owner; }
@@ -209,5 +209,5 @@ export class Guild extends BaseGuild {
   /** FIXME: Probably coming in a future update. */
   vanityURLCode?: string;
 
-  verificationLevel = 'NONE';
+  verificationLevel = "NONE";
 }

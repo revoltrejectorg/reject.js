@@ -7,10 +7,14 @@ import { GuildManager } from "./DiscordAPI_Stubs/Managers/GuildManager";
 
 export class ClientApplication extends baseClass {
   private revoltClient: revoltClient;
+
+  // eslint-disable-next-line no-use-before-define
   private rejectClient: Client;
 
   get botPublic() { return this.rejectClient.user?.bot; }
+
   get botRequireCodeGrant() { return false; }
+
   get commands() { return []; }
 
   get createdAt() { return this.rejectClient.user?.createdAt; }
@@ -37,13 +41,17 @@ export class ClientApplication extends baseClass {
   }
 
   coverURL = "http://FIXME";
+
   cover = "FIXME";
+
   partial = false;
+
   rpcOrigins?: never;
 
   constructor(rClient: revoltClient) {
     super();
     this.revoltClient = rClient;
+    // eslint-disable-next-line no-use-before-define
     this.rejectClient = new Client(this.revoltClient);
   }
 
@@ -89,7 +97,7 @@ export class Client extends baseClass {
   get users() { return this.revoltClient.users; }
 
   get voice() { missingEquiv("voice"); return {}; }
-  
+
   get ws() { return this.revoltClient.websocket; }
 
   constructor(rClient: revoltClient) {

@@ -1,77 +1,18 @@
-import { Channel as revoltChannel } from 'revolt.js/dist/maps/Channels';
-import { WebhookTypes } from 'discord.js/typings/enums';
+import { Channel as revoltChannel } from "revolt.js";
 import {
-  Webhook as DiscordWebhook,
-  BaseGuildTextChannel as DiscordBaseChannel,
   DMChannel as DiscordDMChannel,
   ChannelWebhookCreateOptions as DiscordChannelWebhookCreateOptions,
-} from 'discord.js';
+} from "discord.js";
 
-import MessageOptions from 'revolt.js/dist/maps/Messages';
-import { Reject as rejectDiscordAPI } from '../Utils/DiscordAPI/DiscordParamsConverter';
-import { Message } from './Message';
-import { baseClass } from './Base';
-import { fixme } from '../Utils/Logger';
-import User from './User';
-import { Guild } from './Guild';
-import { Client } from '../Client';
-
-/** FIXME: Revolt doesn't support webhooks, this is only a dummy. */
-export class Webhook extends baseClass implements DiscordWebhook {
-  name: string;
-
-  avatar = 'http://FIXME';
-
-  channelId: string;
-
-  guildId: string;
-
-  id = '0';
-
-  token = 'null';
-
-  /** FIXME: No idea how to make this not cry over types */
-  // @ts-ignore
-  type = WebhookTypes.Application;
-
-  readonly url = 'http://FIXME';
-
-  private fixmsg = "webhooks don't exist in revolt, passing dummy type";
-
-  constructor(name: string, channel: BaseGuildTextChannel, options?: DiscordChannelWebhookCreateOptions) {
-    super();
-    this.name = name ?? 'REJECTFIXME';
-    this.channelId = channel.id;
-    this.guildId = channel.guild?.id ?? '0';
-
-    fixme(this.fixmsg);
-  }
-
-  /** FIXME: Literally all of these need stubs */
-  // @ts-ignore
-  async send(message: string | MessageOptions) {}
-
-  async delete() {}
-
-  avatarURL() {
-    return 'http://FIXME';
-  }
-
-  async deleteMessage() {}
-
-  // @ts-ignore
-  async edit() {}
-
-  // @ts-ignore
-  async editMessage() {}
-
-  // @ts-ignore
-  async fetchMessage() {}
-
-  isChannelFollower() { return false; }
-
-  isIncoming() { return false; }
-}
+import MessageOptions from "revolt.js/dist/maps/Messages";
+import { Reject as rejectDiscordAPI } from "../Utils/DiscordAPI/DiscordParamsConverter";
+import { Message } from "./Message";
+import { baseClass } from "./Base";
+import { fixme } from "../Utils/Logger";
+import User from "./User";
+import { Guild } from "./Guild";
+import { Client } from "../Client";
+import { Webhook } from "./Webhook";
 
 export class Channel extends baseClass {
   protected revoltChannel: revoltChannel;
@@ -129,7 +70,7 @@ export class GuildChannel extends Channel {
 
   guild?: Guild;
 
-  get guildid() { return this.guild?.id ?? '0'; }
+  get guildid() { return this.guild?.id ?? "0"; }
 
   readonly managable = true;
 
@@ -140,6 +81,7 @@ export class GuildChannel extends Channel {
 
   /** FIXME: cant get category for this channel */
   readonly parent?: any;
+
   parentId?: string;
 
   position = 0;
@@ -148,14 +90,18 @@ export class GuildChannel extends Channel {
 
   /**  FIXME: not all equivs can be added */
   // @ts-ignore
-  get type() { return rejectDiscordAPI.Utils.DiscordAPI.ChannelTypeConverter(this.revoltChannel.channel_type); }
+  get type() {
+    return rejectDiscordAPI
+      .Utils
+      .DiscordAPI
+      .ChannelTypeConverter(this.revoltChannel.channel_type);
+  }
 
   readonly viewable = true;
 
   constructor(channel: revoltChannel) {
     super(channel);
-    if (channel.server) 
-      this.guild = new Guild(channel.server);
+    if (channel.server) { this.guild = new Guild(channel.server); }
   }
 
   async clone() {
@@ -164,7 +110,6 @@ export class GuildChannel extends Channel {
 }
 
 export class BaseGuildTextChannel extends GuildChannel {
-
   get nsfw() { return this.revoltChannel.nsfw === true; }
 
   get description() { return this.revoltChannel.description; }
@@ -205,6 +150,7 @@ export class DMChannel extends BaseGuildTextChannel implements DiscordDMChannel 
   // @ts-ignore
   get messages() {
     fixme("no message history support yet");
+    return;
   }
 
   // @ts-ignore
@@ -215,7 +161,7 @@ export class DMChannel extends BaseGuildTextChannel implements DiscordDMChannel 
 
   // @ts-ignore
   get lastMessage() {
-    if (!this.revoltChannel.last_message) return null;
+    if (!this.revoltChannel.last_message) return;
     return new Message(this.revoltChannel.last_message);
   }
 }

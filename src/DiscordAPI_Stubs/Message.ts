@@ -1,13 +1,13 @@
-import { Message as revoltMessage } from 'revolt.js/dist/maps/Messages';
-import { User as RevoltUser } from 'revolt.js/dist/maps/Users';
-import { Collection, Message as DiscordMessage } from 'discord.js';
-import { fixme } from '../Utils/Logger';
-import { Reject as rejectDiscordAPI } from '../Utils/DiscordAPI/DiscordParamsConverter';
-import { BaseGuildTextChannel } from './Channel';
-import User from './User';
-import { Member } from './Member';
-import { Guild } from './Guild';
-import { baseClass } from './Base';
+import { Message as revoltMessage } from "revolt.js/dist/maps/Messages";
+import { User as RevoltUser } from "revolt.js/dist/maps/Users";
+import { Collection, Message as DiscordMessage } from "discord.js";
+import { fixme } from "../Utils/Logger";
+import { Reject as rejectDiscordAPI } from "../Utils/DiscordAPI/DiscordParamsConverter";
+import { BaseGuildTextChannel } from "./Channel";
+import User from "./User";
+import { Member } from "./Member";
+import { Guild } from "./Guild";
+import { baseClass } from "./Base";
 
 export class MessageMentions {
   private revoltUsers?: (RevoltUser | undefined)[];
@@ -43,7 +43,10 @@ export class Message extends baseClass {
 
   get author() { return new User(this.revoltMsg.author!); }
 
-  get member() { if (this.revoltMsg.member) return new Member(this.revoltMsg.member); return; }
+  get member() {
+    if (!this.revoltMsg.member) return;
+    return new Member(this.revoltMsg.member);
+  }
 
   get url() { return this.revoltMsg.url; }
 
@@ -57,19 +60,25 @@ export class Message extends baseClass {
 
   get edited() { return this.revoltMsg.edited; }
 
-  get editedTimestamp() { fixme('revolt has no struct for editedtimestamp'); return Date.now(); }
+  get editedTimestamp() { fixme("revolt has no struct for editedtimestamp"); return Date.now(); }
 
   get createdTimestamp() { return this.createdAt; }
 
   get createdAt() { return this.revoltMsg.createdAt; }
 
-  get webhookId() { fixme("revolt doesn't support webhooks yet"); return; }
+  get webhookId() {
+    fixme("revolt doesn't support webhooks yet");
+    return;
+  }
 
   get nonce() { return this.revoltMsg.nonce; }
 
   get tts() { fixme("revolt doesn't support tts"); return false; }
 
-  get guild() { if (this.revoltMsg.channel?.server) return new Guild(this.revoltMsg.channel.server); return; }
+  get guild() {
+    if (!this.revoltMsg.channel?.server) return;
+    return new Guild(this.revoltMsg.channel.server);
+  }
 
   constructor(rMsg: revoltMessage) {
     super();
@@ -82,21 +91,19 @@ export class Message extends baseClass {
       if (rejectDiscordAPI.Utils.DiscordAPI.checkifString(content)) return content;
       return rejectDiscordAPI.Utils.DiscordAPI.discordParamsToRevolt(content as any);
     })());
-  
-    if (!msg) return;
 
-    return new Message(msg);
+    return new Message(msg!);
   }
 
   async delete(): Promise<Message> {
-    this.revoltMsg.delete().catch(() => console.error(`Failed to delete message ${this.revoltMsg._id}`));
+    this.revoltMsg.delete().catch(() => fixme(`Failed to delete message ${this.revoltMsg._id}`));
     return this;
   }
 
   async edit(content: string): Promise<Message> {
     await this.revoltMsg.edit((() => {
       if (rejectDiscordAPI.Utils.DiscordAPI.checkifString(content)) return content;
-      
+
       return rejectDiscordAPI.Utils.DiscordAPI.discordParamsToRevolt(content as any) as any;
     })());
 

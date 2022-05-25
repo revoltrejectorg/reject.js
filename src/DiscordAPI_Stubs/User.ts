@@ -3,13 +3,13 @@ import {
   ImageURLOptions,
   PresenceData,
   User as DiscordUser,
-  UserMention as DiscordUserMention
+  UserMention as DiscordUserMention,
 } from "discord.js";
-import { User as revoltUser } from 'revolt.js/dist/maps/Users';
-import { toDiscordStatus, toRevoltStatus } from '../Utils/DiscordAPI';
-import { Client } from '../Client';
-import { fixme } from '../Utils/Logger';
-import { baseClass } from './Base';
+import { User as revoltUser } from "revolt.js/dist/maps/Users";
+import { toDiscordStatus, toRevoltStatus } from "../Utils/DiscordAPI";
+import { Client } from "../Client";
+import { fixme } from "../Utils/Logger";
+import { baseClass } from "./Base";
 import { DMChannel } from "./Channel";
 
 /**
@@ -52,7 +52,9 @@ export default class User extends baseClass implements DiscordUser {
 
   /** FIXME: Unimplemented features */
   dmChannel = null;
+
   flags = null;
+
   hexAccentColor?: never;
 
   get id() { return this.revoltUser._id; }
@@ -67,9 +69,9 @@ export default class User extends baseClass implements DiscordUser {
       status: toDiscordStatus(this.revoltUser.status),
       activities: [],
       clientStatus: {
-        desktop: 'online'
+        desktop: "online",
       },
-      //@ts-ignore
+      // @ts-ignore
       _parse(data: PresenceData) {
         fixme("what is this for?");
         return data;
@@ -84,17 +86,18 @@ export default class User extends baseClass implements DiscordUser {
         if (presence.activities) {
           usrCls.revoltUser.client.users.edit({
             status: {
-              text: presence.activities[0]?.name
-            }
-          })
-      }
+              text: presence.activities[0]?.name,
+            },
+          });
+        }
 
         return this;
-      }
+      },
     };
   }
 
   system = false;
+
   /** FIXME: Improper tag impl. */
   get tag() { return this.discriminator; }
 

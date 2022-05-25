@@ -11,7 +11,9 @@ export namespace Reject.Utils.DiscordAPI {
       return false;
     }
 
-    export function embedConvert(embed: MessageEmbed | MessageEmbedOptions | APIEmbed): API.SendableEmbed {
+    export function embedConvert(
+      embed: MessageEmbed | MessageEmbedOptions | APIEmbed,
+    ): API.SendableEmbed {
       fixme("embed conversion is highly experimental, and may not work as intended");
       return {
         title: embed.title,
