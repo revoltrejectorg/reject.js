@@ -4,9 +4,9 @@ import {
 } from "discord.js";
 import { WebhookTypes } from "discord.js/typings/enums";
 import MessageOptions from "revolt.js/dist/maps/Messages";
-import { fixme } from "Utils";
+import { fixme } from "../Utils";
 import { baseClass } from "./Base";
-import { BaseGuildTextChannel } from "./Channel";
+import { BaseGuildTextChannel } from "./Channels";
 
 /** FIXME: Revolt doesn't support webhooks, this is only a dummy. */
 export class Webhook extends baseClass implements DiscordWebhook {

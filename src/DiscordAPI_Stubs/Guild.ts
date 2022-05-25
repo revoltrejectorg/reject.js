@@ -3,7 +3,7 @@ import { Server as revoltServer } from "revolt.js/dist/maps/Servers";
 import { BanOptions, BaseGuild as discordBaseGuild, Guild as DiscordGuild } from "discord.js";
 import { baseClass } from "./Base";
 import { Member } from "./Member";
-import { Channel } from "./Channel";
+import { Channel } from "./Channels";
 import { Client } from "../Client";
 
 export class GuildMemberManager extends baseClass {

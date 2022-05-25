@@ -8,9 +8,9 @@ import {
 import { User as revoltUser } from "revolt.js/dist/maps/Users";
 import { toDiscordStatus, toRevoltStatus } from "../Utils/DiscordAPI";
 import { Client } from "../Client";
-import { fixme } from "../Utils/Logger";
+import { fixme } from "../Utils";
 import { baseClass } from "./Base";
-import { DMChannel } from "./Channel";
+import { DMChannel } from "./Channels";
 
 /**
  * @reference https://discord.js.org/#/docs/discord.js/stable/class/User

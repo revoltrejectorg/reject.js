@@ -14,7 +14,7 @@ export class GuildManager<K, V> extends Collection<K, V> {
   get cache() {
     return {
       size: this.revoltServers.size,
-    }
+    };
   }
 
   async create() {

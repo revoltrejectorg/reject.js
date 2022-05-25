@@ -1,7 +1,7 @@
 import { MessageEmbed, MessageEmbedOptions, MessageOptions } from "discord.js";
 import { API } from "revolt.js";
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { APIEmbed } from "discord-api-types/v10";
-import { fixme } from "../Logger";
 
 export namespace Reject.Utils.DiscordAPI {
     export type revoltMessagePayload = any;
@@ -14,7 +14,6 @@ export namespace Reject.Utils.DiscordAPI {
     export function embedConvert(
       embed: MessageEmbed | MessageEmbedOptions | APIEmbed,
     ): API.SendableEmbed {
-      fixme("embed conversion is highly experimental, and may not work as intended");
       return {
         title: embed.title,
         url: embed.url,

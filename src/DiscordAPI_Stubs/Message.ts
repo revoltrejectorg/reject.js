@@ -1,9 +1,9 @@
 import { Message as revoltMessage } from "revolt.js/dist/maps/Messages";
 import { User as RevoltUser } from "revolt.js/dist/maps/Users";
 import { Collection, Message as DiscordMessage } from "discord.js";
-import { fixme } from "../Utils/Logger";
+import { fixme } from "../Utils";
 import { Reject as rejectDiscordAPI } from "../Utils/DiscordAPI/DiscordParamsConverter";
-import { BaseGuildTextChannel } from "./Channel";
+import { BaseGuildTextChannel } from "./Channels";
 import User from "./User";
 import { Member } from "./Member";
 import { Guild } from "./Guild";

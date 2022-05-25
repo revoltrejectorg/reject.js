@@ -1,5 +1,5 @@
 import { Base as DiscordBase } from "discord.js";
-import { fixme } from "Utils";
+import { fixme } from "../../Utils";
 
 /** Literally just exports identifiers for detecting Reject. */
 export class baseClass implements DiscordBase {
