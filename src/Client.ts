@@ -1,7 +1,7 @@
 import { Client as revoltClient } from "revolt.js";
-import { Client as DiscordClient, ClientApplication as DiscordClientApp, ImageURLOptions } from "discord.js";
+import { ImageURLOptions } from "discord.js";
 import { missingEquiv } from "./Utils/Logger";
-import User from "./DiscordAPI_Stubs/User";
+import { User } from "./DiscordAPI_Stubs/User";
 import { baseClass } from "./DiscordAPI_Stubs/Base";
 import { GuildManager } from "./DiscordAPI_Stubs/Managers/GuildManager";
 

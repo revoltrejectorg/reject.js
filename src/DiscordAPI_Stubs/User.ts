@@ -15,7 +15,7 @@ import { DMChannel } from "./Channels";
 /**
  * @reference https://discord.js.org/#/docs/discord.js/stable/class/User
  */
-export default class User extends baseClass implements DiscordUser {
+export class User extends baseClass implements DiscordUser {
   private revoltUser: revoltUser;
 
   get accentColor() { return undefined; }

@@ -1,7 +1,7 @@
 import { DMChannel as DiscordDMChannel } from "discord.js";
 import { fixme } from "../../Utils";
 import { Message } from "../Message";
-import User from "../User";
+import { User } from "../User";
 import { BaseGuildTextChannel } from "./BaseGuildTextChannel";
 
 export class DMChannel extends BaseGuildTextChannel implements DiscordDMChannel {

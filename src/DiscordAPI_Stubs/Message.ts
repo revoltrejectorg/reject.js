@@ -4,7 +4,7 @@ import { Collection, Message as DiscordMessage } from "discord.js";
 import { fixme } from "../Utils";
 import { Reject as rejectDiscordAPI } from "../Utils/DiscordAPI/DiscordParamsConverter";
 import { BaseGuildTextChannel } from "./Channels";
-import User from "./User";
+import { User } from "./User";
 import { Member } from "./Member";
 import { Guild } from "./Guild";
 import { baseClass } from "./Base";

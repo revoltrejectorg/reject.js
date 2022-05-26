@@ -1,7 +1,7 @@
 import { Member as revoltMember } from "revolt.js/dist/maps/Members";
 import { UserMention as DiscordUserMention } from "discord.js";
 import { baseClass } from "./Base";
-import User from "./User";
+import { User } from "./User";
 import { Guild } from "./Guild";
 
 export class Permissions extends baseClass {
