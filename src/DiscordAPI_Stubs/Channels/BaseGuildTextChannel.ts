@@ -2,6 +2,7 @@ import {
   MessageOptions,
   ChannelWebhookCreateOptions as DiscordChannelWebhookCreateOptions,
 } from "discord.js";
+import { User } from "../User";
 import { Reject as rejectDiscordAPI } from "../../Utils/DiscordAPI/DiscordParamsConverter";
 import { Message } from "../Message";
 import { Webhook } from "../Webhook";
@@ -13,10 +14,18 @@ export class BaseGuildTextChannel extends GuildChannel {
   get description() { return this.revoltChannel.description; }
 
   async send(content: string | MessageOptions) {
-    const msg = await this.revoltChannel.sendMessage((() => {
-      if (rejectDiscordAPI.Utils.DiscordAPI.checkifString(content)) return content;
-      return rejectDiscordAPI.Utils.DiscordAPI.discordParamsToRevolt(content as any) as any;
-    })());
+    // return the original string if it's a string, otherwise convert it to revolt params
+    const convertedParams = typeof content === "string" ? content : rejectDiscordAPI
+      .Utils
+      .DiscordAPI
+      .discordParamsToRevolt(content);
+
+    if (this instanceof User) {
+      const ch = await this.createDM();
+      ch.send(convertedParams);
+    }
+
+    const msg = await this.revoltChannel.sendMessage(convertedParams);
 
     return new Message(msg);
   }

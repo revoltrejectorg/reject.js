@@ -1,67 +1,35 @@
 import { Client as revoltClient } from "revolt.js";
-import { ImageURLOptions } from "discord.js";
 import { missingEquiv } from "./Utils/Logger";
 import { User } from "./DiscordAPI_Stubs/User";
 import { baseClass } from "./DiscordAPI_Stubs/Base";
 import { GuildManager } from "./DiscordAPI_Stubs/Managers/GuildManager";
+import { Application } from "./DiscordAPI_Stubs/structures/interfaces";
 
-export class ClientApplication extends baseClass {
-  private revoltClient: revoltClient;
-
-  // eslint-disable-next-line no-use-before-define
-  private rejectClient: Client;
-
+export class ClientApplication extends Application {
   get botPublic() { return this.rejectClient.user?.bot; }
 
   get botRequireCodeGrant() { return false; }
 
   get commands() { return []; }
 
-  get createdAt() { return this.rejectClient.user?.createdAt; }
-
-  get createdTimestamp() { return this.rejectClient.user?.createdAt; }
-
-  description = "FIXME";
-
   /** FIXME: wtf is this for anyways?? */
   // @ts-ignore
   flags = undefined;
-
-  icon = "http://FIXME";
-
-  get id() {
-    return this.revoltClient.user?._id ?? "0";
-  }
-
-  get name() { return this.revoltClient.user?.username ?? null; }
 
   get owner() {
     if (this.revoltClient.user?.bot?.owner) return new User(this.revoltClient.user);
     return null;
   }
 
-  coverURL = "http://FIXME";
+  get cover() {
+    return this.coverURL();
+  }
 
-  cover = "FIXME";
-
-  partial = false;
+  get partial() {
+    return !this.name;
+  }
 
   rpcOrigins?: never;
-
-  constructor(rClient: revoltClient) {
-    super();
-    this.revoltClient = rClient;
-    // eslint-disable-next-line no-use-before-define
-    this.rejectClient = new Client(this.revoltClient);
-  }
-
-  async fetchAssets() {
-    return {};
-  }
-
-  iconURL(options?: ImageURLOptions) {
-    return this.rejectClient.user?.avatarURL(options ?? { size: 128 });
-  }
 }
 
 export class Client extends baseClass {
