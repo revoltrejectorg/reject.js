@@ -20,10 +20,10 @@ export class Application extends baseClass {
   }
 
   get id() {
-    return this.revoltClient.user?._id ?? "0";
+    return this.rejectClient.user?.id ?? "0";
   }
 
-  get name() { return this.revoltClient.user?.username; }
+  get name() { return this.rejectClient.user?.username; }
 
   constructor(rClient: revoltClient) {
     super();
