@@ -17,7 +17,7 @@ export class Permissions extends baseClass {
   }
 }
 
-export class Member extends baseClass {
+export class GuildMember extends baseClass {
   private revoltMember: revoltMember;
 
   get avatar() { return this.revoltMember.avatar; }
@@ -61,7 +61,9 @@ export class Member extends baseClass {
 
   get nickname() { return this.revoltMember.nickname; }
 
-  readonly partial = false;
+  get partial() {
+    return this.joinedTimestamp === null;
+  }
 
   pending = false;
 
@@ -99,5 +101,13 @@ export class Member extends baseClass {
 
   toString(): DiscordUserMention {
     return `<@${this.id}>`;
+  }
+
+  createDM(force = false) {
+    return this.user?.createDM(force);
+  }
+
+  deleteDM() {
+    return this.user?.deleteDM();
   }
 }

@@ -11,9 +11,9 @@ export class baseClass implements DiscordBase {
     return null as any;
   }
 
-  private _equals(user: any): boolean { return true; }
-
-  equals(user: any): boolean { return this._equals(user); }
+  _clone() {
+    return Object.assign(Object.create(this), this);
+  }
 
   async fetch() {
     return this as any;
@@ -28,6 +28,6 @@ export class baseClass implements DiscordBase {
   }
 
   valueOf() {
-    return this.toJSON();
+    return "0";
   }
 }

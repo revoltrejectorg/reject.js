@@ -7,6 +7,7 @@ import { Reject as rejectDiscordAPI } from "../../Utils/DiscordAPI/DiscordParams
 import { Message } from "../Message";
 import { Webhook } from "../Webhook";
 import { GuildChannel } from "./GuildChannel";
+import { GuildMember } from "../GuildMember";
 
 export class BaseGuildTextChannel extends GuildChannel {
   get nsfw() { return this.revoltChannel.nsfw === true; }
@@ -20,9 +21,9 @@ export class BaseGuildTextChannel extends GuildChannel {
       .DiscordAPI
       .discordParamsToRevolt(content);
 
-    if (this instanceof User) {
+    if (this instanceof User || this instanceof GuildMember) {
       const ch = await this.createDM();
-      ch.send(convertedParams);
+      ch?.send(convertedParams);
     }
 
     const msg = await this.revoltChannel.sendMessage(convertedParams);

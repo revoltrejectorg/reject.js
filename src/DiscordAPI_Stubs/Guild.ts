@@ -2,14 +2,14 @@ import { Channel as revoltChannel } from "revolt.js/dist/maps/Channels";
 import { Server as revoltServer } from "revolt.js/dist/maps/Servers";
 import { BanOptions, BaseGuild as discordBaseGuild, Guild as DiscordGuild } from "discord.js";
 import { baseClass } from "./Base";
-import { Member } from "./Member";
+import { GuildMember } from "./GuildMember";
 import { Channel } from "./Channels";
 import { Client } from "../Client";
 
 export class GuildMemberManager extends baseClass {
-  private revoltMembers: Array<Member>;
+  private revoltMembers: Array<GuildMember>;
 
-  constructor(members: Array<Member>) {
+  constructor(members: Array<GuildMember>) {
     super();
     this.revoltMembers = members;
   }
@@ -152,10 +152,10 @@ export class Guild extends BaseGuild {
   memberCount = 0;
 
   get members() {
-    const rejectMembers: Member[] = [];
+    const rejectMembers: GuildMember[] = [];
     this.revoltServer.fetchMembers().then((members) => {
       members.members.forEach((member) => {
-        rejectMembers.push(new Member(member));
+        rejectMembers.push(new GuildMember(member));
       });
     });
 

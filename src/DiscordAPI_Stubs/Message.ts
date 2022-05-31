@@ -5,7 +5,7 @@ import { fixme } from "../Utils";
 import { Reject as rejectDiscordAPI } from "../Utils/DiscordAPI/DiscordParamsConverter";
 import { BaseGuildTextChannel } from "./Channels";
 import { User } from "./User";
-import { Member } from "./Member";
+import { GuildMember } from "./GuildMember";
 import { Guild } from "./Guild";
 import { baseClass } from "./Base";
 
@@ -45,7 +45,7 @@ export class Message extends baseClass {
 
   get member() {
     if (!this.revoltMsg.member) return;
-    return new Member(this.revoltMsg.member);
+    return new GuildMember(this.revoltMsg.member);
   }
 
   get url() { return this.revoltMsg.url; }

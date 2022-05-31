@@ -59,9 +59,10 @@ export class User extends baseClass implements DiscordUser {
 
   get id() { return this.revoltUser._id; }
 
-  /** FIXME: no idea how to implement */
-  // @ts-ignore stfu incorrect assumption
-  partial = false;
+  // @ts-ignore - correct impl, wrong type
+  get partial() {
+    return typeof this.username !== "string";
+  }
 
   get presence(): ClientPresence {
     const usrCls = this;
@@ -122,7 +123,7 @@ export class User extends baseClass implements DiscordUser {
   send = () => this.createDM();
 
   // @ts-ignore
-  async createDM(force?: boolean) {
+  async createDM(force = false) {
     const dm = await this.revoltUser.openDM();
     return new DMChannel(dm);
   }
