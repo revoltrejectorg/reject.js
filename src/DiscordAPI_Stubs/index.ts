@@ -5,3 +5,4 @@ export * from "./GuildMember";
 export * from "./Guild";
 export * from "./Base";
 export * from "./structures";
+export * from "./Managers";
