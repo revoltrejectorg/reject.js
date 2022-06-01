@@ -107,11 +107,12 @@ export class Message extends baseClass {
   }
 
   async edit(content: string): Promise<Message> {
-    await this.revoltMsg.edit((() => {
-      if (rejectDiscordAPI.Utils.DiscordAPI.checkifString(content)) return content;
+    const convertedParams = typeof content === "string" ? content : rejectDiscordAPI
+      .Utils
+      .DiscordAPI
+      .discordParamsToRevolt(content);
 
-      return rejectDiscordAPI.Utils.DiscordAPI.discordParamsToRevolt(content as any) as any;
-    })());
+    await this.revoltMsg.edit(convertedParams);
 
     return this;
   }
