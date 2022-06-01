@@ -3,11 +3,11 @@ import {
   ChannelWebhookCreateOptions as DiscordChannelWebhookCreateOptions,
 } from "discord.js";
 import { User } from "../User";
-import { Reject as rejectDiscordAPI } from "../../Utils/DiscordAPI/DiscordParamsConverter";
 import { Message } from "../Message";
 import { Webhook } from "../Webhook";
 import { GuildChannel } from "./GuildChannel";
 import { GuildMember } from "../GuildMember";
+import { msgParamsConverter } from "../../Utils/DiscordAPI";
 
 export class BaseGuildTextChannel extends GuildChannel {
   get nsfw() { return this.revoltChannel.nsfw === true; }
@@ -21,15 +21,12 @@ export class BaseGuildTextChannel extends GuildChannel {
   }
 
   get lastMessageId() {
-    return this.lastMessage?.id;
+    return this.revoltChannel.last_message_id;
   }
 
   async send(content: string | MessageOptions): Promise<Message> {
     // return the original string if it's a string, otherwise convert it to revolt params
-    const convertedParams = typeof content === "string" ? content : rejectDiscordAPI
-      .Utils
-      .DiscordAPI
-      .discordParamsToRevolt(content);
+    const convertedParams = typeof content === "string" ? content : msgParamsConverter(content);
 
     if (this instanceof User || this instanceof GuildMember) {
       const ch = await this.createDM();

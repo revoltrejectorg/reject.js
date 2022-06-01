@@ -1,5 +1,5 @@
 import { Channel as revoltChannel } from "revolt.js";
-import { Reject as rejectDiscordAPI } from "../../Utils/DiscordAPI/DiscordParamsConverter";
+import { ChannelTypeConverter } from "../../Utils/DiscordAPI";
 import { Guild } from "../Guild";
 import { Channel } from "./Channel";
 
@@ -30,10 +30,7 @@ export class GuildChannel extends Channel {
   /**  FIXME: not all equivs can be added */
   // @ts-ignore
   get type() {
-    return rejectDiscordAPI
-      .Utils
-      .DiscordAPI
-      .ChannelTypeConverter(this.revoltChannel.channel_type);
+    return ChannelTypeConverter(this.revoltChannel.channel_type);
   }
 
   readonly viewable = true;

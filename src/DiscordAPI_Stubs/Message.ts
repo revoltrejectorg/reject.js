@@ -2,12 +2,12 @@ import { Message as revoltMessage } from "revolt.js/dist/maps/Messages";
 import { User as RevoltUser } from "revolt.js/dist/maps/Users";
 import { Collection, Message as DiscordMessage } from "discord.js";
 import { fixme } from "../Utils";
-import { Reject as rejectDiscordAPI } from "../Utils/DiscordAPI/DiscordParamsConverter";
 import { BaseGuildTextChannel } from "./Channels";
 import { User } from "./User";
 import { GuildMember } from "./GuildMember";
 import { Guild } from "./Guild";
 import { baseClass } from "./Base";
+import { msgParamsConverter } from "../Utils/DiscordAPI";
 
 export class MessageMentions {
   private revoltUsers?: (RevoltUser | undefined)[];
@@ -90,27 +90,22 @@ export class Message extends baseClass {
     this.revoltMsg = rMsg;
   }
 
-  async reply(content: string, mention?: boolean | undefined): Promise<Message | undefined> {
-    const convertedParams = typeof content === "string" ? content : rejectDiscordAPI
-      .Utils
-      .DiscordAPI
-      .discordParamsToRevolt(content);
+  async reply(content: string, mention?: boolean | undefined) {
+    const convertedParams = typeof content === "string" ? content
+      : msgParamsConverter(content);
 
     const msg = await this.revoltMsg.reply(convertedParams);
 
     return new Message(msg!);
   }
 
-  async delete(): Promise<Message> {
+  async delete() {
     this.revoltMsg.delete().catch(() => fixme(`Failed to delete message ${this.id}`));
     return this;
   }
 
   async edit(content: string): Promise<Message> {
-    const convertedParams = typeof content === "string" ? content : rejectDiscordAPI
-      .Utils
-      .DiscordAPI
-      .discordParamsToRevolt(content);
+    const convertedParams = typeof content === "string" ? content : msgParamsConverter(content);
 
     await this.revoltMsg.edit(convertedParams);
 
