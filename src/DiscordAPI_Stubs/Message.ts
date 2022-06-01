@@ -35,7 +35,10 @@ export class Message extends baseClass {
 
   get content() { return this.revoltMsg.content?.toString() ?? "fixme"; }
 
-  channel: BaseGuildTextChannel;
+  get channel() {
+    if (!this.revoltMsg.channel) fixme("invalid channel, possibly a system message?");
+    return new BaseGuildTextChannel(this.revoltMsg.channel!);
+  }
 
   get channelId() { return this.channel.id; }
 
@@ -66,6 +69,10 @@ export class Message extends baseClass {
 
   get createdAt() { return this.revoltMsg.createdAt; }
 
+  get id() {
+    return this.revoltMsg._id;
+  }
+
   get webhookId() {
     fixme("revolt doesn't support webhooks yet");
     return;
@@ -83,20 +90,21 @@ export class Message extends baseClass {
   constructor(rMsg: revoltMessage) {
     super();
     this.revoltMsg = rMsg;
-    this.channel = new BaseGuildTextChannel(this.revoltMsg.channel!);
   }
 
   async reply(content: string, mention?: boolean | undefined): Promise<Message | undefined> {
-    const msg = await this.revoltMsg.reply((() => {
-      if (rejectDiscordAPI.Utils.DiscordAPI.checkifString(content)) return content;
-      return rejectDiscordAPI.Utils.DiscordAPI.discordParamsToRevolt(content as any);
-    })());
+    const convertedParams = typeof content === "string" ? content : rejectDiscordAPI
+      .Utils
+      .DiscordAPI
+      .discordParamsToRevolt(content);
+
+    const msg = await this.revoltMsg.reply(convertedParams);
 
     return new Message(msg!);
   }
 
   async delete(): Promise<Message> {
-    this.revoltMsg.delete().catch(() => fixme(`Failed to delete message ${this.revoltMsg._id}`));
+    this.revoltMsg.delete().catch(() => fixme(`Failed to delete message ${this.id}`));
     return this;
   }
 
