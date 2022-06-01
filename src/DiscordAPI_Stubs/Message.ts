@@ -42,8 +42,6 @@ export class Message extends baseClass {
 
   get channelId() { return this.channel.id; }
 
-  get channel_id() { return this.channel.id; }
-
   get author() { return new User(this.revoltMsg.author!); }
 
   get member() {
