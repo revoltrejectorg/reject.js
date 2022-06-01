@@ -5,6 +5,11 @@ import { User } from "../User";
 import { BaseGuildTextChannel } from "./BaseGuildTextChannel";
 
 export class DMChannel extends BaseGuildTextChannel implements DiscordDMChannel {
+  // @ts-ignore correct impl.
+  get partial() {
+    return typeof this.lastMessageId === "undefined";
+  }
+
   // @ts-ignore
   get messages() {
     fixme("no message history support yet");
@@ -15,11 +20,5 @@ export class DMChannel extends BaseGuildTextChannel implements DiscordDMChannel 
   get recipient() {
     if (!this.revoltChannel.recipient) return;
     return new User(this.revoltChannel.recipient);
-  }
-
-  // @ts-ignore
-  get lastMessage() {
-    if (!this.revoltChannel.last_message) return;
-    return new Message(this.revoltChannel.last_message);
   }
 }

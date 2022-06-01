@@ -180,6 +180,7 @@ export class Guild extends BaseGuild {
 
   readonly publicUpdatesChannelId?: string;
 
+  /** FIXME: No roles class */
   get roles() { return this.revoltServer.roles; }
 
   rulesChannelId?: string;

@@ -35,8 +35,8 @@ export class Message extends baseClass {
 
   get content() { return this.revoltMsg.content?.toString() ?? "fixme"; }
 
+  // FIXME: potential for the message to be a system message
   get channel() {
-    if (!this.revoltMsg.channel) fixme("invalid channel, possibly a system message?");
     return new BaseGuildTextChannel(this.revoltMsg.channel!);
   }
 

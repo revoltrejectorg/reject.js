@@ -14,6 +14,16 @@ export class BaseGuildTextChannel extends GuildChannel {
 
   get description() { return this.revoltChannel.description; }
 
+  // @ts-ignore
+  get lastMessage() {
+    if (!this.revoltChannel.last_message) return;
+    return new Message(this.revoltChannel.last_message);
+  }
+
+  get lastMessageId() {
+    return this.lastMessage?.id;
+  }
+
   async send(content: string | MessageOptions) {
     // return the original string if it's a string, otherwise convert it to revolt params
     const convertedParams = typeof content === "string" ? content : rejectDiscordAPI

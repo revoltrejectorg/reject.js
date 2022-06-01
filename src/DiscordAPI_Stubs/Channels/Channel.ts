@@ -15,8 +15,10 @@ export class Channel extends baseClass {
 
   get id() { return this.revoltChannel._id; }
 
-  /** FIXME: no revolt equiv. */
-  partial = false;
+  // Always false outside of DM channels
+  get partial() {
+    return false;
+  }
 
   get channel_type() { return this.revoltChannel.channel_type; }
 
