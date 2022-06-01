@@ -24,7 +24,7 @@ export class BaseGuildTextChannel extends GuildChannel {
     return this.lastMessage?.id;
   }
 
-  async send(content: string | MessageOptions) {
+  async send(content: string | MessageOptions): Promise<Message> {
     // return the original string if it's a string, otherwise convert it to revolt params
     const convertedParams = typeof content === "string" ? content : rejectDiscordAPI
       .Utils
@@ -33,7 +33,9 @@ export class BaseGuildTextChannel extends GuildChannel {
 
     if (this instanceof User || this instanceof GuildMember) {
       const ch = await this.createDM();
-      ch?.send(convertedParams);
+      const msg = await ch!.send(convertedParams);
+
+      return msg;
     }
 
     const msg = await this.revoltChannel.sendMessage(convertedParams);
