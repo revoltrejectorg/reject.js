@@ -1,25 +1,30 @@
-import { Base as DiscordBase } from "discord.js";
-import { Client as RevoltClient } from "revolt.js";
+import { Base as DiscordBase, Client as DiscordClient } from "discord.js";
+import { Client } from "../Client";
 import { RejectBase } from "./RejectBase";
 
 /**
  * reference: https://discord.js.org/#/docs/discord.js/stable/class/Base
 */
 export class baseClass extends RejectBase implements DiscordBase {
-  revoltClient: RevoltClient;
+  // FIXME: Needs better way to avoid circular dependency
+  rejectClient: Client;
 
   // @ts-ignore
   get client() {
-    return null as any;
+    return this.rejectClient as unknown as DiscordClient;
   }
 
-  constructor(client: RevoltClient) {
+  constructor(client: Client) {
     super();
-    this.revoltClient = client;
+    this.rejectClient = client;
   }
 
   _clone() {
     return Object.assign(Object.create(this), this);
+  }
+
+  _patch(data: any) {
+    return data;
   }
 
   async fetch() {
@@ -35,6 +40,6 @@ export class baseClass extends RejectBase implements DiscordBase {
   }
 
   valueOf() {
-    return "0";
+    return this.rejectClient.user?.id ?? "00000000000000";
   }
 }

@@ -6,7 +6,7 @@ import { ClientApplication } from "./ClientApplication";
 import { BaseClient } from "./BaseClient";
 
 export class Client extends BaseClient {
-  private revoltClient: revoltClient;
+  revoltClient: revoltClient;
 
   get application() { return new ClientApplication(this.revoltClient); }
 

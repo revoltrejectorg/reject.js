@@ -5,8 +5,6 @@ import { Client } from "../Client";
 export class Channel extends baseClass {
   protected revoltChannel: revoltChannel;
 
-  get client() { return new Client(this.revoltChannel.client); }
-
   get createdAt() { return new Date(this.revoltChannel.createdAt * 1000); }
 
   get createdTimestamp() { return this.revoltChannel.createdAt; }
@@ -49,7 +47,7 @@ export class Channel extends baseClass {
   }
 
   constructor(channel: revoltChannel) {
-    super(channel.client);
+    super(new Client(channel.client));
     this.revoltChannel = channel;
   }
 }

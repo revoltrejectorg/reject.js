@@ -8,6 +8,7 @@ import { GuildMember } from "./GuildMember";
 import { Guild } from "./Guild";
 import { baseClass } from "./Base";
 import { msgParamsConverter } from "../Utils/DiscordAPI";
+import { Client } from "./Client";
 
 export class MessageMentions {
   private revoltUsers?: (RevoltUser | undefined)[];
@@ -86,7 +87,7 @@ export class Message extends baseClass {
   }
 
   constructor(rMsg: revoltMessage) {
-    super(rMsg.client);
+    super(new Client(rMsg.client));
     this.revoltMsg = rMsg;
   }
 

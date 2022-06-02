@@ -4,6 +4,7 @@ import { baseClass } from "./Base";
 import { User } from "./User";
 import { Guild } from "./Guild";
 import { Collection } from "./DiscordJS_Stubs";
+import { Client } from "./Client";
 
 export class GuildMember extends baseClass {
   private revoltMember: revoltMember;
@@ -71,7 +72,7 @@ export class GuildMember extends baseClass {
   readonly voice = undefined;
 
   constructor(member: revoltMember) {
-    super(member.client);
+    super(new Client(member.client));
     this.revoltMember = member;
   }
 

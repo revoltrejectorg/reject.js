@@ -35,9 +35,6 @@ export class User extends baseClass implements DiscordUser {
     return false;
   }
 
-  // @ts-ignore
-  get client() { return new Client(this.revoltUser.client); }
-
   get createdAt() { return new Date(this.revoltUser.createdAt * 1000); }
 
   get createdTimestamp() { return this.revoltUser.createdAt; }
@@ -101,7 +98,7 @@ export class User extends baseClass implements DiscordUser {
   get username() { return this.revoltUser.username; }
 
   constructor(rUser: revoltUser) {
-    super(rUser.client);
+    super(new Client(rUser.client));
     this.revoltUser = rUser;
   }
 

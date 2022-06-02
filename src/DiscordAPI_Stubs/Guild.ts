@@ -1,6 +1,6 @@
 import { Channel as revoltChannel } from "revolt.js/dist/maps/Channels";
 import { Server as revoltServer } from "revolt.js/dist/maps/Servers";
-import { BanOptions, BaseGuild as discordBaseGuild, Guild as DiscordGuild } from "discord.js";
+import { BanOptions, BaseGuild as discordBaseGuild } from "discord.js";
 import { baseClass, RejectBase } from "./Base";
 import { GuildMember } from "./GuildMember";
 import { Channel } from "./Channels";
@@ -61,9 +61,6 @@ export class BaseGuild extends baseClass implements discordBaseGuild {
     return this.icon;
   }
 
-  // @ts-ignore
-  get client() { return new Client(this.revoltServer.client); }
-
   toString(): string {
     return this.name;
   }
@@ -73,7 +70,7 @@ export class BaseGuild extends baseClass implements discordBaseGuild {
   }
 
   constructor(rServer: revoltServer) {
-    super(rServer.client);
+    super(new Client(rServer.client));
     this.revoltServer = rServer;
   }
 }
