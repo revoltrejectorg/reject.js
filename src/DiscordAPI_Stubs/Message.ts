@@ -26,7 +26,7 @@ export class MessageMentions {
 }
 
 /**
- * @reference https://discord.js.org/#/docs/discord.js/stable/class/Message
+ * reference https://discord.js.org/#/docs/discord.js/stable/class/Message
  */
 export class Message extends baseClass {
   private revoltMsg: revoltMessage;
@@ -86,7 +86,7 @@ export class Message extends baseClass {
   }
 
   constructor(rMsg: revoltMessage) {
-    super();
+    super(rMsg.client);
     this.revoltMsg = rMsg;
   }
 

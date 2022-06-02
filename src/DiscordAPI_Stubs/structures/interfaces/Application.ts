@@ -1,9 +1,9 @@
 import { ImageURLOptions } from "discord.js";
 import { Client as revoltClient } from "revolt.js";
-import { Client } from "../../../Client";
-import { baseClass } from "../../Base";
+import { Client } from "../../Client/Client";
+import { RejectBase } from "../../Base";
 
-export class Application extends baseClass {
+export class Application extends RejectBase {
   protected revoltClient: revoltClient;
 
   // eslint-disable-next-line no-use-before-define

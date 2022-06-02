@@ -3,19 +3,7 @@ import { UserMention as DiscordUserMention } from "discord.js";
 import { baseClass } from "./Base";
 import { User } from "./User";
 import { Guild } from "./Guild";
-
-export class Permissions extends baseClass {
-  private revoltPermissions: Array<string>;
-
-  constructor(revoltPermissions: Array<string>) {
-    super();
-    this.revoltPermissions = revoltPermissions;
-  }
-
-  has(value: any) {
-    return this.revoltPermissions.includes(value);
-  }
-}
+import { Collection } from "./DiscordJS_Stubs";
 
 export class GuildMember extends baseClass {
   private revoltMember: revoltMember;
@@ -24,10 +12,6 @@ export class GuildMember extends baseClass {
 
   // TODO: add polyfills here
   readonly bannable = false;
-
-  get client() {
-    return this.revoltMember.client;
-  }
 
   // FIXME: Revolt doesn't implement these classes.
   communicationDisabledUntil = new Date();
@@ -69,9 +53,7 @@ export class GuildMember extends baseClass {
 
   // TODO: polyfill this
   get permissions() {
-    const extractedPerms: any[] = [];
-
-    return new Permissions(extractedPerms);
+    return new Collection<string, boolean>();
   }
 
   readonly premiumSince: Date = new Date();
@@ -89,7 +71,7 @@ export class GuildMember extends baseClass {
   readonly voice = undefined;
 
   constructor(member: revoltMember) {
-    super();
+    super(member.client);
     this.revoltMember = member;
   }
 

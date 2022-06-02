@@ -1,2 +1,2 @@
-export * from "./Client";
 export * from "./DiscordAPI_Stubs";
+export * from "./version";

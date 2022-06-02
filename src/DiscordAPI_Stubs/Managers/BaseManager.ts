@@ -1,5 +1,5 @@
 import { Client as revoltClient } from "revolt.js";
-import { Client } from "../../Client";
+import { Client } from "../Client/Client";
 
 export class BaseManager {
   protected revoltClient: revoltClient;

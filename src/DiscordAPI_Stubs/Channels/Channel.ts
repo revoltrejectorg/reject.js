@@ -1,6 +1,6 @@
 import { Channel as revoltChannel } from "revolt.js";
 import { baseClass } from "../Base";
-import { Client } from "../../Client";
+import { Client } from "../Client";
 
 export class Channel extends baseClass {
   protected revoltChannel: revoltChannel;
@@ -49,7 +49,7 @@ export class Channel extends baseClass {
   }
 
   constructor(channel: revoltChannel) {
-    super();
+    super(channel.client);
     this.revoltChannel = channel;
   }
 }

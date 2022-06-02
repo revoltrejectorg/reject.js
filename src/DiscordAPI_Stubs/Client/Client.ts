@@ -1,38 +1,11 @@
 import { Client as revoltClient } from "revolt.js";
-import { missingEquiv } from "./Utils/Logger";
-import { User } from "./DiscordAPI_Stubs/User";
-import { baseClass } from "./DiscordAPI_Stubs/Base";
-import { GuildManager } from "./DiscordAPI_Stubs/Managers/GuildManager";
-import { Application } from "./DiscordAPI_Stubs/structures/interfaces";
+import { missingEquiv } from "../../Utils/Logger";
+import { User } from "../User";
+import { GuildManager } from "../Managers/GuildManager";
+import { ClientApplication } from "./ClientApplication";
+import { BaseClient } from "./BaseClient";
 
-export class ClientApplication extends Application {
-  get botPublic() { return this.rejectClient.user?.bot; }
-
-  get botRequireCodeGrant() { return false; }
-
-  get commands() { return []; }
-
-  /** FIXME: wtf is this for anyways?? */
-  // @ts-ignore
-  flags = undefined;
-
-  get owner() {
-    if (this.revoltClient.user?.bot?.owner) return new User(this.revoltClient.user);
-    return null;
-  }
-
-  get cover() {
-    return this.coverURL();
-  }
-
-  get partial() {
-    return !this.name;
-  }
-
-  rpcOrigins?: never;
-}
-
-export class Client extends baseClass {
+export class Client extends BaseClient {
   private revoltClient: revoltClient;
 
   get application() { return new ClientApplication(this.revoltClient); }
@@ -41,7 +14,7 @@ export class Client extends baseClass {
 
   get emojis() { missingEquiv("emojis"); return []; }
 
-  get guilds() { return new GuildManager(this.revoltClient.servers); }
+  get guilds() { return new GuildManager(this.revoltClient); }
 
   get options() { return this.revoltClient.options; }
 

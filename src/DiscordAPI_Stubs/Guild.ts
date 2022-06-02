@@ -1,12 +1,12 @@
 import { Channel as revoltChannel } from "revolt.js/dist/maps/Channels";
 import { Server as revoltServer } from "revolt.js/dist/maps/Servers";
 import { BanOptions, BaseGuild as discordBaseGuild, Guild as DiscordGuild } from "discord.js";
-import { baseClass } from "./Base";
+import { baseClass, RejectBase } from "./Base";
 import { GuildMember } from "./GuildMember";
 import { Channel } from "./Channels";
-import { Client } from "../Client";
+import { Client } from "./Client";
 
-export class GuildMemberManager extends baseClass {
+export class GuildMemberManager extends RejectBase {
   private revoltMembers: Array<GuildMember>;
 
   constructor(members: Array<GuildMember>) {
@@ -14,7 +14,7 @@ export class GuildMemberManager extends baseClass {
     this.revoltMembers = members;
   }
 
-  /** FIXME: using any type since type checking needs to STFU (this is legal code btw) */
+  // FIXME: make this NOT use the any type
   async ban(user: any, options: BanOptions) {
     const member = this.revoltMembers.find((m) => m.user?.id === user.id);
     if (!member) throw new Error("User not in guild");
@@ -23,7 +23,7 @@ export class GuildMemberManager extends baseClass {
 }
 
 /** Base for guild-type classes
- * @reference: https://discord.js.org/#/docs/discord.js/stable/class/BaseGuild
+ * reference https://discord.js.org/#/docs/discord.js/stable/class/BaseGuild
 */
 export class BaseGuild extends baseClass implements discordBaseGuild {
   protected revoltServer: revoltServer;
@@ -73,13 +73,13 @@ export class BaseGuild extends baseClass implements discordBaseGuild {
   }
 
   constructor(rServer: revoltServer) {
-    super();
+    super(rServer.client);
     this.revoltServer = rServer;
   }
 }
 
 /**
- * @reference https://discord.js.org/#/docs/discord.js/stable/class/Guild
+ * reference https://discord.js.org/#/docs/discord.js/stable/class/Guild
  */
 export class Guild extends BaseGuild {
   /** None of these types have a revolt equivalent. */

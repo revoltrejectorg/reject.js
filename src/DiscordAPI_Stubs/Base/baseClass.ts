@@ -1,14 +1,21 @@
 import { Base as DiscordBase } from "discord.js";
-import { fixme } from "../../Utils";
+import { Client as RevoltClient } from "revolt.js";
+import { RejectBase } from "./RejectBase";
 
-/** Literally just exports identifiers for detecting Reject. */
-export class baseClass implements DiscordBase {
-  /** Can be used to detect if the command you're receiving is from Discord or Revolt */
-  isRevolt: boolean = true;
+/**
+ * reference: https://discord.js.org/#/docs/discord.js/stable/class/Base
+*/
+export class baseClass extends RejectBase implements DiscordBase {
+  revoltClient: RevoltClient;
 
+  // @ts-ignore
   get client() {
-    fixme("unimplimented client getter");
     return null as any;
+  }
+
+  constructor(client: RevoltClient) {
+    super();
+    this.revoltClient = client;
   }
 
   _clone() {

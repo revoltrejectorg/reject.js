@@ -7,13 +7,13 @@ import {
 } from "discord.js";
 import { User as revoltUser } from "revolt.js/dist/maps/Users";
 import { toDiscordStatus, toRevoltStatus } from "../Utils/DiscordAPI";
-import { Client } from "../Client";
 import { fixme } from "../Utils";
 import { baseClass } from "./Base";
 import { DMChannel } from "./Channels";
+import { Client } from "./Client";
 
 /**
- * @reference https://discord.js.org/#/docs/discord.js/stable/class/User
+ * reference https://discord.js.org/#/docs/discord.js/stable/class/User
  */
 export class User extends baseClass implements DiscordUser {
   private revoltUser: revoltUser;
@@ -35,7 +35,6 @@ export class User extends baseClass implements DiscordUser {
     return false;
   }
 
-  /** FIXME: client is improperly implemented!!! */
   // @ts-ignore
   get client() { return new Client(this.revoltUser.client); }
 
@@ -45,10 +44,7 @@ export class User extends baseClass implements DiscordUser {
 
   get defaultAvatarURL() { return this.revoltUser.defaultAvatarURL; }
 
-  get discriminator() {
-    fixme("discriminator stub");
-    return "#0000";
-  }
+  discriminator: string = "#0000";
 
   /** FIXME: Unimplemented features */
   dmChannel = null;
@@ -105,7 +101,7 @@ export class User extends baseClass implements DiscordUser {
   get username() { return this.revoltUser.username; }
 
   constructor(rUser: revoltUser) {
-    super();
+    super(rUser.client);
     this.revoltUser = rUser;
   }
 
