@@ -1,4 +1,3 @@
-import { Client as revoltClient } from "revolt.js";
 import { missingEquiv } from "../../Utils/Logger";
 import { User } from "../User";
 import { GuildManager } from "../Managers/GuildManager";
@@ -6,29 +5,26 @@ import { ClientApplication } from "./ClientApplication";
 import { BaseClient } from "./BaseClient";
 
 export class Client extends BaseClient {
-  revoltClient: revoltClient;
-
   get application() { return new ClientApplication(this.revoltClient); }
 
-  get channels() { missingEquiv("channels"); return []; }
+  channels = [];
 
-  get emojis() { missingEquiv("emojis"); return []; }
+  emojis = [];
 
   get guilds() { return new GuildManager(this.revoltClient); }
 
-  get options() { return this.revoltClient.options; }
+  get readyAt() { return Date.now(); }
 
-  get readyAt() { missingEquiv("readyAt"); return Date.now(); }
+  get readyTimestamp() { return Date.now(); }
 
-  get readyTimestamp() { missingEquiv("readyTimestamp"); return Date.now(); }
+  shard = { id: 0, count: 1 };
 
-  get shard() { missingEquiv("shard"); return { id: 0, count: 1 }; }
+  sweepers = [];
 
-  get sweepers() { missingEquiv("sweepers"); return []; }
+  get token() { return this.revoltClient.session; }
 
-  get token() { missingEquiv("token"); return ""; }
-
-  get uptime() { missingEquiv("uptime"); return 0; }
+  // FIXME
+  uptime = 0;
 
   get user() {
     if (this.revoltClient.user) return new User(this.revoltClient.user);
@@ -37,12 +33,34 @@ export class Client extends BaseClient {
 
   get users() { return this.revoltClient.users; }
 
-  get voice() { missingEquiv("voice"); return {}; }
+  // TODO
+  voice = {};
 
   get ws() { return this.revoltClient.websocket; }
 
-  constructor(rClient: revoltClient) {
-    super();
-    this.revoltClient = rClient;
+  // Question for Discord.js devs: Why does this exist?
+  private _eval(script: string) {
+    // eslint-disable-next-line no-eval
+    return eval(script);
+  }
+
+  // FIXME
+  private _finalize() {}
+
+  // FIXME
+  private _validOptions() {}
+
+  // FIXME: semi-stub
+  async fetchGuildPreview(guild: string) {
+    const id = this.guilds.resolveId(guild);
+    if (!id) throw new TypeError("INVALID_TYPE guild GuildResolvable");
+    // const data = await this.revoltClient.servers.$get(id).banner;
+  }
+
+  // FIXME
+  async fetchGuildTemplate() {}
+
+  async login(token: string) {
+    this.revoltClient.loginBot(token);
   }
 }
