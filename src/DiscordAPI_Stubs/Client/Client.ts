@@ -7,6 +7,7 @@ import { BaseClient } from "./BaseClient";
 export class Client extends BaseClient {
   get application() { return new ClientApplication(this.revoltClient); }
 
+  // FIXME
   channels = [];
 
   emojis = [];

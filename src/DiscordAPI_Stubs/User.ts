@@ -24,7 +24,7 @@ export class User extends baseClass implements DiscordUser {
   // @ts-ignore
   get avatar() { return this.revoltUser.avatar; }
 
-  get banner() { return undefined; }
+  banner = undefined;
 
   bannerURL() {
     return "https://FIXME";
@@ -122,10 +122,10 @@ export class User extends baseClass implements DiscordUser {
     return new DMChannel(dm);
   }
 
+  // FIXME: stub
   // @ts-ignore
   async deleteDM() {
     const dm = await this.revoltUser.openDM();
-    fixme("delete dm stub");
 
     return new DMChannel(dm);
   }
