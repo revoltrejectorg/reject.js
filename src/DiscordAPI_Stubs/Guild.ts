@@ -40,7 +40,7 @@ export class BaseGuild extends baseClass implements discordBaseGuild {
 
   readonly features = [];
 
-  get icon() { return this.revoltServer.generateIconURL() ?? "http://FIXME"; }
+  get icon() { return this.revoltServer.generateIconURL() ?? "https://FIXME"; }
 
   get id() { return this.revoltServer._id; }
 

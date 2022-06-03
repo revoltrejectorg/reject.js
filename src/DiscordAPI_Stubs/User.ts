@@ -27,7 +27,7 @@ export class User extends baseClass implements DiscordUser {
   get banner() { return undefined; }
 
   bannerURL() {
-    return "http://FIXME";
+    return "https://FIXME";
   }
 
   get bot() {
@@ -80,9 +80,10 @@ export class User extends baseClass implements DiscordUser {
         if (presence.activities) {
           usrCls.revoltUser.client.users.edit({
             status: {
+              ...usrCls.revoltUser.status,
               text: presence.activities[0]?.name,
             },
-          });
+          }).catch(() => fixme("Error setting status"));
         }
 
         return this;

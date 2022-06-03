@@ -12,7 +12,7 @@ import { BaseGuildTextChannel } from "./Channels";
 export class Webhook extends RejectBase implements DiscordWebhook {
   name: string;
 
-  avatar = "http://FIXME";
+  avatar = "https://FIXME";
 
   channelId: string;
 
@@ -50,7 +50,7 @@ export class Webhook extends RejectBase implements DiscordWebhook {
   async delete() {}
 
   avatarURL() {
-    return "http://FIXME";
+    return "https://FIXME";
   }
 
   async deleteMessage() {}
