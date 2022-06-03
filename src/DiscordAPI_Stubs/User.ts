@@ -65,18 +65,14 @@ export class User extends baseClass implements DiscordUser {
       clientStatus: {
         desktop: "online",
       },
+      /// FIXME: what is this even for?
       // @ts-ignore
       _parse(data: PresenceData) {
-        fixme("what is this for?");
         return data;
       },
 
       set(presence: PresenceData) {
-        fixme("partial status impl");
-
-        if (!usrCls.revoltUser.status) return this;
-
-        usrCls.revoltUser.status.presence = toRevoltStatus(presence.status);
+        // FIXME: partial impl
         if (presence.activities) {
           usrCls.revoltUser.client.users.edit({
             status: {
@@ -84,6 +80,10 @@ export class User extends baseClass implements DiscordUser {
               text: presence.activities[0]?.name,
             },
           }).catch(() => fixme("Error setting status"));
+        }
+
+        if (usrCls.revoltUser.status?.presence) {
+          usrCls.revoltUser.status.presence = toRevoltStatus(presence.status);
         }
 
         return this;
