@@ -28,7 +28,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/V3L0C1T13S/reject.js.git"
+        "url": "https://github.com/revoltrejectorg/reject.js.git"
     },
     "dependencies": {
         "discord.js": "^13.7.0",
