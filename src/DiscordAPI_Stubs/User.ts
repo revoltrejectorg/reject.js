@@ -4,9 +4,11 @@ import {
   PresenceData,
   User as DiscordUser,
   UserMention as DiscordUserMention,
+  MessageOptions,
+  Message as DiscordMessage,
 } from "discord.js";
 import { User as revoltUser } from "revolt.js/dist/maps/Users";
-import { toDiscordStatus, toRevoltStatus } from "../Utils/DiscordAPI";
+import { msgParamsConverter, toDiscordStatus, toRevoltStatus } from "../Utils/DiscordAPI";
 import { fixme } from "../Utils";
 import { baseClass } from "./Base";
 import { DMChannel } from "./Channels";
@@ -113,8 +115,14 @@ export class User extends baseClass implements DiscordUser {
     return this.revoltUser.generateAvatarURL(options);
   }
 
-  // @ts-ignore
-  send = () => this.createDM();
+  async send(content: string | MessageOptions) {
+    const convertedParams = msgParamsConverter(content);
+
+    const ch = await this.createDM();
+    const msg = await ch!.send(convertedParams);
+
+    return msg as unknown as DiscordMessage;
+  }
 
   // @ts-ignore
   async createDM(force = false) {

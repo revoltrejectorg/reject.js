@@ -22,8 +22,11 @@ export function embedConvert(
     })(),
   };
 }
-
-export function msgParamsConverter(params: MessageOptions | "") {
+/**
+ * @returns the original string if it's a string, otherwise it's converted
+ * to revolt params
+ * */
+export function msgParamsConverter(params: MessageOptions | string) {
   if (typeof params === "string") return params;
 
   const revoltParams: revoltMessagePayload = {
