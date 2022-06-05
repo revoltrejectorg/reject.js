@@ -37,7 +37,7 @@ export class User extends baseClass implements DiscordUser {
     return false;
   }
 
-  get createdAt() { return new Date(this.revoltUser.createdAt * 1000); }
+  get createdAt() { return new Date(this.revoltUser.createdAt); }
 
   get createdTimestamp() { return this.revoltUser.createdAt; }
 
