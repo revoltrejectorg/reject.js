@@ -11,12 +11,6 @@ export class DMChannel extends BaseGuildTextChannel implements DiscordDMChannel 
   }
 
   // @ts-ignore
-  get messages() {
-    fixme("no message history support yet");
-    return;
-  }
-
-  // @ts-ignore
   get recipient() {
     if (!this.revoltChannel.recipient) return;
     return new User(this.revoltChannel.recipient);

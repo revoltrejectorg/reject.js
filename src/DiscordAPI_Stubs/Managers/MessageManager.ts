@@ -1,13 +1,17 @@
-import { Channel as revoltChannel } from "revolt.js";
+import { Channel } from "../Channels";
 import { Message } from "../Message";
 import { CachedManager } from "./CachedManager";
 
 export class MessageManager extends CachedManager {
-  protected revoltChannel: revoltChannel;
+  protected rejectChannel: Channel;
 
-  constructor(channel: revoltChannel, iterable: boolean) {
-    super(channel.client, Message, iterable);
+  get channel() {
+    return this.rejectChannel;
+  }
 
-    this.revoltChannel = channel;
+  constructor(channel: Channel, iterable: boolean) {
+    super(channel.rejectClient.revoltClient, Message, iterable);
+
+    this.rejectChannel = channel;
   }
 }

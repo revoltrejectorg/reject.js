@@ -6,6 +6,7 @@ import { Message } from "../Message";
 import { Webhook } from "../Webhook";
 import { GuildChannel } from "./GuildChannel";
 import { msgParamsConverter } from "../../Utils/DiscordAPI";
+import { MessageManager } from "../Managers";
 
 export class BaseGuildTextChannel extends GuildChannel {
   get nsfw() { return this.revoltChannel.nsfw === true; }
@@ -21,6 +22,8 @@ export class BaseGuildTextChannel extends GuildChannel {
   get lastMessageId() {
     return this.revoltChannel.last_message_id;
   }
+
+  messages = new MessageManager(this, false);
 
   async send(content: string | MessageOptions): Promise<Message> {
     const convertedParams = msgParamsConverter(content);
