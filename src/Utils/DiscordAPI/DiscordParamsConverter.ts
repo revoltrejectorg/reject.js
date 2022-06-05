@@ -20,6 +20,9 @@ export function embedConvert(
 
       return str;
     })(),
+    // FIXME: may need to use january to have revolt accept media
+    // media: embed.image?.url,
+    icon_url: embed.thumbnail?.url,
   };
 }
 /**
