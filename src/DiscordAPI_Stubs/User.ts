@@ -6,6 +6,7 @@ import {
   UserMention as DiscordUserMention,
   MessageOptions,
   Message as DiscordMessage,
+  DMChannel as DiscordDMChannel,
 } from "discord.js";
 import { User as revoltUser } from "revolt.js/dist/maps/Users";
 import { msgParamsConverter, toDiscordStatus, toRevoltStatus } from "../Utils/DiscordAPI";
@@ -17,14 +18,13 @@ import { Client } from "./Client";
 /**
  * reference https://discord.js.org/#/docs/discord.js/stable/class/User
  */
-export class User extends baseClass implements DiscordUser {
+export class User extends baseClass {
   private revoltUser: revoltUser;
 
   get accentColor() { return undefined; }
 
   /** FIXME: bad impl */
-  // @ts-ignore
-  get avatar() { return this.revoltUser.avatar; }
+  get avatar() { return this.revoltUser.avatar as any; }
 
   banner = undefined;
 
@@ -54,9 +54,8 @@ export class User extends baseClass implements DiscordUser {
 
   get id() { return this.revoltUser._id; }
 
-  // @ts-ignore - correct impl, wrong type
   get partial() {
-    return typeof this.username !== "string";
+    return (typeof this.username !== "string") as false;
   }
 
   get presence(): ClientPresence {
@@ -68,7 +67,6 @@ export class User extends baseClass implements DiscordUser {
         desktop: "online",
       },
       /// FIXME: what is this even for?
-      // @ts-ignore
       _parse(data: PresenceData) {
         return data;
       },
@@ -90,7 +88,7 @@ export class User extends baseClass implements DiscordUser {
 
         return this;
       },
-    };
+    } as unknown as ClientPresence;
   }
 
   system = false;
@@ -124,18 +122,20 @@ export class User extends baseClass implements DiscordUser {
     return msg as unknown as DiscordMessage;
   }
 
-  // @ts-ignore
   async createDM(force = false) {
     const dm = await this.revoltUser.openDM();
-    return new DMChannel(dm);
+    return new DMChannel(dm) as unknown as DiscordDMChannel;
   }
 
   // FIXME: stub
-  // @ts-ignore
   async deleteDM() {
     const dm = await this.revoltUser.openDM();
 
-    return new DMChannel(dm);
+    return new DMChannel(dm) as unknown as DiscordDMChannel;
+  }
+
+  _equals(user: DiscordUser) {
+    return false;
   }
 
   toString(): DiscordUserMention {

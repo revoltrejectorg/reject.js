@@ -27,8 +27,6 @@ export class GuildChannel extends Channel {
 
   rawPosition = 0;
 
-  /**  FIXME: not all equivs can be added */
-  // @ts-ignore
   get type() {
     return ChannelTypeConverter(this.revoltChannel.channel_type);
   }

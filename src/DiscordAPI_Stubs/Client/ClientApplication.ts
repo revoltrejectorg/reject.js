@@ -8,9 +8,8 @@ export class ClientApplication extends Application {
 
   get commands() { return []; }
 
-  /** FIXME: wtf is this for anyways?? */
-  // @ts-ignore
-  flags = undefined;
+  // FIXME: No clue what this is for
+  flags = this.revoltClient.user?.flags;
 
   get owner() {
     if (this.revoltClient.user?.bot?.owner) return new User(this.revoltClient.user);

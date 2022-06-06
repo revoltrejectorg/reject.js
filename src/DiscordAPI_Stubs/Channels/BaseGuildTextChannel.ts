@@ -13,10 +13,15 @@ export class BaseGuildTextChannel extends GuildChannel {
 
   get description() { return this.revoltChannel.description; }
 
-  // @ts-ignore
   get lastMessage() {
     if (!this.revoltChannel.last_message) return;
     return new Message(this.revoltChannel.last_message);
+  }
+
+  lastPinTimestamp = 0;
+
+  get lastPinAt() {
+    return this.lastPinTimestamp ? new Date(this.lastPinTimestamp) : null;
   }
 
   get lastMessageId() {

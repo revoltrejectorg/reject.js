@@ -1,18 +1,13 @@
-import { DMChannel as DiscordDMChannel } from "discord.js";
-import { fixme } from "../../Utils";
-import { Message } from "../Message";
 import { User } from "../User";
 import { BaseGuildTextChannel } from "./BaseGuildTextChannel";
 
-export class DMChannel extends BaseGuildTextChannel implements DiscordDMChannel {
-  // @ts-ignore correct impl.
+export class DMChannel extends BaseGuildTextChannel {
   get partial() {
-    return typeof this.lastMessageId === "undefined";
+    return (typeof this.lastMessageId === "undefined") as false;
   }
 
-  // @ts-ignore
   get recipient() {
-    if (!this.revoltChannel.recipient) return;
+    if (!this.revoltChannel.recipient) return null as any;
     return new User(this.revoltChannel.recipient);
   }
 }

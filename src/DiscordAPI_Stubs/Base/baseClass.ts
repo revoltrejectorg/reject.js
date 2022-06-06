@@ -9,7 +9,6 @@ export class baseClass extends RejectBase implements DiscordBase {
   // FIXME: Needs better way to avoid circular dependency
   rejectClient: Client;
 
-  // @ts-ignore
   get client() {
     return this.rejectClient as unknown as DiscordClient;
   }
