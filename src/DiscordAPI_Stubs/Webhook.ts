@@ -26,7 +26,7 @@ export class Webhook extends baseClass implements DiscordWebhook {
 
   token = "null";
 
-  /** FIXME: No idea how to make this not cry over types */
+  // FIXME: Wont stop crying about type errors
   type = WebhookTypes.Application as any;
 
   get owner() {
@@ -56,12 +56,12 @@ export class Webhook extends baseClass implements DiscordWebhook {
     this.sourceGuild = channel.guild;
   }
 
-  get createdAt() { return new Date(); }
+  createdAt = new Date();
 
-  get createdTimestamp() { return 0; }
+  createdTimestamp = 0;
 
-  sendSlackMessage(body: unknown): Promise<boolean> {
-    throw new Error("Method not implemented.");
+  async sendSlackMessage(body: unknown) {
+    return false;
   }
 
   /** FIXME: Literally all of these need stubs */
