@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2022 V3L0C1T13S
+Copyright (c) 2022 Revolt Reject
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
