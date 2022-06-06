@@ -1,5 +1,5 @@
 # reject.js
-![revolt-reject.js](https://img.shields.io/npm/v/revolt-reject.js)
+<a href="https://www.npmjs.com/package/revolt-reject.js"><img src="https://img.shields.io/npm/v/revolt-reject.js" /><a/>
 
 **Reject** is a compatibility layer for Discord.js developers wanting to port their bots to Revolt. It provides a fast, simple wrapper to simplify moving your code over without any loss in speed.
 
