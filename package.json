@@ -20,6 +20,7 @@
     "scripts": {
         "build": "tsc && tsc -p tsconfig.cjs.json",
         "dev": "tsc -w",
+        "typecheck": "tsc --noEmit",
         "lint": "eslint src/**/*.ts",
         "clean": "rimraf dist esm tsconfig.tsbuildinfo",
         "prepare": "npm run clean && npm run build",
