@@ -10,7 +10,7 @@
         "dist",
         "esm"
     ],
-    "license": "MIT",
+    "license": "Apache-2.0",
     "keywords": [
         "revolt.js",
         "revolt.chat",
@@ -32,13 +32,13 @@
     },
     "dependencies": {
         "discord.js": "^13.7.0",
-        "revolt.js": "^6.0.2"
+        "revolt.js": "^6.0.2",
+        "discord-api-types": "^0.33.3"
     },
     "devDependencies": {
         "@types/node": "^17.0.36",
         "@typescript-eslint/eslint-plugin": "^5.27.0",
         "@typescript-eslint/parser": "^5.27.0",
-        "discord-api-types": "^0.33.3",
         "eslint": "^8.16.0",
         "eslint-config-airbnb-base": "^15.0.0",
         "eslint-plugin-import": "^2.26.0",

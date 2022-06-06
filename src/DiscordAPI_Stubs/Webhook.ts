@@ -2,14 +2,17 @@ import {
   Webhook as DiscordWebhook,
   ChannelWebhookCreateOptions as DiscordChannelWebhookCreateOptions,
   MessageOptions,
+  User as DiscordUser,
 } from "discord.js";
 import { WebhookTypes } from "discord.js/typings/enums";
-import { Channel as RevoltChannel } from "revolt.js";
-import { fixme } from "../Utils";
-import { baseClass, RejectBase } from "./Base";
+import { baseClass } from "./Base";
 import { BaseGuildTextChannel } from "./Channels";
+import { User } from "./User";
 
-/** FIXME: Revolt doesn't support webhooks, this is only a dummy. */
+/**
+ * FIXME: Revolt doesn't support webhooks, this is only a dummy.
+ * reference: https://discord.js.org/#/docs/discord.js/stable/class/Webhook
+ * */
 export class Webhook extends baseClass implements DiscordWebhook {
   name: string;
 
@@ -26,11 +29,15 @@ export class Webhook extends baseClass implements DiscordWebhook {
   /** FIXME: No idea how to make this not cry over types */
   type = WebhookTypes.Application as any;
 
-  owner = null as any;
+  get owner() {
+    const ownerId = this.rejectClient.revoltClient.user?.bot?.owner;
+    if (!ownerId) return null;
 
-  readonly url = "http://FIXME";
+    const owner = this.rejectClient.revoltClient.users.$get(ownerId);
+    return new User(owner) as unknown as DiscordUser;
+  }
 
-  private fixmsg = "webhooks don't exist in revolt, passing dummy type";
+  readonly url = "https://FIXME";
 
   sourceChannel: any;
 
@@ -47,8 +54,6 @@ export class Webhook extends baseClass implements DiscordWebhook {
     this.guildId = channel.guild?.id ?? "0";
     this.sourceChannel = channel;
     this.sourceGuild = channel.guild;
-
-    fixme(this.fixmsg);
   }
 
   get createdAt() { return new Date(); }

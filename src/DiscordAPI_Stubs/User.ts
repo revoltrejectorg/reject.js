@@ -9,6 +9,7 @@ import {
   DMChannel as DiscordDMChannel,
 } from "discord.js";
 import { User as revoltUser } from "revolt.js/dist/maps/Users";
+import { APIUser } from "discord-api-types/v10";
 import { msgParamsConverter, toDiscordStatus, toRevoltStatus } from "../Utils/DiscordAPI";
 import { fixme } from "../Utils";
 import { baseClass } from "./Base";
@@ -134,8 +135,32 @@ export class User extends baseClass {
     return new DMChannel(dm) as unknown as DiscordDMChannel;
   }
 
-  _equals(user: DiscordUser) {
-    return false;
+  // FIXME: Need APIUser stub
+  private _equals(user: APIUser): boolean {
+    return (
+      user
+      && this.id === user.id
+      && this.username === user.username
+      && this.discriminator === user.discriminator
+      && this.avatar === user.avatar
+      && this.flags === user.public_flags
+      && ("banner" in user ? this.banner === user.banner : true)
+      && ("accent_color" in user ? this.accentColor === user.accent_color : true)
+    );
+  }
+
+  // FIXME: stub
+  equals(user: DiscordUser) {
+    return (
+      user
+      && this.id === user.id
+      && this.username === user.username
+      && this.discriminator === user.discriminator
+      && this.avatar === user.avatar
+      && this.flags === user.flags
+      && this.banner === user.banner
+      && this.accentColor === user.accentColor
+    );
   }
 
   toString(): DiscordUserMention {

@@ -12,8 +12,11 @@ export class ClientApplication extends Application {
   flags = this.revoltClient.user?.flags;
 
   get owner() {
-    if (this.revoltClient.user?.bot?.owner) return new User(this.revoltClient.user);
-    return null;
+    const ownerId = this.rejectClient.revoltClient.user?.bot?.owner;
+    if (!ownerId) return null;
+
+    const owner = this.revoltClient.users.$get(ownerId);
+    return new User(owner);
   }
 
   get cover() {
