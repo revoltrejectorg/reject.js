@@ -1,5 +1,7 @@
-# Reject
-Reject is a compatibility layer for Discord.js developers wanting to port their bots to Revolt. It provides a fast, simple wrapper to simplify moving your code over without any loss in speed.
+# reject.js
+![revolt-reject.js](https://img.shields.io/npm/v/revolt-reject.js)
+
+**Reject** is a compatibility layer for Discord.js developers wanting to port their bots to Revolt. It provides a fast, simple wrapper to simplify moving your code over without any loss in speed.
 
 ## Project Status
 Reject covers most of the standard Discord.js API that bots would be interacting with. Right now, if your bot doesn't make use of any low-level API's, all that needs to be done on your codebase is logging into Revolt, and passing its events through Reject.
@@ -9,7 +11,7 @@ Below is a basic example of Reject usage in Typescript.
 ```ts
 import { Client as RevoltClient } from "revolt.js";
 import { Client, Message } from "discord.js";
-import { Message as RejectMessage, Client as RejectClient } from "reject.js";
+import { Message as RejectMessage, Client as RejectClient } from "revolt-reject.js";
 
 function onMessage(message: Message) {
   console.log(`Received message from ${message.channel.id} with content ${message.content}`);
