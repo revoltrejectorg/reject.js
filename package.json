@@ -10,7 +10,7 @@
         "dist",
         "esm"
     ],
-    "license": "Apache-2.0",
+    "license": "MIT",
     "keywords": [
         "revolt.js",
         "revolt.chat",
