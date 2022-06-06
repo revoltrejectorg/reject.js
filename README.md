@@ -7,33 +7,7 @@
 Reject covers most of the standard Discord.js API that bots would be interacting with. Right now, if your bot doesn't make use of any low-level API's, all that needs to be done on your codebase is logging into Revolt, and passing its events through Reject.
 
 # Examples
-Below is a basic example of Reject usage in Typescript.
-```ts
-import { Client as RevoltClient } from "revolt.js";
-import { Client, Message } from "discord.js";
-import { Message as RejectMessage, Client as RejectClient } from "revolt-reject.js";
-
-function onMessage(message: Message) {
-  console.log(`Received message from ${message.channel.id} with content ${message.content}`);
-}
-
-function botReady(client: Client) {
-  console.log("Bot is ready!");
-}
-
-console.log("Starting Revolt bot...");
-const revoltBot = new RevoltClient();
-
-// Here we pass a Reject class, which will make the above onMessage function work with Revolt.
-revoltBot.on("message", (message) => onMessage(new RejectMessage(message) as any));
-
-revoltBot.on("ready", () => {
-  botReady(new RejectClient(revoltBot) as any);
-  console.log("Revolt bot is ready!");
-});
-
-revoltBot.loginBot(revoltToken);
-```
+Examples can be found [here](https://github.com/revoltrejectorg/reject-examples)
 
 # FAQ
 ## How can I detect Reject?
