@@ -13,7 +13,7 @@ export class ClientApplication extends Application {
   flags = this.revoltClient.user?.flags;
 
   get owner() {
-    const ownerId = this.rejectClient.revoltClient.user?.bot?.owner;
+    const ownerId = this.revoltClient.user?.bot?.owner;
     if (!ownerId) return null;
 
     const owner = this.revoltClient.users.$get(ownerId);
