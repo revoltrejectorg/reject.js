@@ -1,6 +1,5 @@
 import { PresenceStatus } from "discord.js";
-import { API } from "revolt.js";
-import { Nullable } from "revolt.js/dist/util/null";
+import { API, Nullable } from "revolt.js";
 
 export function toDiscordStatus(revoltStatus: Nullable<API.UserStatus>): PresenceStatus {
   switch (revoltStatus) {

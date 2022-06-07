@@ -1,4 +1,4 @@
-import { Member as revoltMember } from "revolt.js/dist/maps/Members";
+import { Member as revoltMember } from "revolt.js";
 import { UserMention as DiscordUserMention } from "discord.js";
 import { baseClass } from "./Base";
 import { User } from "./User";

@@ -1,6 +1,5 @@
 /* eslint-disable no-bitwise */
-import { Channel as revoltChannel } from "revolt.js/dist/maps/Channels";
-import { Server as revoltServer } from "revolt.js/dist/maps/Servers";
+import { Channel as revoltChannel, Server as revoltServer } from "revolt.js";
 import { BanOptions, BaseGuild as discordBaseGuild } from "discord.js";
 import { baseClass, RejectBase } from "./Base";
 import { GuildMember } from "./GuildMember";
