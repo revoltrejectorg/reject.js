@@ -50,7 +50,7 @@ export class GuildMember extends baseClass {
 
   get displayHexColor() {
     // convert this.color to hex
-    return this.displayColor.toString(16);
+    return this.displayColor.toString(16) ?? "#000000";
   }
 
   get displayName() { return this.nickname; }
