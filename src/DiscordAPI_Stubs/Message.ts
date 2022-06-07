@@ -66,7 +66,7 @@ export class Message extends baseClass {
 
   get createdTimestamp() { return this.createdAt; }
 
-  get createdAt() { return this.revoltMsg.createdAt; }
+  get createdAt() { return new Date(this.revoltMsg.createdAt); }
 
   get id() {
     return this.revoltMsg._id;

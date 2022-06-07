@@ -28,12 +28,8 @@ export class GuildMemberManager extends RejectBase {
 export class BaseGuild extends baseClass implements discordBaseGuild {
   protected revoltServer: revoltServer;
 
-  get createdAt() {
-    const millis = this.revoltServer.createdAt * 1000;
-    return new Date(millis);
-  }
+  get createdAt() { return new Date(this.revoltServer.createdAt); }
 
-  /** @readonly */
   get createdTimestamp() { return this.revoltServer.createdAt; }
 
   get description() { return this.revoltServer.description; }
@@ -131,7 +127,7 @@ export class Guild extends BaseGuild {
   get invites() { return this.revoltServer.fetchInvites(); }
 
   /** FIXME: no info available for when a user joined a server */
-  get joinedAt() { return new Date(this.revoltServer.client.user?.createdAt ?? 0 * 1000); }
+  get joinedAt() { return new Date(this.revoltServer.client.user?.createdAt ?? 0); }
 
   get joinedTimestamp() { return this.revoltServer.client.user?.createdAt; }
 

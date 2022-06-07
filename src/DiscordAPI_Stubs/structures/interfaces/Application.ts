@@ -11,7 +11,7 @@ export class Application extends RejectBase {
 
   get createdAt() { return this.rejectClient.user?.createdAt; }
 
-  get createdTimestamp() { return this.rejectClient.user?.createdAt; }
+  get createdTimestamp() { return this.rejectClient.user?.createdTimestamp; }
 
   description = "FIXME";
 

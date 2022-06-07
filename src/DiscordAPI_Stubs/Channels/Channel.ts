@@ -5,7 +5,7 @@ import { Client } from "../Client";
 export class Channel extends baseClass {
   protected revoltChannel: revoltChannel;
 
-  get createdAt() { return new Date(this.revoltChannel.createdAt * 1000); }
+  get createdAt() { return new Date(this.revoltChannel.createdAt); }
 
   get createdTimestamp() { return this.revoltChannel.createdAt; }
 
