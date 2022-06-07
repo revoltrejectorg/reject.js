@@ -9,7 +9,7 @@ import { msgParamsConverter } from "../../Utils/DiscordAPI";
 import { MessageManager } from "../Managers";
 
 export class BaseGuildTextChannel extends GuildChannel {
-  get nsfw() { return this.revoltChannel.nsfw === true; }
+  get nsfw() { return this.revoltChannel.nsfw; }
 
   get description() { return this.revoltChannel.description; }
 
