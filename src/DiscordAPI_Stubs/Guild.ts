@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 import { Channel as revoltChannel } from "revolt.js/dist/maps/Channels";
 import { Server as revoltServer } from "revolt.js/dist/maps/Servers";
 import { BanOptions, BaseGuild as discordBaseGuild } from "discord.js";
@@ -46,12 +47,18 @@ export class BaseGuild extends baseClass implements discordBaseGuild {
 
   nsfwLevel = "DEFAULT";
 
-  /** Cant figure out how to get if server
-   * is in discovery. insert pls fix
-   */
-  partnered = false;
+  get verified() {
+    if (!this.revoltServer.flags) return false;
 
-  verified = false;
+    return !!(this.revoltServer.flags & 1
+      || this.revoltServer.flags & 2
+    );
+  }
+
+  // discord.js duplicate
+  get partnered() {
+    return this.verified;
+  }
 
   iconURL() {
     return this.icon;
