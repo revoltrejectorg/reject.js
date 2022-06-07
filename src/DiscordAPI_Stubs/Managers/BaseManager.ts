@@ -2,7 +2,7 @@ import { Client as revoltClient } from "revolt.js";
 import { Client } from "../Client/Client";
 
 export class BaseManager {
-  protected revoltClient: revoltClient;
+  revoltClient: revoltClient;
 
   isRevolt = true;
 

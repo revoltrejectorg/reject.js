@@ -1,3 +1,4 @@
+import { ApplicationCommandManager } from "../Managers";
 import { Application } from "../structures/interfaces";
 import { User } from "../User";
 
@@ -6,7 +7,7 @@ export class ClientApplication extends Application {
 
   get botRequireCodeGrant() { return false; }
 
-  get commands() { return []; }
+  commands = new ApplicationCommandManager(this.revoltClient, false);
 
   // FIXME: No clue what this is for
   flags = this.revoltClient.user?.flags;
