@@ -18,8 +18,6 @@ export class Channel extends baseClass {
     return false;
   }
 
-  get channel_type() { return this.revoltChannel.channel_type; }
-
   async delete() {
     this.revoltChannel.delete();
     return this;
