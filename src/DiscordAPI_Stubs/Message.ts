@@ -106,9 +106,9 @@ export class Message extends baseClass {
   }
 
   async edit(content: string): Promise<Message> {
-    const convertedParams = typeof content === "string" ? content : msgParamsConverter(content);
+    const convertedParams = msgParamsConverter(content);
 
-    await this.revoltMsg.edit(convertedParams);
+    await this.revoltMsg.edit(convertedParams as any);
 
     return this;
   }

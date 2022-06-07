@@ -32,7 +32,7 @@ export function embedConvert(
 export function msgParamsConverter(params: MessageOptions | string) {
   if (typeof params === "string") return params;
 
-  const revoltParams: revoltMessagePayload = {
+  const revoltParams = {
     // Revolt doesn't like blank messages
     content: params.content ?? " ",
     embeds: (() => {

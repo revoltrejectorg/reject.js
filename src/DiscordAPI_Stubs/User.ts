@@ -115,24 +115,22 @@ export class User extends baseClass {
   }
 
   async send(content: string | MessageOptions) {
-    const convertedParams = msgParamsConverter(content);
-
     const ch = await this.createDM();
-    const msg = await ch!.send(convertedParams);
+    const msg = await ch!.send(content);
 
-    return msg as unknown as DiscordMessage;
+    return msg;
   }
 
   async createDM(force = false) {
     const dm = await this.revoltUser.openDM();
-    return new DMChannel(dm) as unknown as DiscordDMChannel;
+    return new DMChannel(dm);
   }
 
   // FIXME: stub
   async deleteDM() {
     const dm = await this.revoltUser.openDM();
 
-    return new DMChannel(dm) as unknown as DiscordDMChannel;
+    return new DMChannel(dm);
   }
 
   // FIXME: Need APIUser stub

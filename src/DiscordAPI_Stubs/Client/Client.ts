@@ -1,4 +1,3 @@
-import { missingEquiv } from "../../Utils/Logger";
 import { User } from "../User";
 import { GuildManager } from "../Managers/GuildManager";
 import { ClientApplication } from "./ClientApplication";

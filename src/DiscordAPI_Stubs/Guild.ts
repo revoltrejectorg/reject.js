@@ -157,10 +157,9 @@ export class Guild extends BaseGuild {
 
   mfaLevel = "NONE";
 
-  /**  I *think* this works, but I'm not 100% sure. */
   get ownerId() { return this.revoltServer.owner; }
 
-  /** FIXME: revolt will likely support this in the future, watch for updates. */
+  // FIXME: revolt will likely support this in the future, watch for updates.
   preferredLocale?: string;
 
   premiumProgressBarEnabled = false;
