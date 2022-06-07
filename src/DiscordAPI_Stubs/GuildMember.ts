@@ -6,6 +6,9 @@ import { Guild } from "./Guild";
 import { Collection } from "./DiscordJS_Stubs";
 import { Client } from "./Client";
 
+/**
+ * reference: https://discord.js.org/#/docs/discord.js/13.8.0/class/GuildMember
+ */
 export class GuildMember extends baseClass {
   private revoltMember: revoltMember;
 
