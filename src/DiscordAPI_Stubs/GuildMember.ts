@@ -24,10 +24,34 @@ export class GuildMember extends baseClass {
 
   deleted = false;
 
-  get displayColor() { return 0; }
+  get displayColor() {
+    let color;
 
-  /** 99% sure this will exist some day */
-  get displayHexColor() { return "#000000"; }
+    if (this.revoltMember.roles && this.revoltMember.roles.length > 0) {
+      const srv = this.revoltMember.server;
+      if (srv?.roles) {
+        this.revoltMember.roles.forEach((role) => {
+          // bri'ish spelling
+          const c = srv.roles![role]?.colour;
+          if (c) {
+            color = c;
+            return;
+          }
+        });
+      }
+    }
+
+    if (color) {
+      color = parseInt(color, 16);
+    }
+
+    return color ?? 0;
+  }
+
+  get displayHexColor() {
+    // convert this.color to hex
+    return this.displayColor.toString(16);
+  }
 
   get displayName() { return this.nickname; }
 
@@ -67,8 +91,8 @@ export class GuildMember extends baseClass {
   get roles() { return this.revoltMember.roles; }
 
   get user() {
-    if (this.revoltMember.user) return new User(this.revoltMember.user);
-    return undefined;
+    if (!this.revoltMember.user) return;
+    return new User(this.revoltMember.user);
   }
 
   // TODO: also add a polyfill for this. insert pls help idk how voicechat api works.
