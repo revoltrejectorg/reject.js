@@ -39,6 +39,6 @@ export class baseClass extends RejectBase implements DiscordBase {
   }
 
   valueOf() {
-    return this.rejectClient.user?.id ?? "00000000000000";
+    return this.rejectClient.user?.id ?? "0";
   }
 }

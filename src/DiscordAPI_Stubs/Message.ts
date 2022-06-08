@@ -53,7 +53,8 @@ export class Message extends baseClass {
 
   get mentions() { return new MessageMentions(this.revoltMsg.mentions); }
 
-  get reactions() { fixme("revolt doesn't support reactions yet"); return []; }
+  // FIXME: revolt may add emote reactions in the future
+  get reactions() { return []; }
 
   get embeds() { return this.revoltMsg.embeds; }
 
@@ -61,9 +62,9 @@ export class Message extends baseClass {
 
   get edited() { return this.revoltMsg.edited; }
 
-  get editedTimestamp() { fixme("revolt has no struct for editedtimestamp"); return Date.now(); }
+  get editedTimestamp() { return this.revoltMsg.edited?.getUTCMilliseconds(); }
 
-  get createdTimestamp() { return this.createdAt; }
+  get createdTimestamp() { return this.revoltMsg.createdAt; }
 
   get createdAt() { return new Date(this.revoltMsg.createdAt); }
 
@@ -71,14 +72,11 @@ export class Message extends baseClass {
     return this.revoltMsg._id;
   }
 
-  get webhookId() {
-    fixme("revolt doesn't support webhooks yet");
-    return;
-  }
+  webhookId?: string;
 
   get nonce() { return this.revoltMsg.nonce; }
 
-  get tts() { fixme("revolt doesn't support tts"); return false; }
+  tts = false;
 
   get guild() {
     if (!this.revoltMsg.channel?.server) return;
@@ -91,8 +89,7 @@ export class Message extends baseClass {
   }
 
   async reply(content: string, mention?: boolean | undefined) {
-    const convertedParams = typeof content === "string" ? content
-      : msgParamsConverter(content);
+    const convertedParams = msgParamsConverter(content);
 
     const msg = await this.revoltMsg.reply(convertedParams);
 
@@ -117,32 +114,22 @@ export class Message extends baseClass {
     return false;
   }
 
-  /** None of these have correct implementations */
-  async startThread() { return this as unknown as DiscordMessage<boolean>; }
-
-  async pin() { return this as unknown as DiscordMessage<boolean>; }
-
-  async unpin() {
-    fixme("unpin stub");
-  }
-
-  async react() {
-    fixme("react stub");
-  }
-
-  async awaitReactions() {
-    fixme("awaitReactions stub");
-  }
-
-  async createReactionCollector() {
-    fixme("createReactionCollector stub");
-  }
-
-  async fetchWebhook() {
-    fixme("fetchWebhook stub");
-  }
-
   toString() {
     return this.revoltMsg.content?.toString() ?? "FIXME";
   }
+
+  // Unimplemented stuff
+  async startThread() { return this; }
+
+  async pin() { return this; }
+
+  async unpin() {}
+
+  async react() {}
+
+  async awaitReactions() {}
+
+  async createReactionCollector() {}
+
+  async fetchWebhook() {}
 }

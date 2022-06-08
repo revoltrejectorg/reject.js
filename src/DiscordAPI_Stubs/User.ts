@@ -2,15 +2,13 @@ import {
   ClientPresence,
   ImageURLOptions,
   PresenceData,
-  User as DiscordUser,
   UserMention as DiscordUserMention,
   MessageOptions,
-  Message as DiscordMessage,
-  DMChannel as DiscordDMChannel,
+  User as DiscordUser,
 } from "discord.js";
 import { User as revoltUser } from "revolt.js/dist/maps/Users";
 import { APIUser } from "discord-api-types/v10";
-import { msgParamsConverter, toDiscordStatus, toRevoltStatus } from "../Utils/DiscordAPI";
+import { toDiscordStatus, toRevoltStatus } from "../Utils/DiscordAPI";
 import { fixme } from "../Utils";
 import { baseClass } from "./Base";
 import { DMChannel } from "./Channels";
@@ -24,7 +22,7 @@ export class User extends baseClass {
 
   get accentColor() { return undefined; }
 
-  /** FIXME: bad impl */
+  // FIXME: incorrect impl.
   get avatar() { return this.revoltUser.avatar as any; }
 
   banner = undefined;
@@ -148,7 +146,7 @@ export class User extends baseClass {
   }
 
   // FIXME: stub
-  equals(user: DiscordUser) {
+  equals(user: User) {
     return (
       user
       && this.id === user.id

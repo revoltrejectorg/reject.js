@@ -13,7 +13,7 @@ import { User } from "./User";
  * FIXME: Revolt doesn't support webhooks, this is only a dummy.
  * reference: https://discord.js.org/#/docs/discord.js/stable/class/Webhook
  * */
-export class Webhook extends baseClass implements DiscordWebhook {
+export class Webhook extends baseClass {
   name: string;
 
   avatar = "https://FIXME";
@@ -34,7 +34,7 @@ export class Webhook extends baseClass implements DiscordWebhook {
     if (!ownerId) return null;
 
     const owner = this.rejectClient.revoltClient.users.$get(ownerId);
-    return new User(owner) as unknown as DiscordUser;
+    return new User(owner);
   }
 
   readonly url = "https://FIXME";
