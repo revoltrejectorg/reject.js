@@ -2,6 +2,7 @@ import { MessageEmbed, MessageEmbedOptions, MessageOptions } from "discord.js";
 import { API, Client as RevoltClient } from "revolt.js";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { APIEmbed } from "discord-api-types/v10";
+import { discordJSColorToHex, rgbToHex } from "../colorTils";
 
 export type revoltMessagePayload = any;
 
@@ -25,7 +26,10 @@ export function embedConvert(
     // media: embed.image?.url ? client.proxyFile(embed.image.url) : undefined,
     icon_url: embed.thumbnail?.url,
     // convert color from rgb number to hex
-    colour: embed.color ? `#${embed.color.toString(16).padStart(6, "0")}` : null,
+    // eslint-disable-next-line no-nested-ternary
+    colour: embed.color && typeof embed.color === "number"
+      ? rgbToHex(embed.color)
+      : typeof embed.color === "string" ? discordJSColorToHex(embed.color) : null,
   };
 }
 /**
