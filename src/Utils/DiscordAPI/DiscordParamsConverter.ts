@@ -1,5 +1,5 @@
 import { MessageEmbed, MessageEmbedOptions, MessageOptions } from "discord.js";
-import { API } from "revolt.js";
+import { API, Client as RevoltClient } from "revolt.js";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { APIEmbed } from "discord-api-types/v10";
 
@@ -7,6 +7,7 @@ export type revoltMessagePayload = any;
 
 export function embedConvert(
   embed: MessageEmbed | MessageEmbedOptions | APIEmbed,
+  client: RevoltClient,
 ): API.SendableEmbed {
   return {
     title: embed.title,
@@ -21,15 +22,19 @@ export function embedConvert(
       return str;
     })(),
     // FIXME: may need to use january to have revolt accept media
-    // media: embed.image?.url,
+    // media: embed.image?.url ? client.proxyFile(embed.image.url) : undefined,
     icon_url: embed.thumbnail?.url,
+    // convert color from rgb number to hex
+    colour: embed.color ? `#${embed.color.toString(16).padStart(6, "0")}` : null,
   };
 }
 /**
+ * @param params - the params to convert
+ * @param client - the client to use for converting, needed for media
  * @returns the original string if it's a string, otherwise it's converted
  * to revolt params
  * */
-export function msgParamsConverter(params: MessageOptions | string) {
+export function msgParamsConverter(params: MessageOptions | string, client: RevoltClient) {
   if (typeof params === "string") return params;
 
   const revoltParams = {
@@ -37,7 +42,7 @@ export function msgParamsConverter(params: MessageOptions | string) {
     content: params.content ?? " ",
     embeds: (() => {
       if (!params.embeds || !(params.embeds[0])) return;
-      return params.embeds.map((embed) => embedConvert(embed));
+      return params.embeds.map((embed) => embedConvert(embed, client));
     })(),
   };
   return revoltParams;

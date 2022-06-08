@@ -4,7 +4,6 @@ import {
   PresenceData,
   UserMention as DiscordUserMention,
   MessageOptions,
-  User as DiscordUser,
 } from "discord.js";
 import { User as revoltUser } from "revolt.js/dist/maps/Users";
 import { APIUser } from "discord-api-types/v10";
