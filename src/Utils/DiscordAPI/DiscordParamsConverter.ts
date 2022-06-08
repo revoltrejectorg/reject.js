@@ -13,7 +13,7 @@ export function embedConvert(
     title: embed.title,
     url: embed.url,
     description: (() => {
-      let str = embed.description;
+      let str = embed.description ?? "";
 
       embed.fields?.forEach((field) => {
         str += `\n\n**${field.name}**\n\n${field.value}`;
