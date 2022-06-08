@@ -32,9 +32,9 @@
         "url": "https://github.com/revoltrejectorg/reject.js.git"
     },
     "dependencies": {
-        "discord.js": "^13.7.0",
-        "revolt.js": "^6.0.2",
-        "discord-api-types": "^0.33.3"
+        "discord-api-types": "^0.33.5",
+        "discord.js": "^13.8.0",
+        "revolt.js": "^6.0.2"
     },
     "devDependencies": {
         "@types/node": "^17.0.36",
