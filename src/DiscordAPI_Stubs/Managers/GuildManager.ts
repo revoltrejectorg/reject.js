@@ -7,7 +7,17 @@ export class GuildManager extends CachedManager {
     super(client, Guild, iterable);
     // FIXME: May cause performance issues with uncached guilds.
     this.revoltClient.servers.forEach((server, key) => {
-      this._add(server, true, { id: key });
+      this._add(new Guild(server), true, { id: key });
     });
+  }
+
+  // FIXME: partial stub
+  async create(name: string) {
+    const srv = await this.revoltClient.servers.createServer({
+      name: name
+    });
+    if (this.cache.has(srv._id)) return this.cache.get(srv._id);
+
+    return this._add(new Guild(srv), true, { id: srv._id });
   }
 }
