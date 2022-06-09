@@ -89,7 +89,7 @@ export class Message extends baseClass {
   }
 
   async reply(content: string, mention?: boolean | undefined) {
-    const convertedParams = msgParamsConverter(content, this.revoltMsg.client);
+    const convertedParams = await msgParamsConverter(content, this.revoltMsg.client);
 
     const msg = await this.revoltMsg.reply(convertedParams);
 

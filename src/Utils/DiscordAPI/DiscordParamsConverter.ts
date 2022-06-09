@@ -3,13 +3,20 @@ import { API, Client as RevoltClient } from "revolt.js";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { APIEmbed } from "discord-api-types/v10";
 import { discordJSColorToHex, rgbToHex } from "../colorTils";
+import { UploadFile } from "../UploadFile";
 
 export type revoltMessagePayload = any;
 
-export function embedConvert(
+async function createFileBuffer(url: string) {
+  const buff = Buffer.from(
+    await (await fetch(url)).arrayBuffer()
+  )
+  return buff;
+}
+export async function embedConvert(
   embed: MessageEmbed | MessageEmbedOptions | APIEmbed,
   client: RevoltClient,
-): API.SendableEmbed {
+): Promise<API.SendableEmbed> {
   return {
     title: embed.title,
     url: embed.url,
@@ -23,7 +30,10 @@ export function embedConvert(
       return str;
     })(),
     // FIXME: may need to use january to have revolt accept media
-    // media: embed.image?.url ? client.proxyFile(embed.image.url) : undefined,
+    media: embed.image?.url ? await UploadFile({
+      name: "image.png",
+      file: await createFileBuffer(embed.image.url)
+    }) : undefined,
     icon_url: embed.thumbnail?.url,
     // convert color from rgb number to hex
     // eslint-disable-next-line no-nested-ternary
@@ -38,15 +48,15 @@ export function embedConvert(
  * @returns the original string if it's a string, otherwise it's converted
  * to revolt params
  * */
-export function msgParamsConverter(params: MessageOptions | string, client: RevoltClient) {
+export async function msgParamsConverter(params: MessageOptions | string, client: RevoltClient) {
   if (typeof params === "string") return params;
 
   const revoltParams = {
     // Revolt doesn't like blank messages
     content: params.content ?? " ",
-    embeds: (() => {
+    embeds: await (async () => {
       if (!params.embeds || !(params.embeds[0])) return;
-      return params.embeds.map((embed) => embedConvert(embed, client));
+      return await Promise.all(params.embeds.map((embed) => embedConvert(embed, client)));
     })(),
   };
   return revoltParams;

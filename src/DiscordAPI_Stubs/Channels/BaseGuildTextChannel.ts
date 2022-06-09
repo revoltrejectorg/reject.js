@@ -31,7 +31,7 @@ export class BaseGuildTextChannel extends GuildChannel {
   messages = new MessageManager(this, false);
 
   async send(content: string | MessageOptions): Promise<Message> {
-    const convertedParams = msgParamsConverter(content, this.revoltChannel.client);
+    const convertedParams = await msgParamsConverter(content, this.revoltChannel.client);
 
     const msg = await this.revoltChannel.sendMessage(convertedParams);
 
