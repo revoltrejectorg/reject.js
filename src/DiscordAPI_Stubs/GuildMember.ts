@@ -5,6 +5,7 @@ import { User } from "./User";
 import { Guild } from "./Guild";
 import { Collection } from "./DiscordJS_Stubs";
 import { Client } from "./Client";
+import { hexToRgb } from "../Utils";
 
 /**
  * reference: https://discord.js.org/#/docs/discord.js/13.8.0/class/GuildMember
@@ -25,7 +26,11 @@ export class GuildMember extends baseClass {
   deleted = false;
 
   get displayColor() {
-    let color;
+    return hexToRgb(this.displayHexColor);
+  }
+
+  get displayHexColor() {
+    let color: string = "#000000";
 
     if (this.revoltMember.roles && this.revoltMember.roles.length > 0) {
       const srv = this.revoltMember.server;
@@ -41,16 +46,7 @@ export class GuildMember extends baseClass {
       }
     }
 
-    if (color) {
-      color = parseInt(color, 16);
-    }
-
-    return color ?? 0;
-  }
-
-  get displayHexColor() {
-    // convert this.color to hex
-    return this.displayColor.toString(16) ?? "#000000";
+    return color;
   }
 
   get displayName() { return this.nickname; }
