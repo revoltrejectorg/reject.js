@@ -64,7 +64,8 @@ export function discordJSColorToHex(color: ColorResolvable) {
     case "BLURPLE": return "#7289da";
     case "DARK_BUT_NOT_BLACK": return "#2e2f30";
     case "NOT_QUITE_BLACK": return "#23272a";
-    case "RANDOM": return "#ffffff";
+    case "RANDOM": return rgbToHex(Math.floor(Math.random() * (0xffffff + 1)));
+    
     default: return "#000000";
   }
 }
