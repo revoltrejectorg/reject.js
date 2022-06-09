@@ -8,18 +8,18 @@ import {
 import { User as revoltUser } from "revolt.js/dist/maps/Users";
 import { APIUser } from "discord-api-types/v10";
 import { toDiscordStatus, toRevoltStatus } from "../Utils/DiscordAPI";
-import { fixme } from "../Utils";
+import { fixme, rgbToHex } from "../Utils";
 import { baseClass } from "./Base";
 import { DMChannel } from "./Channels";
 import { Client } from "./Client";
 
 /**
- * reference https://discord.js.org/#/docs/discord.js/stable/class/User
+ * @see https://discord.js.org/#/docs/discord.js/stable/class/User
  */
 export class User extends baseClass {
   private revoltUser: revoltUser;
 
-  get accentColor() { return undefined; }
+  accentColor = 0xff0000;
 
   // FIXME: incorrect impl.
   get avatar() { return this.revoltUser.avatar as any; }
@@ -48,7 +48,7 @@ export class User extends baseClass {
 
   flags = null;
 
-  hexAccentColor?: never;
+  readonly hexAccentColor = rgbToHex(this.accentColor);
 
   get id() { return this.revoltUser._id; }
 
