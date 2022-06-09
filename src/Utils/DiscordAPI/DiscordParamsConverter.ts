@@ -4,14 +4,15 @@ import { API, Client as RevoltClient } from "revolt.js";
 import { APIEmbed } from "discord-api-types/v10";
 import { discordJSColorToHex, rgbToHex } from "../colorTils";
 import { UploadFile } from "../UploadFile";
+import axios from "axios";
 
 export type revoltMessagePayload = any;
 
 async function createFileBuffer(url: string) {
-  const buff = Buffer.from(
-    await (await fetch(url)).arrayBuffer()
-  )
-  return buff;
+  const res = Buffer.from(
+    await (await axios.get(url, { responseType: "arraybuffer" })).data
+  );
+  return res;
 }
 export async function embedConvert(
   embed: MessageEmbed | MessageEmbedOptions | APIEmbed,
