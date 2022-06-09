@@ -1,3 +1,5 @@
+import axios from "axios";
+
 type AttachmentTag = "attachments";
 
 const boundary = "------REJECTJS"
@@ -27,13 +29,14 @@ export async function UploadFile(
   type: AttachmentTag = "attachments"
 ) {
   const response = (await (
-    await fetch(`https://autumn.revolt.chat/${type}`, {
+    await axios({
       method: "POST",
+      url: `https://autumn.revolt.chat/${type}`,
       headers: { "Content-Type": `multipart/form-data; boundary=${boundary}` },
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      body: Buffer.concat(appendFormData("file", file.file, file.name)!)
+      data: Buffer.concat(appendFormData("file", file.file, file.name)!)
     })
-  ).json()) as unknown as { id: string };
+  ).data) as unknown as { id: string };
 
   return response.id;
 }
