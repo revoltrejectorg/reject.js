@@ -8,7 +8,7 @@ import { Client } from "./Client";
 import { hexToRgb } from "../Utils";
 
 /**
- * reference: https://discord.js.org/#/docs/discord.js/13.8.0/class/GuildMember
+ * @see https://discord.js.org/#/docs/discord.js/13.8.0/class/GuildMember
  */
 export class GuildMember extends baseClass {
   private revoltMember: revoltMember;
