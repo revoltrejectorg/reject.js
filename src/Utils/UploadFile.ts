@@ -28,13 +28,11 @@ export async function UploadFile(
   file: { name: string; file: Buffer },
   type: AttachmentTag = "attachments"
 ) {
+  const data = Buffer.concat(appendFormData("file", file.file, file.name)!);
+
   const response = (await (
-    await axios({
-      method: "POST",
-      url: `https://autumn.revolt.chat/${type}`,
+    await axios.post(`https://autumn.revolt.chat/${type}`,data, {
       headers: { "Content-Type": `multipart/form-data; boundary=${boundary}` },
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      data: Buffer.concat(appendFormData("file", file.file, file.name)!)
     })
   ).data) as unknown as { id: string };
 
