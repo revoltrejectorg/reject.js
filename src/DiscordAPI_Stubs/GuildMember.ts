@@ -77,7 +77,7 @@ export class GuildMember extends baseClass {
 
   get manageable() {
     return this.revoltMember.inferior;
-  };
+  }
 
   get nickname() { return this.revoltMember.nickname; }
 
