@@ -1,5 +1,5 @@
 import { Member as revoltMember } from "revolt.js";
-import { UserMention as DiscordUserMention } from "discord.js";
+import { BanOptions, MessageOptions, UserMention as DiscordUserMention } from "discord.js";
 import { baseClass } from "./Base";
 import { User } from "./User";
 import { Guild } from "./Guild";
@@ -13,15 +13,17 @@ import { hexToRgb } from "../Utils";
 export class GuildMember extends baseClass {
   private revoltMember: revoltMember;
 
-  get avatar() { return this.revoltMember.avatar; }
+  // FIXME: avatar hash is all screwy
+  get avatar() { return this.revoltMember.avatar?._id; }
 
-  // TODO: add polyfills here
-  readonly bannable = false;
+  get bannable() {
+    return this.revoltMember.bannable;
+  }
 
-  // FIXME: Revolt doesn't implement these classes.
-  communicationDisabledUntil = new Date();
+  // Revolt doesn't support this
+  readonly communicationDisabledUntil?: Date;
 
-  communicationDisabledUntilTimestamp = new Date();
+  communicationDisabledUntilTimestamp?: number;
 
   deleted = false;
 
@@ -58,12 +60,14 @@ export class GuildMember extends baseClass {
 
   get id() { return this.user?.id; }
 
+  get kickable() {
+    return this.revoltMember.kickable;
+  }
+
   // FIXME: Revolt doesn't implement these classes.
   readonly joinedAt = new Date();
 
-  joinedTimestamp = new Date();
-
-  readonly kickable: boolean = false;
+  joinedTimestamp = 0;
 
   readonly manageable: boolean = false;
 
@@ -99,10 +103,22 @@ export class GuildMember extends baseClass {
     this.revoltMember = member;
   }
 
-  /** FIXME: missing ban reason */
-  async ban() {
-    if (!this.id) return;
-    this.revoltMember.server?.banUser(this.id, { reason: "Banned by discord.js" });
+  async ban(options?: BanOptions) {
+    // FIXME: may need to throw error to preserve original discord.js behavior
+    if (!this.id || !this.revoltMember.bannable) return;
+    this.revoltMember.server?.banUser(this.id, {
+      reason: options?.reason,
+    });
+  }
+
+  async kick(reason?: string) {
+    // FIXME: see ban() fixme
+    if (!this.revoltMember.kickable) return;
+    this.revoltMember.kick();
+  }
+
+  send(content: string | MessageOptions) {
+    return this.user?.send(content);
   }
 
   toString(): DiscordUserMention {
