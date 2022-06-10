@@ -1,5 +1,11 @@
 import { Member as revoltMember } from "revolt.js";
-import { BanOptions, MessageOptions, UserMention as DiscordUserMention } from "discord.js";
+import {
+  BanOptions,
+  GuildMemberEditData,
+  ImageURLOptions,
+  MessageOptions,
+  UserMention as DiscordUserMention,
+} from "discord.js";
 import { baseClass } from "./Base";
 import { User } from "./User";
 import { Guild } from "./Guild";
@@ -103,12 +109,64 @@ export class GuildMember extends baseClass {
     this.revoltMember = member;
   }
 
+  avatarURL(options: ImageURLOptions) {
+    return this.user?.avatarURL(options);
+  }
+
   async ban(options?: BanOptions) {
     // FIXME: may need to throw error to preserve original discord.js behavior
     if (!this.id || !this.revoltMember.bannable) return;
     this.revoltMember.server?.banUser(this.id, {
       reason: options?.reason,
     });
+  }
+
+  // FIXME
+  async disableCommunicationUntil() {
+    return null;
+  }
+
+  displayAvatarURL(options: ImageURLOptions) {
+    return this.user?.displayAvatarURL(options);
+  }
+
+  // FIXME
+  async edit(data: GuildMemberEditData, reason?: string) {
+    this.revoltMember.edit({
+      nickname: data.nick,
+    });
+  }
+
+  equals(member: GuildMember) {
+    return (
+      member instanceof this.constructor
+      && this.id === member.id
+      && this.partial === member.partial
+      && this.guild?.id === member.guild?.id
+      && this.joinedTimestamp === member.joinedTimestamp
+      && this.nickname === member.nickname
+      && this.avatar === member.avatar
+      && this.pending === member.pending
+      && this.communicationDisabledUntilTimestamp === member.communicationDisabledUntilTimestamp
+      // && (this._roles === member._roles
+    // eslint-disable-next-line max-len
+    // || (this._roles.length === member._roles.length && this._roles.every((role, i) => role === member._roles[i])))
+    );
+  }
+
+  isCommunicationDisabled() {
+    return false;
+  }
+
+  async setNickname(name?: string, reason?: string) {
+    this.edit({
+      nick: name,
+    }, reason);
+  }
+
+  // FIXME
+  async timeout(timeout: number, reason?: string) {
+    return this;
   }
 
   async kick(reason?: string) {
