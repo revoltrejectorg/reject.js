@@ -30,11 +30,11 @@ export async function embedConvert(
 
       return str;
     })(),
-    // FIXME: may need to use january to have revolt accept media
+    // FIXME: Highly inefficient
     media: embed.image?.url ? await UploadFile({
       name: "image.png",
       file: await createFileBuffer(embed.image.url),
-    }) : undefined,
+    }).catch(() => undefined) : undefined,
     icon_url: embed.thumbnail?.url,
     // convert color from rgb number to hex
     // eslint-disable-next-line no-nested-ternary
