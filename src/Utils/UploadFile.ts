@@ -2,7 +2,7 @@ import axios from "axios";
 
 type AttachmentTag = "attachments";
 
-const boundary = "------REJECTJS"
+const boundary = "------REJECTJS";
 function appendFormData(name: string, data: any, fileName: string) {
   const fileBuffer: Buffer[] = [];
 
@@ -12,8 +12,10 @@ function appendFormData(name: string, data: any, fileName: string) {
     str += "\r\nContent-Type: application/octet-stream";
   } else if (data instanceof Object) {
     str += "\r\nContent-Type: application/json";
+    // eslint-disable-next-line no-param-reassign
     data = Buffer.from(JSON.stringify(data));
   } else {
+    // eslint-disable-next-line no-param-reassign
     data = Buffer.from(`${data}`);
   }
 
@@ -26,12 +28,12 @@ function appendFormData(name: string, data: any, fileName: string) {
 
 export async function UploadFile(
   file: { name: string; file: Buffer },
-  type: AttachmentTag = "attachments"
+  type: AttachmentTag = "attachments",
 ) {
   const data = Buffer.concat(appendFormData("file", file.file, file.name)!);
 
   const response = (await (
-    await axios.post(`https://autumn.revolt.chat/${type}`,data, {
+    await axios.post(`https://autumn.revolt.chat/${type}`, data, {
       headers: { "Content-Type": `multipart/form-data; boundary=${boundary}` },
     })
   ).data) as unknown as { id: string };
