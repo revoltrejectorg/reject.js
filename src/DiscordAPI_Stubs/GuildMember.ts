@@ -75,7 +75,9 @@ export class GuildMember extends baseClass {
 
   joinedTimestamp = 0;
 
-  readonly manageable: boolean = false;
+  get manageable() {
+    return this.revoltMember.inferior;
+  };
 
   get nickname() { return this.revoltMember.nickname; }
 

@@ -5,7 +5,6 @@ import { APIEmbed } from "discord-api-types/v10";
 import axios from "axios";
 import { discordJSColorToHex, rgbToHex } from "../colorTils";
 import { UploadFile } from "../UploadFile";
-import { trimIfLong } from "./charLimit";
 
 export type revoltMessagePayload = any;
 
@@ -51,11 +50,11 @@ export async function embedConvert(
  * to revolt params
  * */
 export async function msgParamsConverter(params: MessageOptions | string, client: RevoltClient) {
-  if (typeof params === "string") return trimIfLong(params);
+  if (typeof params === "string") return params;
 
   const revoltParams = {
     // Revolt doesn't like blank messages
-    content: trimIfLong(params.content ?? " "),
+    content: params.content,
     embeds: await (async () => {
       if (!params.embeds || !(params.embeds[0])) return;
       const convEmbeds = await Promise
