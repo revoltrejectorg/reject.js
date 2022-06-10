@@ -1,6 +1,6 @@
 {
     "name": "revolt-reject.js",
-    "version": "2.1.1",
+    "version": "2.2.0",
     "description": "Converts Discord.js API calls into Revolt.js API calls",
     "author": "V3L0C1T13S",
     "main": "dist/index.js",
