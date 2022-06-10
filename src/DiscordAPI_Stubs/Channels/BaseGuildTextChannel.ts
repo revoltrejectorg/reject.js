@@ -5,7 +5,7 @@ import {
 import { Message } from "../Message";
 import { Webhook } from "../Webhook";
 import { GuildChannel } from "./GuildChannel";
-import { msgParamsConverter } from "../../Utils/DiscordAPI";
+import { charLimitChecker, msgParamsConverter } from "../../Utils/DiscordAPI";
 import { MessageManager } from "../Managers";
 
 export class BaseGuildTextChannel extends GuildChannel {

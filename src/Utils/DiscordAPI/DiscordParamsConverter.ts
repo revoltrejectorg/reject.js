@@ -2,15 +2,16 @@ import { MessageEmbed, MessageEmbedOptions, MessageOptions } from "discord.js";
 import { API, Client as RevoltClient } from "revolt.js";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { APIEmbed } from "discord-api-types/v10";
+import axios from "axios";
 import { discordJSColorToHex, rgbToHex } from "../colorTils";
 import { UploadFile } from "../UploadFile";
-import axios from "axios";
+import { trimIfLong } from "./charLimit";
 
 export type revoltMessagePayload = any;
 
 async function createFileBuffer(url: string) {
   const res = Buffer.from(
-    await (await axios.get(url, { responseType: "arraybuffer" })).data
+    await (await axios.get(url, { responseType: "arraybuffer" })).data,
   );
   return res;
 }
@@ -33,7 +34,7 @@ export async function embedConvert(
     // FIXME: may need to use january to have revolt accept media
     media: embed.image?.url ? await UploadFile({
       name: "image.png",
-      file: await createFileBuffer(embed.image.url)
+      file: await createFileBuffer(embed.image.url),
     }) : undefined,
     icon_url: embed.thumbnail?.url,
     // convert color from rgb number to hex
@@ -50,14 +51,17 @@ export async function embedConvert(
  * to revolt params
  * */
 export async function msgParamsConverter(params: MessageOptions | string, client: RevoltClient) {
-  if (typeof params === "string") return params;
+  if (typeof params === "string") return trimIfLong(params);
 
   const revoltParams = {
     // Revolt doesn't like blank messages
-    content: params.content ?? " ",
+    content: trimIfLong(params.content ?? " "),
     embeds: await (async () => {
       if (!params.embeds || !(params.embeds[0])) return;
-      return await Promise.all(params.embeds.map((embed) => embedConvert(embed, client)));
+      const convEmbeds = await Promise
+        .all(params.embeds.map((embed) => embedConvert(embed, client)));
+
+      return convEmbeds;
     })(),
   };
   return revoltParams;
