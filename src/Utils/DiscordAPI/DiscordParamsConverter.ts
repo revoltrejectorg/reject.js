@@ -52,9 +52,9 @@ export async function embedConvert(
 export async function msgParamsConverter(params: MessageOptions | string, client: RevoltClient) {
   if (typeof params === "string") return params;
 
-  const revoltParams = {
+  const revoltParams: Omit<API.DataMessageSend, "nonce"> = {
     // Revolt doesn't like blank messages
-    content: params.content,
+    content: params.content ?? " ",
     embeds: await (async () => {
       if (!params.embeds || !(params.embeds[0])) return;
       const convEmbeds = await Promise

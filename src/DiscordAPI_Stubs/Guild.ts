@@ -78,7 +78,7 @@ export class BaseGuild extends baseClass implements discordBaseGuild {
 }
 
 /**
- * reference https://discord.js.org/#/docs/discord.js/stable/class/Guild
+ * @see https://discord.js.org/#/docs/discord.js/stable/class/Guild
  */
 export class Guild extends BaseGuild {
   /** None of these types have a revolt equivalent. */

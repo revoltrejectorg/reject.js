@@ -3,7 +3,7 @@ import { baseClass } from "../Base";
 import { Client } from "../Client";
 
 export class Channel extends baseClass {
-  protected revoltChannel: revoltChannel;
+  revoltChannel: revoltChannel;
 
   get createdAt() { return new Date(this.revoltChannel.createdAt); }
 

@@ -1,12 +1,15 @@
 import {
-  Webhook as DiscordWebhook,
   ChannelWebhookCreateOptions as DiscordChannelWebhookCreateOptions,
   MessageOptions,
-  User as DiscordUser,
+  WebhookMessageOptions,
 } from "discord.js";
 import { WebhookTypes } from "discord.js/typings/enums";
+import { API } from "revolt.js";
+import { msgParamsConverter } from "../Utils/DiscordAPI";
 import { baseClass } from "./Base";
 import { BaseGuildTextChannel } from "./Channels";
+import { Guild } from "./Guild";
+import { Message } from "./Message";
 import { User } from "./User";
 
 /**
@@ -39,9 +42,9 @@ export class Webhook extends baseClass {
 
   readonly url = "https://FIXME";
 
-  sourceChannel: any;
+  sourceChannel: BaseGuildTextChannel;
 
-  sourceGuild: any;
+  sourceGuild?: Guild;
 
   constructor(
     name: string,
@@ -50,10 +53,19 @@ export class Webhook extends baseClass {
   ) {
     super(channel.rejectClient);
     this.name = name ?? "REJECTFIXME";
+
     this.channelId = channel.id;
     this.guildId = channel.guild?.id ?? "0";
+
     this.sourceChannel = channel;
     this.sourceGuild = channel.guild;
+
+    // FIXME: Currently only supports URLs
+    if (options?.avatar) {
+      if (typeof options.avatar === "string") {
+        this.avatar = options.avatar;
+      }
+    }
   }
 
   createdAt = new Date();
@@ -64,11 +76,30 @@ export class Webhook extends baseClass {
     return false;
   }
 
-  /** FIXME: Literally all of these need stubs */
-  async send(message: string | MessageOptions) {
-    return null as any;
+  // FIXME: Needs masquerade permissions to work properly
+  async send(message: string | MessageOptions | WebhookMessageOptions) {
+    const params = await msgParamsConverter(message, this.rejectClient.revoltClient);
+
+    const masq = {
+      name: this.name,
+      avatar: this.avatar,
+    }
+
+    // add masquerade to params
+    const masqueradedParams = typeof params === "string" ? {
+      content: params,
+      masquerade: masq,
+    } : {
+      ...params,
+      masquerade: masq,
+    }
+
+    const msg = await this.sourceChannel.revoltChannel.sendMessage(masqueradedParams);
+
+    return new Message(msg);
   }
 
+  /** FIXME: Literally all of these need stubs */
   async delete() {}
 
   avatarURL() {
