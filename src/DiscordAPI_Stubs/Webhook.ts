@@ -4,7 +4,6 @@ import {
   WebhookMessageOptions,
 } from "discord.js";
 import { WebhookTypes } from "discord.js/typings/enums";
-import { API } from "revolt.js";
 import { msgParamsConverter } from "../Utils/DiscordAPI";
 import { baseClass } from "./Base";
 import { BaseGuildTextChannel } from "./Channels";
@@ -83,7 +82,7 @@ export class Webhook extends baseClass {
     const masq = {
       name: this.name,
       avatar: this.avatar,
-    }
+    };
 
     // add masquerade to params
     const masqueradedParams = typeof params === "string" ? {
@@ -92,7 +91,7 @@ export class Webhook extends baseClass {
     } : {
       ...params,
       masquerade: masq,
-    }
+    };
 
     const msg = await this.sourceChannel.revoltChannel.sendMessage(masqueradedParams);
 
