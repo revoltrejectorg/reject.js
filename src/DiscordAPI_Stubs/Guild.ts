@@ -1,6 +1,6 @@
 /* eslint-disable no-bitwise */
 import { Channel as revoltChannel, Server as revoltServer } from "revolt.js";
-import { BanOptions, BaseGuild as discordBaseGuild } from "discord.js";
+import { BanOptions, BaseGuild as discordBaseGuild, ImageURLOptions } from "discord.js";
 import { baseClass, RejectBase } from "./Base";
 import { GuildMember } from "./GuildMember";
 import { Channel } from "./Channels";
@@ -32,11 +32,9 @@ export class BaseGuild extends baseClass {
 
   get createdTimestamp() { return this.revoltServer.createdAt; }
 
-  get description() { return this.revoltServer.description; }
-
   readonly features = [];
 
-  get icon() { return this.revoltServer.generateIconURL() ?? "https://FIXME"; }
+  get icon() { return this.revoltServer.icon ?? "0"; }
 
   get id() { return this.revoltServer._id; }
 
@@ -44,11 +42,14 @@ export class BaseGuild extends baseClass {
 
   get nameAcronym() { return this.name.split(" ").map((word) => word[0]).join(""); }
 
-  nsfwLevel = "DEFAULT";
-
   get verified() {
     if (!this.revoltServer.flags) return false;
 
+    /**
+     * Plain english:
+     * If a server has a flag of 1, it is an official Revolt server.
+     * If a server has a flag of 2, it is a verified server.
+    */
     return !!(this.revoltServer.flags & 1
       || this.revoltServer.flags & 2
     );
@@ -59,16 +60,14 @@ export class BaseGuild extends baseClass {
     return this.verified;
   }
 
-  iconURL() {
-    return this.icon;
+  iconURL(options?: ImageURLOptions) {
+    return this.revoltServer.generateIconURL({
+      size: options?.size,
+    });
   }
 
   toString(): string {
     return this.name;
-  }
-
-  valueOf(): string {
-    return "FIXME";
   }
 
   constructor(rServer: revoltServer) {
@@ -78,9 +77,46 @@ export class BaseGuild extends baseClass {
 }
 
 /**
+ * @see https://discord.js.org/#/docs/discord.js/13.8.0/class/AnonymousGuild
+ */
+export class AnonymousGuild extends BaseGuild {
+  get banner() {
+    return this.revoltServer.banner;
+  }
+
+  get description() {
+    return this.revoltServer.description;
+  }
+
+  get splash() {
+    return this.splashURL();
+  }
+
+  nsfwLevel = "DEFAULT";
+
+  // FIXME: Probably coming soon.
+  vanityURLCode?: string;
+
+  verificationLevel = "NONE";
+
+  premiumSubscriptionCount = 0;
+
+  bannerURL(options?: ImageURLOptions) {
+    return this.revoltServer.generateBannerURL({
+      size: options?.size,
+    });
+  }
+
+  // FIXME: stub - revolt has no invite splashes
+  splashURL(options?: ImageURLOptions) {
+    return this.bannerURL(options);
+  }
+}
+
+/**
  * @see https://discord.js.org/#/docs/discord.js/stable/class/Guild
  */
-export class Guild extends BaseGuild {
+export class Guild extends AnonymousGuild {
   /** None of these types have a revolt equivalent. */
   readonly afkChannel?: revoltChannel;
 
@@ -99,8 +135,6 @@ export class Guild extends BaseGuild {
   readonly approximatePresenceCount?: number = 0;
 
   available = true;
-
-  get banner() { return this.revoltServer.generateBannerURL() ?? null; }
 
   get bans() { return this.revoltServer.fetchBans(); }
 
@@ -123,7 +157,9 @@ export class Guild extends BaseGuild {
 
   readonly deleted = false;
 
-  get discoverySplash() { return this.revoltServer.generateBannerURL(); }
+  get discoverySplash() {
+    return this.bannerURL();
+  }
 
   /** FIXME: need to retrieve emojis from server */
   readonly emojis = [];
@@ -132,7 +168,7 @@ export class Guild extends BaseGuild {
 
   get invites() { return this.revoltServer.fetchInvites(); }
 
-  /** FIXME: no info available for when a user joined a server */
+  // FIXME: No info about when a user joined the server
   get joinedAt() { return new Date(this.revoltServer.client.user?.createdAt ?? 0); }
 
   get joinedTimestamp() { return this.revoltServer.client.user?.createdAt; }
@@ -141,9 +177,9 @@ export class Guild extends BaseGuild {
 
   maximumBitrate = 96000;
 
-  maximumMembers = 2 ** 53;
+  maximumMembers = Infinity;
 
-  readonly maximumPresences = 2 ** 53;
+  readonly maximumPresences = Infinity;
 
   get me() { return this.client.user; }
 
@@ -170,8 +206,6 @@ export class Guild extends BaseGuild {
 
   premiumProgressBarEnabled = false;
 
-  premiumSubscriptionCount = 0;
-
   premiumTier = "NONE";
 
   presences = [];
@@ -190,8 +224,6 @@ export class Guild extends BaseGuild {
 
   shardId = 0;
 
-  get splash() { return this.revoltServer.generateBannerURL(); }
-
   stageInstances = [];
 
   stickers = [];
@@ -204,9 +236,4 @@ export class Guild extends BaseGuild {
   systemChannelFlags = 0;
 
   systemChannelId?: string;
-
-  /** FIXME: Probably coming in a future update. */
-  vanityURLCode?: string;
-
-  verificationLevel = "NONE";
 }
