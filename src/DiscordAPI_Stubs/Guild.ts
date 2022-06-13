@@ -23,9 +23,9 @@ export class GuildMemberManager extends RejectBase {
 }
 
 /** Base for guild-type classes
- * reference https://discord.js.org/#/docs/discord.js/stable/class/BaseGuild
+ * @see https://discord.js.org/#/docs/discord.js/stable/class/BaseGuild
 */
-export class BaseGuild extends baseClass implements discordBaseGuild {
+export class BaseGuild extends baseClass {
   protected revoltServer: revoltServer;
 
   get createdAt() { return new Date(this.revoltServer.createdAt); }
