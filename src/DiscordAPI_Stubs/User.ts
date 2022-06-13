@@ -5,8 +5,7 @@ import {
   UserMention as DiscordUserMention,
   MessageOptions,
 } from "discord.js";
-import { User as revoltUser } from "revolt.js/dist/maps/Users";
-import { APIUser } from "discord-api-types/v10";
+import { User as revoltUser } from "revolt.js";
 import { toDiscordStatus, toRevoltStatus } from "../Utils/DiscordAPI";
 import { fixme, rgbToHex } from "../Utils";
 import { baseClass } from "./Base";
@@ -31,8 +30,7 @@ export class User extends baseClass {
   }
 
   get bot() {
-    if (this.revoltUser.bot) return true;
-    return false;
+    return !!(this.revoltUser.bot);
   }
 
   get createdAt() { return new Date(this.revoltUser.createdAt); }
@@ -43,10 +41,14 @@ export class User extends baseClass {
 
   discriminator: string = "#0000";
 
-  /** FIXME: Unimplemented features */
-  dmChannel = null;
+  // FIXME: stub
+  get dmChannel() {
+    return this.createDM();
+  }
 
-  flags = null;
+  get flags() {
+    return this.revoltUser.flags;
+  }
 
   readonly hexAccentColor = rgbToHex(this.accentColor);
 

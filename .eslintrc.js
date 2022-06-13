@@ -27,4 +27,5 @@ module.exports = {
     "no-useless-return": "off",
     "no-empty-function": "off",
   },
+  root: true,
 };

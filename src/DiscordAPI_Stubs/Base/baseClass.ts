@@ -5,12 +5,12 @@ import { RejectBase } from "./RejectBase";
 /**
  * reference: https://discord.js.org/#/docs/discord.js/stable/class/Base
 */
-export class baseClass extends RejectBase implements DiscordBase {
+export class baseClass extends RejectBase {
   // FIXME: Needs better way to avoid circular dependency
   rejectClient: Client;
 
   get client() {
-    return this.rejectClient as unknown as DiscordClient;
+    return this.rejectClient;
   }
 
   constructor(client: Client) {

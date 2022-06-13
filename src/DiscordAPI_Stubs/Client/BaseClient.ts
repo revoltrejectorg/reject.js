@@ -3,7 +3,7 @@ import { Client as revoltClient } from "revolt.js";
 import { RejectBase } from "../Base";
 
 /**
- * reference: https://discord.js.org/#/docs/discord.js/stable/class/BaseClient
+ * @see https://discord.js.org/#/docs/discord.js/stable/class/BaseClient
 */
 export class BaseClient extends EventEmitter implements RejectBase {
   isRevolt: true = true;
