@@ -21,7 +21,7 @@ export class User extends baseClass {
   accentColor = 0xff0000;
 
   // FIXME: incorrect impl.
-  get avatar() { return this.revoltUser.avatar as any; }
+  get avatar() { return this.revoltUser.avatar; }
 
   banner = undefined;
 
@@ -59,36 +59,45 @@ export class User extends baseClass {
   }
 
   get presence(): ClientPresence {
-    const usrCls = this;
-    return {
-      status: toDiscordStatus(this.revoltUser.status),
+    const activityStatus = toDiscordStatus(this.revoltUser.status);
+
+    // FIXME: Why does this have to be so garbage?
+    const discordPresence: ClientPresence = {
+      status: activityStatus,
       activities: [],
       clientStatus: {
-        desktop: "online",
-      },
-      /// FIXME: what is this even for?
-      _parse(data: PresenceData) {
-        return data;
+        // make sure status isn't invisible or offline
+        desktop: activityStatus !== "invisible" && activityStatus !== "offline"
+          ? activityStatus : "online",
       },
 
-      set(presence: PresenceData) {
+      /// FIXME: what is this even for?
+      _parse: (data: PresenceData) => ({
+        user: this as any,
+        // FIXME
+        guild_id: "0",
+        status: toDiscordStatus(this.revoltUser.status),
+        activities: discordPresence.activities,
+        client_status: discordPresence.clientStatus,
+      }) as any,
+
+      set: (presence: PresenceData) => {
         // FIXME: partial impl
         if (presence.activities) {
-          usrCls.revoltUser.client.users.edit({
+          this.revoltUser.client.users.edit({
             status: {
-              ...usrCls.revoltUser.status,
+              ...this.revoltUser.status,
               text: presence.activities[0]?.name,
+              presence: toRevoltStatus(presence.status),
             },
           }).catch(() => fixme("Error setting status"));
         }
 
-        if (usrCls.revoltUser.status?.presence) {
-          usrCls.revoltUser.status.presence = toRevoltStatus(presence.status);
-        }
-
-        return this;
+        return discordPresence;
       },
-    } as unknown as ClientPresence;
+    } as any;
+
+    return discordPresence;
   }
 
   system = false;
