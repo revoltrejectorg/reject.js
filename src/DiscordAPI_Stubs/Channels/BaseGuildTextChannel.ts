@@ -5,8 +5,9 @@ import {
 import { Message } from "../Message";
 import { Webhook } from "../Webhook";
 import { GuildChannel } from "./GuildChannel";
-import { msgParamsConverter } from "../../Utils/DiscordAPI";
+import { getAllPermissions, msgParamsConverter } from "../../Utils/DiscordAPI";
 import { MessageManager } from "../Managers";
+import { GuildMember } from "../GuildMember";
 
 export class BaseGuildTextChannel extends GuildChannel {
   get nsfw() { return this.revoltChannel.nsfw; }
@@ -59,5 +60,10 @@ export class BaseGuildTextChannel extends GuildChannel {
     await this.revoltChannel.deleteMessages(ids);
 
     return messages;
+  }
+
+  // FIXME: completely screws up per-channel permissions
+  permissionsFor(member: GuildMember) {
+    return getAllPermissions(member.revoltMember, this.revoltChannel);
   }
 }

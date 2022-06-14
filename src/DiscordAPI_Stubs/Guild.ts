@@ -181,7 +181,10 @@ export class Guild extends AnonymousGuild {
 
   readonly maximumPresences = Infinity;
 
-  get me() { return this.client.user; }
+  get me() {
+    if (!this.revoltServer.member) return;
+    return new GuildMember(this.revoltServer.member);
+  }
 
   /** FIXME: cant get member count without interrupting stuff */
   memberCount = 0;

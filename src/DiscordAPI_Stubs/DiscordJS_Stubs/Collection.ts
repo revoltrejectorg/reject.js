@@ -199,6 +199,10 @@ export class Collection<K, V> extends Map<K, V> {
     return [...this.values()];
   }
 
+  toString() {
+    return `[${[...this.values()].join(", ")}]`;
+  }
+
   private static defaultSort<Val>(firstValue: Val, secondValue: Val): number {
     return Number(firstValue > secondValue) || Number(firstValue === secondValue) - 1;
   }

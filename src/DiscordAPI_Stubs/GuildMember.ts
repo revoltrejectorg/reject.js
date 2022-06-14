@@ -9,15 +9,15 @@ import {
 import { baseClass } from "./Base";
 import { User } from "./User";
 import { Guild } from "./Guild";
-import { Collection } from "./DiscordJS_Stubs";
 import { Client } from "./Client";
 import { hexToRgb } from "../Utils";
+import { getAllPermissions } from "../Utils/DiscordAPI";
 
 /**
  * @see https://discord.js.org/#/docs/discord.js/13.8.0/class/GuildMember
  */
 export class GuildMember extends baseClass {
-  private revoltMember: revoltMember;
+  revoltMember: revoltMember;
 
   // FIXME: avatar hash is all screwy
   get avatar() { return this.revoltMember.avatar?._id; }
@@ -87,9 +87,9 @@ export class GuildMember extends baseClass {
 
   pending = false;
 
-  // TODO: polyfill this
   get permissions() {
-    return new Collection<string, boolean>();
+    if (!this.revoltMember.server) return;
+    return getAllPermissions(this.revoltMember, this.revoltMember.server);
   }
 
   readonly premiumSince: Date = new Date();
