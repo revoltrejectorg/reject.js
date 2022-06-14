@@ -62,7 +62,6 @@ export class BaseGuildTextChannel extends GuildChannel {
     return messages;
   }
 
-  // FIXME: completely screws up per-channel permissions
   permissionsFor(member: GuildMember) {
     return getAllPermissions(member.revoltMember, this.revoltChannel);
   }
