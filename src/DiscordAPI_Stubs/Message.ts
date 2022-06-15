@@ -91,13 +91,13 @@ export class Message extends baseClass {
   async reply(content: string, mention?: boolean | undefined) {
     const convertedParams = await msgParamsConverter(content, this.revoltMsg.client);
 
-    const msg = await this.revoltMsg.reply(convertedParams);
+    const msg = await this.revoltMsg.reply(convertedParams, mention);
 
     return new Message(msg!);
   }
 
   async delete() {
-    this.revoltMsg.delete().catch(() => fixme(`Failed to delete message ${this.id}`));
+    await this.revoltMsg.delete();
     return this;
   }
 
