@@ -6,7 +6,7 @@ import { User } from "./User";
 import { GuildMember } from "./GuildMember";
 import { Guild } from "./Guild";
 import { baseClass } from "./Base";
-import { msgParamsConverter } from "../Utils/DiscordAPI";
+import { msgEditConvert, msgParamsConverter } from "../Utils/DiscordAPI";
 import { Client } from "./Client";
 
 export class MessageMentions {
@@ -102,9 +102,9 @@ export class Message extends baseClass {
   }
 
   async edit(content: string): Promise<Message> {
-    const convertedParams = msgParamsConverter(content, this.revoltMsg.client);
+    const editParams = await msgEditConvert(content);
 
-    await this.revoltMsg.edit(convertedParams as any);
+    await this.revoltMsg.edit(editParams);
 
     return this;
   }

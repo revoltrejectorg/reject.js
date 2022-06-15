@@ -16,7 +16,7 @@ async function createFileBuffer(url: string) {
 }
 export async function embedConvert(
   embed: MessageEmbed | MessageEmbedOptions | APIEmbed,
-  client: RevoltClient,
+  client?: RevoltClient,
 ): Promise<API.SendableEmbed> {
   return {
     title: embed.title,
@@ -49,7 +49,7 @@ export async function embedConvert(
  * @returns the original string if it's a string, otherwise it's converted
  * to revolt params
  * */
-export async function msgParamsConverter(params: MessageOptions | string, client: RevoltClient) {
+export async function msgParamsConverter(params: MessageOptions | string, client?: RevoltClient) {
   if (typeof params === "string") return params;
 
   const revoltParams: Omit<API.DataMessageSend, "nonce"> = {
@@ -58,12 +58,24 @@ export async function msgParamsConverter(params: MessageOptions | string, client
     embeds: await (async () => {
       if (!params.embeds || !(params.embeds[0])) return;
       const convEmbeds = await Promise
-        .all(params.embeds.map((embed) => embedConvert(embed, client)));
+        .all(params.embeds.map((embed) => embedConvert(embed)));
 
       return convEmbeds;
     })(),
   };
   return revoltParams;
+}
+
+export async function msgEditConvert(params: MessageOptions | string, client?: RevoltClient) {
+  const convertedParams = await msgParamsConverter(params, client);
+
+  const editParams: API.DataEditMessage = typeof convertedParams === "string"
+    ? { content: convertedParams } : {
+      content: convertedParams.content,
+      embeds: convertedParams.embeds,
+    };
+
+  return editParams;
 }
 
 export function ChannelTypeConverter(channelType: string) {
