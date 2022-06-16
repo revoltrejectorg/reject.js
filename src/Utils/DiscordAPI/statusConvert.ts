@@ -1,33 +1,22 @@
 import { PresenceStatus } from "discord.js";
 import { API, Nullable } from "revolt.js";
+import { swap } from "../js";
 
-export function toDiscordStatus(revoltStatus: Nullable<API.UserStatus>): PresenceStatus {
-  switch (revoltStatus) {
-    case "Online":
-      return "online";
-    case "Idle":
-      return "idle";
-    case "Busy":
-      return "dnd";
-    case "Offline":
-      return "offline";
-    default:
-      return "offline";
-  }
-}
+// Discord -> Revolt
+export const statusMap: { [key: string]: API.UserStatus["presence"] } = {
+  online: "Online",
+  idle: "Idle",
+  dnd: "Busy",
+  offline: "Invisible",
+};
 
-export function toRevoltStatus(status?: string) {
-  switch (status) {
-    case "online":
-      return "Online";
-    case "idle":
-      return "Idle";
-    case "dnd":
-      return "Busy";
-    case "offline":
-      /** @V3L0C1T13S i think this is correct, might need some work though */
-      return "Invisible";
-    default:
-      return "Invisible";
+// Revolt -> Discord
+export const discordStatusMap: { [key: string ]: PresenceStatus} = swap(statusMap);
+
+export function statusConvert(status: API.UserStatus["presence"] | PresenceStatus, toRevolt: boolean) {
+  if (toRevolt) {
+    return (statusMap[status ?? "offline"] ?? "Invisible") as API.UserStatus["presence"];
   }
+
+  return (discordStatusMap[status ?? "Invisible"] ?? "offline") as PresenceStatus;
 }

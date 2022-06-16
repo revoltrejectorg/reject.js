@@ -5,8 +5,8 @@ import {
   UserMention as DiscordUserMention,
   MessageOptions,
 } from "discord.js";
-import { User as revoltUser } from "revolt.js";
-import { toDiscordStatus, toRevoltStatus } from "../Utils/DiscordAPI";
+import { API, User as revoltUser } from "revolt.js";
+import { statusConvert } from "../Utils/DiscordAPI";
 import { fixme, rgbToHex } from "../Utils";
 import { baseClass } from "./Base";
 import { DMChannel } from "./Channels";
@@ -59,7 +59,7 @@ export class User extends baseClass {
   }
 
   get presence(): ClientPresence {
-    const activityStatus = toDiscordStatus(this.revoltUser.status);
+    const activityStatus = statusConvert(this.revoltUser.status?.presence, false);
 
     // FIXME: Why does this have to be so garbage?
     const discordPresence: ClientPresence = {
@@ -76,7 +76,7 @@ export class User extends baseClass {
         user: this as any,
         // FIXME
         guild_id: "0",
-        status: toDiscordStatus(this.revoltUser.status),
+        status: activityStatus,
         activities: discordPresence.activities,
         client_status: discordPresence.clientStatus,
       }) as any,
@@ -88,7 +88,7 @@ export class User extends baseClass {
             status: {
               ...this.revoltUser.status,
               text: presence.activities[0]?.name,
-              presence: toRevoltStatus(presence.status),
+              presence: statusConvert(presence.status, true) as API.UserStatus["presence"],
             },
           }).catch(() => fixme("Error setting status"));
         }

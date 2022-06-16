@@ -2,7 +2,9 @@ import { Collection } from "discord.js";
 import {
   Channel, Member, Server, Permission,
 } from "revolt.js";
+import { swap } from "../js";
 
+// Discord -> Revolt
 export const PermissionsMap: { [key: string]: keyof typeof Permission } = {
   MANAGE_CHANNELS: "ManageChannel",
   MANAGE_GUILD: "ManageServer",
@@ -29,6 +31,8 @@ export const PermissionsMap: { [key: string]: keyof typeof Permission } = {
   DEAFEN_MEMBERS: "DeafenMembers",
   MOVE_MEMBERS: "MoveMembers",
 };
+
+export const RevoltPermissionsMap = swap(PermissionsMap);
 
 export function getAllPermissions(member: Member, target: Server | Channel) {
   const permissions = new Collection<string, string>();
