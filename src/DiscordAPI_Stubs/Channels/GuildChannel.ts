@@ -1,5 +1,5 @@
 import { Channel as revoltChannel } from "revolt.js";
-import { ChannelTypeConverter } from "../../Utils/DiscordAPI";
+import { convertChannelType } from "../../Utils/DiscordAPI";
 import { Guild } from "../Guild";
 import { Channel } from "./Channel";
 
@@ -28,7 +28,7 @@ export class GuildChannel extends Channel {
   rawPosition = 0;
 
   get type() {
-    return ChannelTypeConverter(this.revoltChannel.channel_type);
+    return convertChannelType(this.revoltChannel.channel_type, false);
   }
 
   readonly viewable = true;

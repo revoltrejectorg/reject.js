@@ -77,19 +77,3 @@ export async function msgEditConvert(params: MessageOptions | string, client?: R
 
   return editParams;
 }
-
-export function ChannelTypeConverter(channelType: string) {
-  switch (channelType) {
-    case "DirectMessage": return "DM";
-    case "Group": return "GROUP_DM";
-    case "TextChannel": return "GUILD_TEXT";
-    case "VoiceChannel": return "GUILD_VOICE";
-    case "Category": return "GUILD_CATEGORY";
-    case "News": return "GUILD_NEWS";
-    case "Store": return "GUILD_STORE";
-    case "GuildPublicThread": return "GUILD_PUBLIC_THREAD";
-    case "GuildPrivateThread": return "GUILD_PRIVATE_THREAD";
-    case "GuildNewsThread": return "GUILD_NEWS_THREAD";
-    default: return "UNKNOWN";
-  }
-}
