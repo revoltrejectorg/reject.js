@@ -1,6 +1,4 @@
-import { Message as revoltMessage, User as RevoltUser } from "revolt.js";
-import { Collection, Message as DiscordMessage } from "discord.js";
-import { fixme } from "../Utils";
+import { Message as revoltMessage } from "revolt.js";
 import { BaseGuildTextChannel } from "./Channels";
 import { User } from "./User";
 import { GuildMember } from "./GuildMember";
@@ -8,28 +6,13 @@ import { Guild } from "./Guild";
 import { baseClass } from "./Base";
 import { msgEditConvert, msgParamsConverter } from "../Utils/DiscordAPI";
 import { Client } from "./Client";
-
-export class MessageMentions {
-  private revoltUsers?: (RevoltUser | undefined)[];
-
-  users = new Collection<string, User>();
-
-  constructor(rUsers?: (RevoltUser | undefined)[]) {
-    if (!rUsers) return;
-
-    this.revoltUsers = rUsers;
-    this.revoltUsers.forEach((user) => {
-      if (!user) return;
-      this.users.set(user._id, new User(user));
-    });
-  }
-}
+import { MessageMentions } from "./structures";
 
 /**
  * reference https://discord.js.org/#/docs/discord.js/stable/class/Message
  */
 export class Message extends baseClass {
-  private revoltMsg: revoltMessage;
+  revoltMsg: revoltMessage;
 
   get applicationId() { return this.revoltMsg.client.user?._id ?? null; }
 
@@ -51,7 +34,7 @@ export class Message extends baseClass {
 
   get url() { return this.revoltMsg.url; }
 
-  get mentions() { return new MessageMentions(this.revoltMsg.mentions); }
+  get mentions() { return new MessageMentions(this); }
 
   // FIXME: revolt may add emote reactions in the future
   get reactions() { return []; }
@@ -101,7 +84,7 @@ export class Message extends baseClass {
     return this;
   }
 
-  async edit(content: string): Promise<Message> {
+  async edit(content: string) {
     const editParams = await msgEditConvert(content);
 
     await this.revoltMsg.edit(editParams);
@@ -109,7 +92,7 @@ export class Message extends baseClass {
     return this;
   }
 
-  async inGuild(): Promise<boolean> {
+  async inGuild() {
     if (this.revoltMsg.channel?.server) return true;
     return false;
   }

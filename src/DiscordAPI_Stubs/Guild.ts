@@ -1,6 +1,6 @@
 /* eslint-disable no-bitwise */
 import { Channel as revoltChannel, Server as revoltServer } from "revolt.js";
-import { BanOptions, BaseGuild as discordBaseGuild, ImageURLOptions } from "discord.js";
+import { BanOptions, ImageURLOptions } from "discord.js";
 import { baseClass, RejectBase } from "./Base";
 import { GuildMember } from "./GuildMember";
 import { Channel } from "./Channels";

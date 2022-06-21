@@ -1,4 +1,3 @@
-import { Base as DiscordBase, Client as DiscordClient } from "discord.js";
 import { Client } from "../Client";
 import { RejectBase } from "./RejectBase";
 
@@ -19,11 +18,17 @@ export class baseClass extends RejectBase {
   }
 
   _clone() {
-    return Object.assign(Object.create(this), this);
+    return Object.assign(Object.create(this), this) as this;
   }
 
-  _patch(data: any) {
+  _patch<T>(data: T) {
     return data;
+  }
+
+  _update<T>(data: T) {
+    const clone = this._clone();
+    this._patch(data);
+    return clone;
   }
 
   async fetch() {
@@ -34,7 +39,7 @@ export class baseClass extends RejectBase {
     return undefined as any;
   }
 
-  toJSON() {
+  toJSON(...props: any) {
     return JSON.stringify(this) as string;
   }
 
