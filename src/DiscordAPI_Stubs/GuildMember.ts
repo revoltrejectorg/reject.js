@@ -12,6 +12,7 @@ import { Guild } from "./Guild";
 import { Client } from "./Client";
 import { hexToRgb } from "../Utils";
 import { getAllPermissions } from "../Utils/DiscordAPI";
+import { VoiceState } from "./structures";
 
 /**
  * @see https://discord.js.org/#/docs/discord.js/13.8.0/class/GuildMember
@@ -104,7 +105,10 @@ export class GuildMember extends baseClass {
   }
 
   // TODO: also add a polyfill for this. insert pls help idk how voicechat api works.
-  readonly voice = undefined;
+  get voice() {
+    if (!this.guild) return;
+    return new VoiceState(this);
+  }
 
   constructor(member: revoltMember) {
     super(new Client(member.client));
