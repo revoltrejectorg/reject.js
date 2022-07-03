@@ -1,26 +1,11 @@
 /* eslint-disable no-bitwise */
 import { Channel as revoltChannel, Server as revoltServer } from "revolt.js";
-import { BanOptions, ImageURLOptions } from "discord.js";
-import { baseClass, RejectBase } from "./Base";
+import { ImageURLOptions } from "discord.js";
+import { baseClass } from "./Base";
 import { GuildMember } from "./GuildMember";
 import { Channel } from "./Channels";
 import { Client } from "./Client";
-
-export class GuildMemberManager extends RejectBase {
-  private revoltMembers: Array<GuildMember>;
-
-  constructor(members: Array<GuildMember>) {
-    super();
-    this.revoltMembers = members;
-  }
-
-  // FIXME: make this NOT use the any type
-  async ban(user: any, options: BanOptions) {
-    const member = this.revoltMembers.find((m) => m.user?.id === user.id);
-    if (!member) throw new Error("User not in guild");
-    member.ban();
-  }
-}
+import { GuildMemberManager } from "./Managers";
 
 /** Base for guild-type classes
  * @see https://discord.js.org/#/docs/discord.js/stable/class/BaseGuild
@@ -197,7 +182,7 @@ export class Guild extends AnonymousGuild {
       });
     });
 
-    return new GuildMemberManager(rejectMembers);
+    return new GuildMemberManager(rejectMembers, this.client);
   }
 
   mfaLevel = "NONE";
