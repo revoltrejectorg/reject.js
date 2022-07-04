@@ -1,6 +1,7 @@
 import { BanOptions } from "discord.js";
 import { Client } from "../Client";
 import { GuildMember } from "../GuildMember";
+import { User } from "../User";
 import { CachedManager } from "./CachedManager";
 
 export class GuildMemberManager extends CachedManager {
@@ -16,5 +17,11 @@ export class GuildMemberManager extends CachedManager {
     const member = this.revoltMembers.find((m) => m.user?.id === user.id);
     if (!member) throw new Error("User not in guild");
     member.ban();
+  }
+
+  async kick(user: User, reason: string) {
+    const member = this.revoltMembers.find((m) => m.user?.id === user.id);
+    if (!member) throw new Error("User not in guild");
+    member.kick(reason);
   }
 }
