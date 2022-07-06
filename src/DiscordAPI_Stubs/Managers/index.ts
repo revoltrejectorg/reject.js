@@ -5,3 +5,4 @@ export * from "./DataManager";
 export * from "./CachedManager";
 export * from "./Commands";
 export * from "./GuildMemberManager";
+export * from "./GuildChannelManager";

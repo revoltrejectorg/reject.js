@@ -14,7 +14,7 @@ export class GuildManager extends CachedManager {
   // FIXME: partial stub
   async create(name: string) {
     const srv = await this.revoltClient.servers.createServer({
-      name: name
+      name,
     });
     if (this.cache.has(srv._id)) return this.cache.get(srv._id);
 

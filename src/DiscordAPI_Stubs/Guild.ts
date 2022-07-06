@@ -5,13 +5,13 @@ import { baseClass } from "./Base";
 import { GuildMember } from "./GuildMember";
 import { Channel } from "./Channels";
 import { Client } from "./Client";
-import { GuildMemberManager } from "./Managers";
+import { GuildChannelManager, GuildMemberManager } from "./Managers";
 
 /** Base for guild-type classes
  * @see https://discord.js.org/#/docs/discord.js/stable/class/BaseGuild
 */
 export class BaseGuild extends baseClass {
-  protected revoltServer: revoltServer;
+  revoltServer: revoltServer;
 
   get createdAt() { return new Date(this.revoltServer.createdAt); }
 
@@ -124,15 +124,7 @@ export class Guild extends AnonymousGuild {
   get bans() { return this.revoltServer.fetchBans(); }
 
   get channels() {
-    const channels: ReadonlyArray<Channel> = (() => {
-      const channelsArray: Channel[] = [];
-      this.revoltServer.channels.forEach((channel) => {
-        if (!channel) return;
-        channelsArray.push(new Channel(channel));
-      });
-      return channelsArray;
-    })();
-    return channels;
+    return new GuildChannelManager(this, false);
   }
 
   /** FIXME: missing stub GuildApplicationCommandManager */

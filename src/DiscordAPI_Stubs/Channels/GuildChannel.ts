@@ -1,17 +1,21 @@
 import { Channel as revoltChannel } from "revolt.js";
-import { convertChannelType } from "../../Utils/DiscordAPI";
 import { Guild } from "../Guild";
 import { Channel } from "./Channel";
 
 export class GuildChannel extends Channel {
-  /** FIXME: Revolt.js needs perms api */
-  readonly deletable = true;
+  get deletable() {
+    return this.managable
+    && this.guild?.rulesChannelId !== this.id
+    && this.guild?.publicUpdatesChannelId !== this.id;
+  }
 
   guild?: Guild;
 
   get guildid() { return this.guild?.id ?? "0"; }
 
-  readonly managable = true;
+  get managable() {
+    return this.guild?.me?.permissions?.has("MANAGE_CHANNELS") ?? false;
+  }
 
   /** FIXME: improper members stub */
   readonly members = [];
@@ -26,10 +30,6 @@ export class GuildChannel extends Channel {
   position = 0;
 
   rawPosition = 0;
-
-  get type() {
-    return convertChannelType(this.revoltChannel.channel_type, false);
-  }
 
   readonly viewable = true;
 
