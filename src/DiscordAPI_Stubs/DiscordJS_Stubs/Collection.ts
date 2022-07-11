@@ -183,6 +183,17 @@ export class Collection<K, V> extends Map<K, V> {
     return this;
   }
 
+  map<T>(fn: (value: V, key: K, collection: this) => T, thisArg?: unknown): T[] {
+    if (typeof fn !== "function") throw new TypeError("Map requires a function");
+    // eslint-disable-next-line no-param-reassign
+    if (typeof thisArg !== "undefined") fn = fn.bind(thisArg);
+    const iter = this.entries();
+    return Array.from({ length: this.size }, (): T => {
+      const [key, value] = iter.next().value;
+      return fn(value, key, this);
+    });
+  }
+
   equals(collection: Collection<K, V>) {
     if (!collection) return false; // runtime check
     if (this === collection) return true;

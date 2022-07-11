@@ -2,6 +2,7 @@ import { User } from "../User";
 import { GuildManager } from "../Managers/GuildManager";
 import { ClientApplication } from "./ClientApplication";
 import { BaseClient } from "./BaseClient";
+import { Emoji } from "../structures";
 
 export class Client extends BaseClient {
   get application() { return new ClientApplication(this.revoltClient); }
@@ -9,7 +10,9 @@ export class Client extends BaseClient {
   // FIXME
   channels = [];
 
-  emojis = [];
+  get emojis() {
+    return [...this.revoltClient.emojis.values()].map((emoji) => new Emoji(this, emoji));
+  }
 
   get guilds() { return new GuildManager(this.revoltClient); }
 

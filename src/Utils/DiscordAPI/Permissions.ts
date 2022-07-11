@@ -1,7 +1,7 @@
-import { Collection } from "discord.js";
 import {
   Channel, Member, Server, Permission,
 } from "revolt.js";
+import { Collection } from "../../DiscordAPI_Stubs/DiscordJS_Stubs";
 import { swap } from "../js";
 
 // Discord -> Revolt

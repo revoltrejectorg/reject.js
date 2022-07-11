@@ -6,3 +6,5 @@ export * from "./CachedManager";
 export * from "./Commands";
 export * from "./GuildMemberManager";
 export * from "./GuildChannelManager";
+export * from "./BaseGuildEmojiManager";
+export * from "./GuildEmojiManager";

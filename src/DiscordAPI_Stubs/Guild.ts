@@ -5,7 +5,7 @@ import { baseClass } from "./Base";
 import { GuildMember } from "./GuildMember";
 import { Channel } from "./Channels";
 import { Client } from "./Client";
-import { GuildChannelManager, GuildMemberManager } from "./Managers";
+import { GuildChannelManager, GuildEmojiManager, GuildMemberManager } from "./Managers";
 
 /** Base for guild-type classes
  * @see https://discord.js.org/#/docs/discord.js/stable/class/BaseGuild
@@ -138,8 +138,9 @@ export class Guild extends AnonymousGuild {
     return this.bannerURL();
   }
 
-  /** FIXME: need to retrieve emojis from server */
-  readonly emojis = [];
+  get emojis() {
+    return new GuildEmojiManager(this, false);
+  }
 
   readonly explicitContentFilter = "DISABLED";
 
