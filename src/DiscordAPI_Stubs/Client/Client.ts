@@ -3,6 +3,7 @@ import { GuildManager } from "../Managers/GuildManager";
 import { ClientApplication } from "./ClientApplication";
 import { BaseClient } from "./BaseClient";
 import { Emoji } from "../structures";
+import { WebSocketManager } from "./WebSocketManager";
 
 export class Client extends BaseClient {
   get application() { return new ClientApplication(this.revoltClient); }
@@ -16,9 +17,9 @@ export class Client extends BaseClient {
 
   get guilds() { return new GuildManager(this.revoltClient); }
 
-  get readyAt() { return Date.now(); }
+  get readyAt() { return new Date(this.readyTimestamp); }
 
-  get readyTimestamp() { return Date.now(); }
+  readyTimestamp: number = 0;
 
   shard = { id: 0, count: 1 };
 
@@ -39,7 +40,7 @@ export class Client extends BaseClient {
   // TODO
   voice = {};
 
-  get ws() { return this.revoltClient.websocket; }
+  ws = new WebSocketManager(this);
 
   // Question for Discord.js devs: Why does this exist?
   private _eval(script: string) {
