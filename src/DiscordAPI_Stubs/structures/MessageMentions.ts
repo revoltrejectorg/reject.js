@@ -1,6 +1,6 @@
-import { Collection } from "discord.js";
 import { User as RevoltUser } from "revolt.js";
 import { baseClass } from "../Base";
+import { Collection } from "../DiscordJS_Stubs";
 import { Message } from "../Message";
 import { User } from "../User";
 

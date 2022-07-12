@@ -11,7 +11,7 @@ export class GuildEmoji extends BaseGuildEmoji {
   }
 
   get deletable() {
-    return this.guild.me?.permissions?.has("MANAGE_EMOJIS");
+    return this.guild.me?.permissions?.has("MANAGE_EMOJIS_AND_STICKERS");
   }
 
   // FIXME
@@ -47,7 +47,7 @@ export class GuildEmoji extends BaseGuildEmoji {
   }
 
   /**
-   * Don't see why we need a seperate call the name when .edit() is available.
+   * Don't see why we need a seperate call for the name when .edit() is available.
   */
   async setName(name: string, reason?: string) {
     return this.edit({ name });

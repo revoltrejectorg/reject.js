@@ -30,6 +30,7 @@ export const PermissionsMap: { [key: string]: keyof typeof Permission } = {
   MUTE_MEMBERS: "MuteMembers",
   DEAFEN_MEMBERS: "DeafenMembers",
   MOVE_MEMBERS: "MoveMembers",
+  MANAGE_EMOJIS_AND_STICKERS: "ManageCustomisation",
 };
 
 export const RevoltPermissionsMap = swap(PermissionsMap);
