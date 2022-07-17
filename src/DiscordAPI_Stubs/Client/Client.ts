@@ -4,6 +4,7 @@ import { ClientApplication } from "./ClientApplication";
 import { BaseClient } from "./BaseClient";
 import { Emoji } from "../structures";
 import { WebSocketManager } from "./WebSocketManager";
+import { ClientVoiceManager } from "./ClientVoiceManager";
 
 export class Client extends BaseClient {
   get application() { return new ClientApplication(this.revoltClient); }
@@ -38,7 +39,7 @@ export class Client extends BaseClient {
   get users() { return this.revoltClient.users; }
 
   // TODO
-  voice = {};
+  voice = new ClientVoiceManager(this);
 
   ws = new WebSocketManager(this);
 

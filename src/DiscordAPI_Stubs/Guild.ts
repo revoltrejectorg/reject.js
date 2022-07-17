@@ -1,6 +1,6 @@
 /* eslint-disable no-bitwise */
 import { Channel as revoltChannel, Server as revoltServer } from "revolt.js";
-import { ImageURLOptions } from "discord.js";
+import { GuildEditData, ImageURLOptions } from "discord.js";
 import { baseClass } from "./Base";
 import { GuildMember } from "./GuildMember";
 import { Channel } from "./Channels";
@@ -217,4 +217,51 @@ export class Guild extends AnonymousGuild {
   systemChannelFlags = 0;
 
   systemChannelId?: string;
+
+  async delete() {
+    return this.revoltServer.delete();
+  }
+
+  discoverySplashURL(options: ImageURLOptions) {
+    return this.bannerURL(options);
+  }
+
+  async edit(data: GuildEditData, reason?: string) {
+    this.revoltServer.edit({
+      name: data.name,
+      description: data.description,
+    });
+
+    return this;
+  }
+
+  setIcon(icon: any, reason?: string) {
+    return this.revoltServer.edit({ icon });
+  }
+
+  setName(name: string, reason?: string) {
+    return this.revoltServer.edit({ name });
+  }
+
+  // FIXME
+  setOwner(user: GuildMember, reason?: string) {
+    return this.edit({});
+  }
+
+  setPreferredLocale(preferredLocale: string, reason?: string) {
+    return this.edit({ preferredLocale }, reason);
+  }
+
+  get voiceAdapterCreator() {
+    return (methods: any) => {
+      this.client.voice.adapters.set(this.id, methods);
+      return {
+        // FIXME
+        sendPayload: (data: any) => true,
+        destroy: () => {
+          this.client.voice.adapters.delete(this.id);
+        },
+      };
+    };
+  }
 }
