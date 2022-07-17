@@ -14,7 +14,7 @@ export class GuildEmojiManager extends BaseGuildEmojiManager {
     this.guild = guild;
 
     const revoltEmojis = [...guild.rejectClient.revoltClient.emojis.values()].filter(
-      (x) => x.parent.id === guild.id,
+      (x) => (x.parent.type === "Server" ? x.parent.id === guild.id : false),
     );
 
     this.emojis = revoltEmojis.map((emoji) => new GuildEmoji(this.client, emoji, guild));

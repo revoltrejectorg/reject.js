@@ -36,7 +36,7 @@
         "discord-api-types": "^0.36.0",
         "discord.js": "^13.8.0",
         "form-data": "^4.0.0",
-        "revolt.js": "^6.0.6"
+        "revolt.js": "^6.0.12"
     },
     "devDependencies": {
         "@types/node": "^18.0.0",
