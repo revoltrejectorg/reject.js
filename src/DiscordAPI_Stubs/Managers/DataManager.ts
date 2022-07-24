@@ -2,7 +2,7 @@ import { Client } from "revolt.js";
 import { Collection } from "../DiscordJS_Stubs";
 import { BaseManager } from "./BaseManager";
 
-export class DataManager extends BaseManager {
+export class DataManager<T> extends BaseManager {
   readonly holds: any;
 
   /**
@@ -18,7 +18,7 @@ export class DataManager extends BaseManager {
     this.holds = holds;
   }
 
-  resolve(idOrInstance: any) {
+  resolve(idOrInstance: any): T | null {
     if (idOrInstance instanceof this.holds) return idOrInstance;
     if (typeof idOrInstance === "string") return this.cache.get(idOrInstance) ?? null;
     return null;

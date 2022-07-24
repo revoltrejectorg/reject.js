@@ -159,6 +159,9 @@ export class Guild extends AnonymousGuild {
 
   readonly maximumPresences = Infinity;
 
+  /**
+   * Deprecated since v14 but its way more efficient to implement it here.
+  */
   get me() {
     if (!this.revoltServer.member) return;
     return new GuildMember(this.revoltServer.member);
@@ -167,15 +170,15 @@ export class Guild extends AnonymousGuild {
   /** FIXME: cant get member count without interrupting stuff */
   memberCount = 0;
 
-  get members() {
-    const rejectMembers: GuildMember[] = [];
-    this.revoltServer.fetchMembers().then((members) => {
-      members.members.forEach((member) => {
-        rejectMembers.push(new GuildMember(member));
-      });
-    });
+  // FIXME: stupid idiot hack
+  private _members?: GuildMemberManager;
 
-    return new GuildMemberManager(rejectMembers, this.client);
+  get members() {
+    if (!this._members) {
+      this._members = new GuildMemberManager(this);
+    }
+
+    return this._members;
   }
 
   mfaLevel = "NONE";
@@ -209,9 +212,10 @@ export class Guild extends AnonymousGuild {
 
   stickers = [];
 
-  /** FIXME: SystemChannel isn't implemented correctly AT ALL, and is mainly to stop
-     * bots from crashing when they try to use it.
-     */
+  /**
+   * FIXME: SystemChannel isn't implemented correctly AT ALL, and is mainly to stop
+   * bots from crashing when they try to use it.
+  */
   get systemChannel() { return this.revoltServer.system_messages; }
 
   systemChannelFlags = 0;

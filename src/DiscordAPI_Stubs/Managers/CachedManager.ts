@@ -1,15 +1,16 @@
 import { Client } from "revolt.js";
+import { baseClass } from "../Base";
 import { Collection } from "../DiscordJS_Stubs";
 import { DataManager } from "./DataManager";
 
-export class CachedManager extends DataManager {
-  protected _cache = new Collection<string, any>();
+export class CachedManager<T extends baseClass> extends DataManager<T> {
+  protected _cache = new Collection<string, T>();
 
   get cache() {
     return this._cache;
   }
 
-  constructor(client: Client, holds: any, iterable: any) {
+  constructor(client: Client, holds: T, iterable?: any) {
     super(client, holds);
 
     if (iterable) {

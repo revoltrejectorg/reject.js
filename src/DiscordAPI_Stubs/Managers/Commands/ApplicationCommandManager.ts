@@ -3,13 +3,13 @@ import { ApplicationCommand } from "../../ApplicationCommand";
 import { CachedManager } from "../CachedManager";
 import { ApplicationCommandPermissionsManager } from "./ApplicationCommandPermissionsManager";
 
-export class ApplicationCommandManager extends CachedManager {
+export class ApplicationCommandManager extends CachedManager<ApplicationCommand> {
   protected revoltServer?: RevoltServer;
 
   permissions = new ApplicationCommandPermissionsManager(this);
 
   constructor(client: RevoltClient, iterable: boolean) {
     // FIXME: major hack!
-    super(client, ApplicationCommand, iterable);
+    super(client, ApplicationCommand as any, iterable);
   }
 }

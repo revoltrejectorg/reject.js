@@ -2,9 +2,9 @@ import { BaseGuildTextChannel, GuildChannel, VoiceChannel } from "../Channels";
 import { Guild } from "../Guild";
 import { CachedManager } from "./CachedManager";
 
-export class GuildChannelManager extends CachedManager {
+export class GuildChannelManager extends CachedManager<GuildChannel> {
   constructor(guild: Guild, iterable = false) {
-    super(guild.client.revoltClient, GuildChannel, iterable);
+    super(guild.client.revoltClient, GuildChannel as any, iterable);
 
     guild.revoltServer.channels.forEach((channel) => {
       if (!channel) return;

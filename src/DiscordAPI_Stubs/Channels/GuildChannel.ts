@@ -37,8 +37,4 @@ export class GuildChannel extends Channel {
     super(channel);
     if (channel.server) { this.guild = new Guild(channel.server); }
   }
-
-  async clone() {
-    throw new Error("Method not implemented.");
-  }
 }

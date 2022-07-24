@@ -44,5 +44,6 @@ export class GuildEmojiManager extends BaseGuildEmojiManager {
       Object.values(data).forEach((emoji) => {});
       return emojis;
     }
+    return null;
   }
 }

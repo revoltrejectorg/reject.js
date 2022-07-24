@@ -39,6 +39,10 @@ export class baseClass extends RejectBase {
     return undefined as any;
   }
 
+  clone() {
+    return this._clone();
+  }
+
   toJSON(...props: any) {
     return JSON.stringify(this) as string;
   }

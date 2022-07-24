@@ -30,7 +30,7 @@ export class MessageMentions extends baseClass {
   get channels() {
     const channels = new Collection();
 
-    channels.set(this.message.channel.id, this.message.channel);
+    channels.set(this.message.channel?.id, this.message.channel);
 
     return channels;
   }

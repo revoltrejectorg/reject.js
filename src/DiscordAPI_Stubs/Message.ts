@@ -19,11 +19,9 @@ export class Message extends baseClass {
   get content() { return this.revoltMsg.content?.toString() ?? "fixme"; }
 
   // FIXME: potential for the message to be a system message
-  get channel() {
-    return new BaseGuildTextChannel(this.revoltMsg.channel!);
-  }
+  channel?: BaseGuildTextChannel;
 
-  get channelId() { return this.channel.id; }
+  get channelId() { return this.channel?.id; }
 
   get author() { return new User(this.revoltMsg.author!); }
 
@@ -69,6 +67,7 @@ export class Message extends baseClass {
   constructor(rMsg: revoltMessage) {
     super(new Client(rMsg.client));
     this.revoltMsg = rMsg;
+    if (rMsg.channel) this.channel = new BaseGuildTextChannel(rMsg.channel);
   }
 
   async reply(content: string, mention?: boolean | undefined) {
