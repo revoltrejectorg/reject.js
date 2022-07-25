@@ -32,12 +32,25 @@ export class Channel extends baseClass {
     return false;
   }
 
+  /**
+   * @deprecated since version 14.0.0
+  */
   isText() {
     return (this.type === "GUILD_TEXT" || this.type === "DM" || this.type === "GROUP_DM");
   }
 
+  /**
+   * @deprecated since version 14.0.0
+  */
   isVoice() {
     return this.type === "GUILD_VOICE";
+  }
+
+  /**
+   * @deprecated since version 14.0.0
+  */
+  isDM() {
+    return this.type === "DM";
   }
 
   isDirectory() {
