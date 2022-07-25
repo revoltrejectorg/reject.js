@@ -1,3 +1,28 @@
+/* eslint-disable no-dupe-class-members */
+declare type Keep<V> = {
+  keep: true;
+  value: V;
+} | {
+  keep: false;
+};
+
+export interface Collection<K, V> extends Map<K, V> {
+  // eslint-disable-next-line no-use-before-define
+  constructor: CollectionConstructor;
+}
+
+export interface CollectionConstructor {
+  new (): Collection<unknown, unknown>;
+  new <K, V>(entries?: ReadonlyArray<readonly [K, V]> | null): Collection<K, V>;
+  new <K, V>(iterable: Iterable<readonly [K, V]>): Collection<K, V>;
+  readonly prototype: Collection<unknown, unknown>;
+  readonly [Symbol.species]: CollectionConstructor;
+}
+
+export type ReadonlyCollection<K, V> = ReadonlyMap<K, V> &
+  Omit<Collection<K, V>, "forEach" | "ensure" | "reverse" | "sweep" | "sort" | "get" | "set" | "delete">;
+
+// eslint-disable-next-line no-redeclare
 export class Collection<K, V> extends Map<K, V> {
   at(index: number) {
     const i = Math.floor(index);
@@ -74,6 +99,10 @@ export class Collection<K, V> extends Map<K, V> {
     );
   }
 
+  randomKey(): K | undefined;
+
+  randomKey(amount: number): K[];
+
   randomKey(amount?: number): K | K[] | undefined {
     const arr = [...this.keys()];
     if (typeof amount === "undefined") return arr[Math.floor(Math.random() * arr.length)];
@@ -93,7 +122,25 @@ export class Collection<K, V> extends Map<K, V> {
     return this;
   }
 
-  find(fn: (value: V, key: K, collection: this) => boolean, thisArg?: unknown): V | undefined {
+  find<V2 extends V>(
+    fn: (value: V, key: K, collection: this) => value is V2
+  ): V2 | undefined;
+
+  find(fn: (value: V, key: K, collection: this) => boolean): V | undefined;
+
+  find<This, V2 extends V>(
+    fn: (this: This, value: V, key: K, collection: this) => value is V2,
+    thisArg: This,
+  ): V2 | undefined;
+
+  find<This>(
+    fn: (this: This, value: V, key: K, collection: this) => boolean, thisArg: This
+  ): V | undefined;
+
+  find(
+    fn: (value: V, key: K, collection: this) => boolean,
+    thisArg?: unknown,
+  ): V | undefined {
     // eslint-disable-next-line no-param-reassign
     if (typeof thisArg !== "undefined") fn = fn.bind(thisArg);
     this.forEach((value, key) => {
@@ -114,6 +161,10 @@ export class Collection<K, V> extends Map<K, V> {
     return undefined;
   }
 
+  sweep(fn: (value: V, key: K, collection: this) => boolean): number;
+
+  sweep<T>(fn: (this: T, value: V, key: K, collection: this) => boolean, thisArg: T): number;
+
   sweep(fn: (value: V, key: K, collection: this) => boolean, thisArg?: unknown): number {
     // eslint-disable-next-line no-param-reassign
     if (typeof thisArg !== "undefined") fn = fn.bind(thisArg);
@@ -133,6 +184,37 @@ export class Collection<K, V> extends Map<K, V> {
     });
     return false;
   }
+
+  every<K2 extends K>(
+    fn: (
+      value: V,
+      key: K,
+      collection: this
+    ) => key is K2
+  ): this is Collection<K2, V>;
+
+  every<V2 extends V>(
+    fn: (value: V, key: K, collection: this) => value is V2
+  ): this is Collection<K, V2>;
+
+  every(fn: (value: V, key: K, collection: this) => boolean): boolean;
+
+  every<This, K2 extends K>(
+    fn: (this: This, value: V, key: K, collection: this) => key is K2,
+    thisArg: This,
+  ): this is Collection<K2, V>;
+
+  every<This, V2 extends V>(
+    fn: (this: This, value: V, key: K, collection: this) => value is V2,
+    thisArg: This,
+  ): this is Collection<K, V2>;
+
+  every<This>(
+    fn: (
+      this: This,
+      value: V, key: K,
+      collection: this
+  ) => boolean, thisArg: This): boolean;
 
   every(fn: (value: V, key: K, collection: this) => boolean, thisArg?: unknown): boolean {
     // eslint-disable-next-line no-param-reassign
@@ -171,10 +253,18 @@ export class Collection<K, V> extends Map<K, V> {
     return accumulator;
   }
 
+  each(fn: (value: V, key: K, collection: this) => void): this;
+
+  each<T>(fn: (this: T, value: V, key: K, collection: this) => void, thisArg: T): this;
+
   each(fn: (value: V, key: K, collection: this) => void, thisArg?: unknown): this {
     this.forEach(fn as (value: V, key: K, map: Map<K, V>) => void, thisArg);
     return this;
   }
+
+  tap(fn: (collection: this) => void): this;
+
+  tap<T>(fn: (this: T, collection: this) => void, thisArg: T): this;
 
   tap(fn: (collection: this) => void, thisArg?: unknown): this {
     // eslint-disable-next-line no-param-reassign
@@ -182,6 +272,14 @@ export class Collection<K, V> extends Map<K, V> {
     fn(this);
     return this;
   }
+
+  clone(): Collection<K, V> {
+    return new this.constructor[Symbol.species](this);
+  }
+
+  map<T>(fn: (value: V, key: K, collection: this) => T): T[];
+
+  map<This, T>(fn: (this: This, value: V, key: K, collection: this) => T, thisArg: This): T[];
 
   map<T>(fn: (value: V, key: K, collection: this) => T, thisArg?: unknown): T[] {
     if (typeof fn !== "function") throw new TypeError("Map requires a function");
@@ -194,7 +292,7 @@ export class Collection<K, V> extends Map<K, V> {
     });
   }
 
-  equals(collection: Collection<K, V>) {
+  equals(collection: ReadonlyCollection<K, V>) {
     if (!collection) return false; // runtime check
     if (this === collection) return true;
     if (this.size !== collection.size) return false;
@@ -204,6 +302,32 @@ export class Collection<K, V> extends Map<K, V> {
       return;
     });
     return true;
+  }
+
+  merge<T, R>(
+    other: ReadonlyCollection<K, T>,
+    whenInSelf: (value: V, key: K) => Keep<R>,
+    whenInOther: (valueOther: T, key: K) => Keep<R>,
+    whenInBoth: (value: V, valueOther: T, key: K) => Keep<R>,
+  ): Collection<K, R> {
+    const coll = new this.constructor[Symbol.species]<K, R>();
+    const keys = new Set([...this.keys(), ...other.keys()]);
+    keys.forEach((k) => {
+      const hasInSelf = this.has(k);
+      const hasInOther = other.has(k);
+
+      if (hasInSelf && hasInOther) {
+        const r = whenInBoth(this.get(k)!, other.get(k)!, k);
+        if (r.keep) coll.set(k, r.value);
+      } else if (hasInSelf) {
+        const r = whenInSelf(this.get(k)!, k);
+        if (r.keep) coll.set(k, r.value);
+      } else if (hasInOther) {
+        const r = whenInOther(other.get(k)!, k);
+        if (r.keep) coll.set(k, r.value);
+      }
+    });
+    return coll;
   }
 
   toJSON() {

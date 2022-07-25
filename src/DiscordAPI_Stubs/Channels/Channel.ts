@@ -1,3 +1,4 @@
+import { ChannelType } from "discord-api-types/v10";
 import { Channel as revoltChannel } from "revolt.js";
 import { convertChannelType } from "../../Utils/DiscordAPI";
 import { baseClass } from "../Base";
@@ -28,6 +29,18 @@ export class Channel extends baseClass {
     return this;
   }
 
+  isTextBased() {
+    return "messages" in this;
+  }
+
+  isDMBased() {
+    return [ChannelType.DM, ChannelType.GroupDM].includes(this.type);
+  }
+
+  isVoiceBased() {
+    return "bitrate" in this;
+  }
+
   isThread() {
     return false;
   }
@@ -53,6 +66,9 @@ export class Channel extends baseClass {
     return this.type === "DM";
   }
 
+  /**
+   * @deprecated since version 14.0.0
+  */
   isDirectory() {
     return false;
   }

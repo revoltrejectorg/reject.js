@@ -2,7 +2,7 @@ import { GuildChannel } from "./GuildChannel";
 
 export class BaseGuildVoiceChannel extends GuildChannel {
   // FIXME
-  bitrate = 96000;
+  bitrate = 48000;
 
   full = false;
 
