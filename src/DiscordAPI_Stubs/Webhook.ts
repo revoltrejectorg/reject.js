@@ -2,8 +2,8 @@ import {
   ChannelWebhookCreateOptions as DiscordChannelWebhookCreateOptions,
   MessageOptions,
   WebhookMessageOptions,
+  WebhookType,
 } from "discord.js";
-import { WebhookTypes } from "discord.js/typings/enums";
 import { msgParamsConverter } from "../Utils/DiscordAPI";
 import { baseClass } from "./Base";
 import { BaseGuildTextChannel } from "./Channels";
@@ -29,7 +29,7 @@ export class Webhook extends baseClass {
   token = "null";
 
   // FIXME: Wont stop crying about type errors
-  type = WebhookTypes.Application as any;
+  type = WebhookType.Application as any;
 
   get owner() {
     const ownerId = this.rejectClient.revoltClient.user?.bot?.owner;

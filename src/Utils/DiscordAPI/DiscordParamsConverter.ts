@@ -1,4 +1,4 @@
-import { MessageEmbed, MessageEmbedOptions, MessageOptions } from "discord.js";
+import { Embed, JSONEncodable, MessageOptions } from "discord.js";
 import { API, Client as RevoltClient } from "revolt.js";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { APIEmbed } from "discord-api-types/v10";
@@ -14,33 +14,42 @@ async function createFileBuffer(url: string) {
   );
   return res;
 }
+
+function isJSONEncodable<T>(maybeEncodable: T) {
+  return maybeEncodable !== null && typeof maybeEncodable === "object" && "toJSON" in maybeEncodable;
+}
+
 export async function embedConvert(
-  embed: MessageEmbed | MessageEmbedOptions | APIEmbed,
+  embed: APIEmbed | JSONEncodable<APIEmbed>,
   client?: RevoltClient,
 ): Promise<API.SendableEmbed> {
-  return {
-    title: embed.title,
-    url: embed.url,
-    description: (() => {
-      let str = embed.description ?? "";
+  const discordEmbed = isJSONEncodable(embed)
+    ? (embed as JSONEncodable<APIEmbed>).toJSON()
+    : embed as APIEmbed;
 
-      embed.fields?.forEach((field) => {
+  return {
+    title: discordEmbed.title,
+    url: discordEmbed.url,
+    description: (() => {
+      let str = discordEmbed.description ?? "";
+
+      discordEmbed.fields?.forEach((field) => {
         str += `\n\n**${field.name}**\n\n${field.value}`;
       });
 
       return str;
     })(),
     // FIXME: Highly inefficient
-    media: embed.image?.url ? await UploadFile({
+    media: discordEmbed.image?.url ? await UploadFile({
       name: "image.png",
-      file: await createFileBuffer(embed.image.url),
+      file: await createFileBuffer(discordEmbed.image.url),
     }).catch(() => undefined) : undefined,
-    icon_url: embed.thumbnail?.url,
+    icon_url: discordEmbed.thumbnail?.url,
     // convert color from rgb number to hex
     // eslint-disable-next-line no-nested-ternary
-    colour: embed.color && typeof embed.color === "number"
-      ? rgbToHex(embed.color)
-      : typeof embed.color === "string" ? discordJSColorToHex(embed.color) : null,
+    colour: discordEmbed.color && typeof discordEmbed.color === "number"
+      ? rgbToHex(discordEmbed.color)
+      : typeof discordEmbed.color === "string" ? discordJSColorToHex(discordEmbed.color) : null,
   };
 }
 /**

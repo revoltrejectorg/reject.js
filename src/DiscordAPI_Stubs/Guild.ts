@@ -1,6 +1,6 @@
 /* eslint-disable no-bitwise */
 import { Channel as revoltChannel, Server as revoltServer } from "revolt.js";
-import { GuildEditData, ImageURLOptions } from "discord.js";
+import { GuildEditData, ImageURLOptions, Locale } from "discord.js";
 import { baseClass } from "./Base";
 import { GuildMember } from "./GuildMember";
 import { Channel } from "./Channels";
@@ -252,7 +252,7 @@ export class Guild extends AnonymousGuild {
     return this.edit({});
   }
 
-  setPreferredLocale(preferredLocale: string, reason?: string) {
+  setPreferredLocale(preferredLocale: Locale, reason?: string) {
     return this.edit({ preferredLocale }, reason);
   }
 

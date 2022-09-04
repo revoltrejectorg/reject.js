@@ -31,7 +31,7 @@ export const colorsMap: { [key: string]: string } = {
 };
 
 export function discordJSColorToHex(color: ColorResolvable) {
-  if (color === "RANDOM") {
+  if (color === "Random") {
     return rgbToHex(Math.floor(Math.random() * (0xffffff + 1)));
   }
 

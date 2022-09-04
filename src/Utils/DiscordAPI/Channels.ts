@@ -1,4 +1,4 @@
-import { ChannelTypes } from "discord.js/typings/enums";
+import { ChannelType } from "discord.js";
 import { API } from "revolt.js";
 import { swap } from "../js";
 
@@ -10,14 +10,22 @@ export const channelsMap: { [key: string]: API.Channel["channel_type"] } = {
   GUILD_VOICE: "VoiceChannel",
 };
 
+export const channelEnumMap: { [key: string]: API.Channel["channel_type"] } = {
+  [ChannelType.DM]: "DirectMessage",
+  [ChannelType.GroupDM]: "Group",
+  [ChannelType.GuildText]: "TextChannel",
+  [ChannelType.GuildVoice]: "VoiceChannel",
+};
+
 // Revolt -> Discord
 export const discordChannelsMap = swap(channelsMap);
 
-export function convertChannelType(channelType: API.Channel["channel_type"]
-  | keyof typeof ChannelTypes, toRevolt: boolean) {
+export const discordEnumChannelMap = swap(channelsMap);
+
+export function convertChannelType(channelType: API.Channel["channel_type"] |ChannelType, toRevolt: boolean) {
   if (toRevolt) {
-    return channelsMap[channelType];
+    return channelEnumMap[channelType];
   }
 
-  return discordChannelsMap[channelType] ?? "UNKNOWN";
+  return discordEnumChannelMap[channelType] ?? "UNKNOWN";
 }
