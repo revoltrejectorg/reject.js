@@ -61,18 +61,16 @@ export function createChannelfromRevolt<T extends revoltChannel>(channel: T) : T
 export function createChannelfromRevolt(channel: revoltChannel) {
   let rejectChannel: BaseChannel;
 
-  const channelT = convertChannelType(channel.channel_type, false);
-
-  switch (channelT) {
-    case ChannelType.GuildText: {
+  switch (channel.channel_type) {
+    case "TextChannel": {
       rejectChannel = new BaseGuildTextChannel(channel);
       break;
     }
-    case ChannelType.GuildVoice: {
+    case "VoiceChannel": {
       rejectChannel = new VoiceChannel(channel);
       break;
     }
-    case ChannelType.DM: {
+    case "DirectMessage": {
       rejectChannel = new DMChannel(channel);
       break;
     }
