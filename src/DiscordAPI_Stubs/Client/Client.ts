@@ -3,7 +3,6 @@ import { User } from "../User";
 import { GuildManager } from "../Managers/GuildManager";
 import { ClientApplication } from "./ClientApplication";
 import { BaseClient } from "./BaseClient";
-import { Emoji } from "../structures";
 import { WebSocketManager } from "./WebSocketManager";
 import { ClientVoiceManager } from "./ClientVoiceManager";
 import { BaseGuildEmojiManager, ChannelManager } from "../Managers";
@@ -12,7 +11,9 @@ export class Client extends BaseClient {
   get application() { return new ClientApplication(this.revoltClient); }
 
   // FIXME
-  get channels() { return new ChannelManager(this.revoltClient, false); }
+  get channels() {
+    return new ChannelManager(this.revoltClient, false);
+  }
 
   get emojis() {
     const emojis = new BaseGuildEmojiManager(this.revoltClient, false);
@@ -26,13 +27,17 @@ export class Client extends BaseClient {
     return emojis;
   }
 
-  get guilds() { return new GuildManager(this.revoltClient); }
+  get guilds() {
+    return new GuildManager(this.revoltClient);
+  }
 
   get readyAt() { return new Date(this.readyTimestamp); }
 
   readyTimestamp: number = 0;
 
-  shard = { id: 0, count: 1 };
+  shard = {
+    id: 0, count: 1,
+  };
 
   sweepers = [];
 
@@ -40,8 +45,9 @@ export class Client extends BaseClient {
     return this.revoltClient.session;
   }
 
-  // FIXME
-  uptime = 0;
+  get uptime() {
+    return this.readyTimestamp && Date.now() - this.readyTimestamp;
+  }
 
   get user() {
     if (this.revoltClient.user) return new User(this.revoltClient.user);
