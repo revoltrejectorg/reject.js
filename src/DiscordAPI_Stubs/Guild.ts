@@ -224,7 +224,7 @@ export class Guild extends AnonymousGuild {
   systemChannelId?: string;
 
   async delete() {
-    return this.revoltServer.delete();
+    await this.revoltServer.delete();
   }
 
   discoverySplashURL(options: ImageURLOptions) {
@@ -241,16 +241,16 @@ export class Guild extends AnonymousGuild {
   }
 
   setIcon(icon: any, reason?: string) {
-    return this.revoltServer.edit({ icon });
+    return this.edit({ icon }, reason);
   }
 
   setName(name: string, reason?: string) {
-    return this.revoltServer.edit({ name });
+    return this.edit({ name }, reason);
   }
 
   // FIXME
   setOwner(user: GuildMember, reason?: string) {
-    return this.edit({});
+    return this.edit({}, reason);
   }
 
   setPreferredLocale(preferredLocale: Locale, reason?: string) {
