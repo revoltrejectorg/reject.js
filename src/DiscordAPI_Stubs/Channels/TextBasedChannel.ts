@@ -32,7 +32,6 @@ export class TextBasedChannel extends BaseChannel {
   }
 
   async sendTyping(timeout: number = 5000) {
-    // TODO: stop typing when we send a message
     this.revoltChannel.startTyping();
     setTimeout(() => {
       this.revoltChannel.stopTyping();
