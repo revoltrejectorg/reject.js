@@ -5,12 +5,13 @@ import { BaseClient } from "./BaseClient";
 import { Emoji } from "../structures";
 import { WebSocketManager } from "./WebSocketManager";
 import { ClientVoiceManager } from "./ClientVoiceManager";
+import { ChannelManager } from "../Managers";
 
 export class Client extends BaseClient {
   get application() { return new ClientApplication(this.revoltClient); }
 
   // FIXME
-  channels = [];
+  get channels() { return new ChannelManager(this.revoltClient, false); }
 
   get emojis() {
     return [...this.revoltClient.emojis.values()].map((emoji) => new Emoji(this, emoji));

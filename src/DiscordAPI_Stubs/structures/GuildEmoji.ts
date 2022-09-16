@@ -1,4 +1,4 @@
-import { GuildEmojiEditData } from "discord.js";
+import { GuildEmojiEditData, PermissionFlagsBits } from "discord.js";
 import { User } from "../User";
 import { BaseGuildEmoji } from "./BaseGuildEmoji";
 
@@ -11,7 +11,7 @@ export class GuildEmoji extends BaseGuildEmoji {
   }
 
   get deletable() {
-    return this.guild.me?.permissions?.has("MANAGE_EMOJIS_AND_STICKERS");
+    return this.guild.me?.permissions?.has("ManageEmojisAndStickers");
   }
 
   // FIXME

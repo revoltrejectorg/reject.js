@@ -3,9 +3,10 @@ import { Channel as revoltChannel, Server as revoltServer } from "revolt.js";
 import { GuildEditData, ImageURLOptions, Locale } from "discord.js";
 import { baseClass } from "./Base";
 import { GuildMember } from "./GuildMember";
-import { Channel } from "./Channels";
 import { Client } from "./Client";
-import { GuildChannelManager, GuildEmojiManager, GuildMemberManager } from "./Managers";
+import {
+  GuildChannelManager, GuildEmojiManager, GuildMemberManager, RoleManager,
+} from "./Managers";
 
 /** Base for guild-type classes
  * @see https://discord.js.org/#/docs/discord.js/stable/class/BaseGuild
@@ -197,7 +198,7 @@ export class Guild extends AnonymousGuild {
   readonly publicUpdatesChannelId?: string;
 
   /** FIXME: No roles class */
-  get roles() { return this.revoltServer.roles; }
+  roles = new RoleManager(this.rejectClient.revoltClient);
 
   rulesChannelId?: string;
 

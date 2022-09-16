@@ -1,5 +1,5 @@
 import { baseClass } from "../Base";
-import { Channel } from "../Channels";
+import { BaseChannel } from "../Channels";
 import { GuildMember } from "../GuildMember";
 
 export class VoiceState extends baseClass {
@@ -58,7 +58,7 @@ export class VoiceState extends baseClass {
   }
 
   // FIXME
-  async setChannel(channel: Channel, reason: string) {
+  async setChannel(channel: BaseChannel, reason: string) {
     return this.rejectMember;
   }
 

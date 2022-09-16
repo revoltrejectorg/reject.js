@@ -8,3 +8,5 @@ export * from "./GuildMemberManager";
 export * from "./GuildChannelManager";
 export * from "./BaseGuildEmojiManager";
 export * from "./GuildEmojiManager";
+export * from "./ChannelManager";
+export * from "./RoleManager";

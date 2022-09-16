@@ -1,7 +1,10 @@
+import { ChannelType } from "discord.js";
 import { User } from "../User";
-import { BaseGuildTextChannel } from "./BaseGuildTextChannel";
+import { TextBasedChannel } from "./TextBasedChannel";
 
-export class DMChannel extends BaseGuildTextChannel {
+export class DMChannel extends TextBasedChannel {
+  declare type: ChannelType.DM;
+
   get partial() {
     return (typeof this.lastMessageId === "undefined") as false;
   }

@@ -1,10 +1,12 @@
 import { Message as revoltMessage } from "revolt.js";
-import { BaseGuildTextChannel } from "./Channels";
+import { BaseGuildTextChannel, TextBasedChannels } from "./Channels";
 import { User } from "./User";
 import { GuildMember } from "./GuildMember";
 import { Guild } from "./Guild";
 import { baseClass } from "./Base";
-import { msgEditConvert, msgParamsConverter } from "../Utils/DiscordAPI";
+import {
+  cleanContent, createChannelfromRevolt, msgEditConvert, msgParamsConverter,
+} from "../Utils/DiscordAPI";
 import { Client } from "./Client";
 import { MessageMentions } from "./structures";
 
@@ -19,20 +21,34 @@ export class Message extends baseClass {
   get content() { return this.revoltMsg.content?.toString() ?? "fixme"; }
 
   // FIXME: potential for the message to be a system message
-  channel?: BaseGuildTextChannel;
+  channel?: TextBasedChannels;
 
-  get channelId() { return this.channel?.id; }
+  get channelId() {
+    return this.channel?.id;
+  }
 
-  get author() { return new User(this.revoltMsg.author!); }
+  get author() {
+    return new User(this.revoltMsg.author!);
+  }
 
   get member() {
-    if (!this.revoltMsg.member) return;
+    if (!this.revoltMsg.member) return null;
     return new GuildMember(this.revoltMsg.member);
   }
 
-  get url() { return this.revoltMsg.url; }
+  get url() {
+    return this.revoltMsg.url;
+  }
 
-  get mentions() { return new MessageMentions(this); }
+  get cleanContent() {
+    if (!this.channel) return this.content;
+
+    return this.content != null ? cleanContent(this.content, this.channel) : null;
+  }
+
+  get mentions() {
+    return new MessageMentions(this);
+  }
 
   // FIXME: revolt may add emote reactions in the future
   get reactions() { return []; }
@@ -53,9 +69,15 @@ export class Message extends baseClass {
     return this.revoltMsg._id;
   }
 
+  get partial() {
+    return typeof this.content !== "string" || !this.author;
+  }
+
   webhookId?: string;
 
-  get nonce() { return this.revoltMsg.nonce; }
+  get nonce() {
+    return this.revoltMsg.nonce;
+  }
 
   tts = false;
 
@@ -67,7 +89,8 @@ export class Message extends baseClass {
   constructor(rMsg: revoltMessage) {
     super(new Client(rMsg.client));
     this.revoltMsg = rMsg;
-    if (rMsg.channel) this.channel = new BaseGuildTextChannel(rMsg.channel);
+
+    if (rMsg.channel) this.channel = createChannelfromRevolt(rMsg.channel);
   }
 
   async reply(content: string, mention?: boolean | undefined) {

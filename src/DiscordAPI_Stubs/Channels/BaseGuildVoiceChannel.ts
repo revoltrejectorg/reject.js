@@ -1,13 +1,16 @@
+import { ChannelType } from "discord.js";
 import { GuildChannel } from "./GuildChannel";
 
 export class BaseGuildVoiceChannel extends GuildChannel {
+  declare type: ChannelType.GuildVoice;
+
   // FIXME
   bitrate = 48000;
 
   full = false;
 
   get joinable() {
-    return this.guild?.me?.permissions?.has("CONNECT") ?? false;
+    return this.guild?.me?.permissions?.has("Connect") ?? false;
   }
 
   // FIXME
