@@ -1,3 +1,4 @@
+import { Events } from "discord.js";
 import { User } from "../User";
 import { GuildManager } from "../Managers/GuildManager";
 import { ClientApplication } from "./ClientApplication";
@@ -5,7 +6,7 @@ import { BaseClient } from "./BaseClient";
 import { Emoji } from "../structures";
 import { WebSocketManager } from "./WebSocketManager";
 import { ClientVoiceManager } from "./ClientVoiceManager";
-import { ChannelManager } from "../Managers";
+import { BaseGuildEmojiManager, ChannelManager } from "../Managers";
 
 export class Client extends BaseClient {
   get application() { return new ClientApplication(this.revoltClient); }
@@ -14,7 +15,15 @@ export class Client extends BaseClient {
   get channels() { return new ChannelManager(this.revoltClient, false); }
 
   get emojis() {
-    return [...this.revoltClient.emojis.values()].map((emoji) => new Emoji(this, emoji));
+    const emojis = new BaseGuildEmojiManager(this.revoltClient, false);
+    this.guilds.cache.forEach((guild) => {
+      if (guild.available) {
+        guild.emojis.cache.forEach((emoji) => {
+          emojis.cache.set(emoji.id, emoji);
+        });
+      }
+    });
+    return emojis;
   }
 
   get guilds() { return new GuildManager(this.revoltClient); }
@@ -27,7 +36,9 @@ export class Client extends BaseClient {
 
   sweepers = [];
 
-  get token() { return this.revoltClient.session; }
+  get token() {
+    return this.revoltClient.session;
+  }
 
   // FIXME
   uptime = 0;
@@ -67,6 +78,21 @@ export class Client extends BaseClient {
   async fetchGuildTemplate() {}
 
   async login(token: string) {
-    this.revoltClient.loginBot(token);
+    this.emit(Events.Debug, `Provided token: ${token}`);
+
+    this.emit(Events.Debug, "Preparing to connect to the gateway...");
+
+    try {
+      await this.revoltClient.loginBot(token);
+      return this.token;
+    } catch (e) {
+      this.destroy();
+      throw e;
+    }
+  }
+
+  // FIXME: simulate ws and rest destruction??
+  destroy() {
+    super.destroy();
   }
 }
