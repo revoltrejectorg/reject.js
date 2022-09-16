@@ -1,4 +1,6 @@
-import { BaseGuildTextChannel, GuildChannel, VoiceChannel } from "../Channels";
+import { ChannelType } from "discord.js";
+import { createChannelfromRevolt } from "../../Utils/DiscordAPI";
+import { GuildChannel } from "../Channels";
 import { Guild } from "../Guild";
 import { CachedManager } from "./CachedManager";
 
@@ -9,12 +11,18 @@ export class GuildChannelManager extends CachedManager<GuildChannel> {
     guild.revoltServer.channels.forEach((channel) => {
       if (!channel) return;
 
-      // eslint-disable-next-line no-nested-ternary
-      const guildChannel = channel.channel_type === "TextChannel" ? new BaseGuildTextChannel(channel)
-        : channel.channel_type === "VoiceChannel" ? new VoiceChannel(channel)
-          : new GuildChannel(channel);
+      const guildChannel = createChannelfromRevolt(channel);
 
-      this._add(guildChannel, true, { id: guildChannel.id });
+      if (guildChannel.type === ChannelType.DM) return;
+
+      this._add(guildChannel);
     });
+  }
+
+  _add(channel: GuildChannel) {
+    const existing = this.cache.get(channel.id);
+    if (existing) return existing;
+    this.cache.set(channel.id, channel);
+    return channel;
   }
 }

@@ -4,7 +4,7 @@ import { ChannelType } from "discord.js";
 import { API, Channel as revoltChannel } from "revolt.js";
 import {
   BaseChannel,
-  BaseGuildTextChannel, DMChannel, TextBasedChannel, TextBasedChannels, VoiceChannel,
+  BaseGuildTextChannel, DMChannel, TextBasedChannels, VoiceChannel,
 } from "../../DiscordAPI_Stubs";
 import { swap } from "../js";
 
@@ -57,7 +57,9 @@ export function convertChannelType(channelType: channelTypeParams, toRevolt: boo
   return discordEnumChannelMap[channelType] ?? ChannelType.GuildText;
 }
 
-export function createChannelfromRevolt<T extends revoltChannel>(channel: T) : T["channel_type"] extends "VoiceChannel" ? VoiceChannel : TextBasedChannels
+export function createChannelfromRevolt<T extends revoltChannel>(
+  channel: T
+) : T["channel_type"] extends "VoiceChannel" ? VoiceChannel : TextBasedChannels
 export function createChannelfromRevolt(channel: revoltChannel) {
   let rejectChannel: BaseChannel;
 

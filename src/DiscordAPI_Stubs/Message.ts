@@ -1,5 +1,5 @@
 import { Message as revoltMessage } from "revolt.js";
-import { BaseGuildTextChannel, TextBasedChannels } from "./Channels";
+import { TextBasedChannels } from "./Channels";
 import { User } from "./User";
 import { GuildMember } from "./GuildMember";
 import { Guild } from "./Guild";

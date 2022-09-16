@@ -79,7 +79,7 @@ export class User extends baseClass {
         status: activityStatus,
         activities: discordPresence.activities,
         client_status: discordPresence.clientStatus,
-      }) as any,
+      }),
 
       set: (presence: PresenceData) => {
         // FIXME: partial impl

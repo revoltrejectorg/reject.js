@@ -10,7 +10,6 @@ import { BaseGuildEmojiManager, ChannelManager } from "../Managers";
 export class Client extends BaseClient {
   get application() { return new ClientApplication(this.revoltClient); }
 
-  // FIXME
   get channels() {
     return new ChannelManager(this.revoltClient, false);
   }
