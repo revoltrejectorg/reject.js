@@ -1,4 +1,5 @@
 import { Message as revoltMessage } from "revolt.js";
+import { ChannelType } from "discord.js";
 import { TextBasedChannels } from "./Channels";
 import { User } from "./User";
 import { GuildMember } from "./GuildMember";
@@ -51,19 +52,44 @@ export class Message extends baseClass {
   }
 
   // FIXME: revolt may add emote reactions in the future
-  get reactions() { return []; }
+  get reactions() {
+    return [];
+  }
 
-  get embeds() { return this.revoltMsg.embeds; }
+  get embeds() {
+    return this.revoltMsg.embeds;
+  }
 
-  get attachments() { return this.revoltMsg.attachments; }
+  get attachments() {
+    return this.revoltMsg.attachments;
+  }
 
-  get edited() { return this.revoltMsg.edited; }
+  get editedTimestamp() {
+    return this.revoltMsg.edited?.getUTCMilliseconds();
+  }
 
-  get editedTimestamp() { return this.revoltMsg.edited?.getUTCMilliseconds(); }
+  get editable() {
+    const precheck = Boolean(this.author.id === this.client.user?.id
+      && (!this.guild || (this.channel?.type !== ChannelType.DM && this.channel?.viewable)));
+    // Thread messages cant be edited if they're locked, regardless of perms.
+    if (this.channel?.isThread()) {
+      // FIXME: Need to check for Thread.locked in the future.
+      return precheck;
+    }
+    return precheck;
+  }
 
-  get createdTimestamp() { return this.revoltMsg.createdAt; }
+  get editedAt() {
+    return this.editedTimestamp && new Date(this.editedTimestamp);
+  }
 
-  get createdAt() { return new Date(this.revoltMsg.createdAt); }
+  get createdTimestamp() {
+    return this.revoltMsg.createdAt;
+  }
+
+  get createdAt() {
+    return new Date(this.createdTimestamp);
+  }
 
   get id() {
     return this.revoltMsg._id;
