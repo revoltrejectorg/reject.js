@@ -1,5 +1,5 @@
 import { Message as revoltMessage } from "revolt.js";
-import { ChannelType, MessageOptions } from "discord.js";
+import { ChannelType, MessageEditOptions, MessageOptions } from "discord.js";
 import { TextBasedChannels } from "./Channels";
 import { User } from "./User";
 import { GuildMember } from "./GuildMember";
@@ -132,7 +132,7 @@ export class Message extends baseClass {
     return this;
   }
 
-  async edit(content: string | MessageOptions) {
+  async edit(content: string | MessageEditOptions) {
     const editParams = await msgEditConvert(content);
 
     await this.revoltMsg.edit(editParams);

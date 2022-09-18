@@ -1,4 +1,6 @@
-import { Embed, JSONEncodable, MessageOptions } from "discord.js";
+import {
+  AttachmentPayload, JSONEncodable, MessageEditOptions, MessageOptions,
+} from "discord.js";
 import { API, Client as RevoltClient } from "revolt.js";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { APIEmbed } from "discord-api-types/v10";
@@ -52,13 +54,31 @@ export async function embedConvert(
       : typeof discordEmbed.color === "string" ? discordJSColorToHex(discordEmbed.color) : null,
   };
 }
+
+export async function convertAttachment(attachment: JSONEncodable<AttachmentPayload>) {
+  const attachmentJSON = attachment.toJSON();
+
+  // FIXME: strings are currently unhandled
+  if (!Buffer.isBuffer(attachmentJSON.attachment)) return;
+
+  const res = await UploadFile({
+    name: attachmentJSON.name ?? "attachment",
+    file: attachmentJSON.attachment,
+  });
+
+  return res;
+}
+
 /**
  * @param params - the params to convert
  * @param client - the client to use for converting, needed for media
  * @returns the original string if it's a string, otherwise it's converted
  * to revolt params
  * */
-export async function msgParamsConverter(params: MessageOptions | string, client?: RevoltClient) {
+export async function msgParamsConverter(
+  params: MessageOptions | MessageEditOptions | string,
+  client?: RevoltClient,
+) {
   if (typeof params === "string") return params;
 
   const revoltParams: Omit<API.DataMessageSend, "nonce"> = {
@@ -71,11 +91,14 @@ export async function msgParamsConverter(params: MessageOptions | string, client
 
       return convEmbeds;
     })(),
+    attachments: params.attachments ? (await Promise
+      .all(params.attachments.map((attachment) => convertAttachment(attachment))))
+      .filter((attachment): attachment is string => attachment !== undefined) : undefined,
   };
   return revoltParams;
 }
 
-export async function msgEditConvert(params: MessageOptions | string, client?: RevoltClient) {
+export async function msgEditConvert(params: MessageEditOptions | string, client?: RevoltClient) {
   const convertedParams = await msgParamsConverter(params, client);
 
   const editParams: API.DataEditMessage = typeof convertedParams === "string"
