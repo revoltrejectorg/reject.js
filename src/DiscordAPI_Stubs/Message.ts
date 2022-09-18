@@ -1,5 +1,5 @@
 import { Message as revoltMessage } from "revolt.js";
-import { ChannelType } from "discord.js";
+import { ChannelType, MessageOptions } from "discord.js";
 import { TextBasedChannels } from "./Channels";
 import { User } from "./User";
 import { GuildMember } from "./GuildMember";
@@ -119,7 +119,7 @@ export class Message extends baseClass {
     if (rMsg.channel) this.channel = createChannelfromRevolt(rMsg.channel);
   }
 
-  async reply(content: string, mention?: boolean | undefined) {
+  async reply(content: string | MessageOptions, mention?: boolean | undefined) {
     const convertedParams = await msgParamsConverter(content, this.revoltMsg.client);
 
     const msg = await this.revoltMsg.reply(convertedParams, mention);
@@ -132,7 +132,7 @@ export class Message extends baseClass {
     return this;
   }
 
-  async edit(content: string) {
+  async edit(content: string | MessageOptions) {
     const editParams = await msgEditConvert(content);
 
     await this.revoltMsg.edit(editParams);
