@@ -28,8 +28,7 @@ export class Webhook extends baseClass {
 
   token = "null";
 
-  // FIXME: Wont stop crying about type errors
-  type = WebhookType.Application as any;
+  type = WebhookType.Application;
 
   get owner() {
     const ownerId = this.rejectClient.revoltClient.user?.bot?.owner;
@@ -67,9 +66,11 @@ export class Webhook extends baseClass {
     }
   }
 
-  createdAt = new Date();
+  createdTimestamp = Date.now();
 
-  createdTimestamp = 0;
+  get createdAt() {
+    return new Date(this.createdTimestamp);
+  }
 
   async sendSlackMessage(body: unknown) {
     return false;
