@@ -1,9 +1,7 @@
 import {
-  AttachmentPayload, JSONEncodable, MessageEditOptions, MessageOptions,
+  AttachmentPayload, JSONEncodable, MessageEditOptions, MessageOptions, APIEmbed,
 } from "discord.js";
 import { API, Client as RevoltClient } from "revolt.js";
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { APIEmbed } from "discord-api-types/v10";
 import axios from "axios";
 import { discordJSColorToHex, rgbToHex } from "../colorTils";
 import { UploadFile } from "../UploadFile";
@@ -82,19 +80,15 @@ export async function msgParamsConverter(
   if (typeof params === "string") return params;
 
   const revoltParams: Omit<API.DataMessageSend, "nonce"> = {
-    // Revolt doesn't like blank messages
+    // Revolt doesn't like blank messages.
     content: params.content ?? " ",
-    embeds: await (async () => {
-      if (!params.embeds || !(params.embeds[0])) return;
-      const convEmbeds = await Promise
-        .all(params.embeds.map((embed) => embedConvert(embed)));
-
-      return convEmbeds;
-    })(),
+    embeds: params.embeds ? await Promise
+      .all(params.embeds.map((embed) => embedConvert(embed))) : undefined,
     attachments: params.attachments ? (await Promise
       .all(params.attachments.map((attachment) => convertAttachment(attachment))))
       .filter((attachment): attachment is string => attachment !== undefined) : undefined,
   };
+
   return revoltParams;
 }
 
