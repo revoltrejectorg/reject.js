@@ -9,7 +9,8 @@ import {
   cleanContent, createChannelfromRevolt, msgEditConvert, msgParamsConverter,
 } from "../Utils/DiscordAPI";
 import { Client } from "./Client";
-import { MessageMentions } from "./structures";
+import { Emoji, MessageMentions, MessageReaction } from "./structures";
+import { ReactionManager } from "./Managers";
 
 /**
  * reference https://discord.js.org/#/docs/discord.js/stable/class/Message
@@ -51,10 +52,7 @@ export class Message extends baseClass {
     return new MessageMentions(this);
   }
 
-  // FIXME: revolt may add emote reactions in the future
-  get reactions() {
-    return [];
-  }
+  reactions = new ReactionManager(this);
 
   get embeds() {
     return this.revoltMsg.embeds;
@@ -156,7 +154,16 @@ export class Message extends baseClass {
 
   async unpin() {}
 
-  async react() {}
+  // FIXME: revolt.js won't auto-resolve "classic" emojis unlike discord.
+  async react(emoji: string) {
+    const revoltEmoji = this.client.revoltClient.emojis.get(emoji);
+    if (!revoltEmoji) throw new Error("Invalid emoji!");
+
+    await this.revoltMsg.react(emoji);
+    return new MessageReaction(this, {
+      emoji: revoltEmoji,
+    });
+  }
 
   async awaitReactions() {}
 

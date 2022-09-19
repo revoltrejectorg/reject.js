@@ -3,7 +3,7 @@ import { baseClass } from "../Base";
 import { Client } from "../Client";
 
 export class Emoji extends baseClass {
-  protected rEmoji: revoltEmoji;
+  rEmoji: revoltEmoji;
 
   get animated() {
     return this.rEmoji.animated;

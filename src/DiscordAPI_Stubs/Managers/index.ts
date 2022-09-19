@@ -10,3 +10,4 @@ export * from "./BaseGuildEmojiManager";
 export * from "./GuildEmojiManager";
 export * from "./ChannelManager";
 export * from "./RoleManager";
+export * from "./ReactionManager";
