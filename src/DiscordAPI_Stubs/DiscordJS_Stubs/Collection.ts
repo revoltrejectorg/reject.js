@@ -114,6 +114,25 @@ export class Collection<K, V> extends Map<K, V> {
     );
   }
 
+  flatMap<T>(
+    fn: (value: V, key: K, collection: this) => Collection<K, T>,
+    thisArg?: unknown,
+  ): Collection<K, T> {
+    const collections = this.map(fn, thisArg);
+    return new this.constructor[Symbol.species]<K, T>().concat(...collections);
+  }
+
+  concat(...collections: ReadonlyCollection<K, V>[]) {
+    const newColl = this.clone();
+    collections.forEach((coll) => {
+      coll.forEach((value, key) => {
+        newColl.set(key, value);
+      });
+    });
+
+    return newColl;
+  }
+
   reverse() {
     const entries = [...this.entries()].reverse();
     this.clear();
@@ -267,6 +286,7 @@ export class Collection<K, V> extends Map<K, V> {
   tap<T>(fn: (this: T, collection: this) => void, thisArg: T): this;
 
   tap(fn: (collection: this) => void, thisArg?: unknown): this {
+    if (typeof fn !== "function") throw new TypeError(`${fn} is not a function`);
     // eslint-disable-next-line no-param-reassign
     if (typeof thisArg !== "undefined") fn = fn.bind(thisArg);
     fn(this);
