@@ -22,6 +22,8 @@ export interface CollectionConstructor {
 export type ReadonlyCollection<K, V> = ReadonlyMap<K, V> &
   Omit<Collection<K, V>, "forEach" | "ensure" | "reverse" | "sweep" | "sort" | "get" | "set" | "delete">;
 
+export type Comparator<K, V> = (firstValue: V, secondValue: V, firstKey: K, secondKey: K) => number;
+
 // eslint-disable-next-line no-redeclare
 export class Collection<K, V> extends Map<K, V> {
   at(index: number) {
@@ -322,6 +324,22 @@ export class Collection<K, V> extends Map<K, V> {
       return;
     });
     return true;
+  }
+
+  sort(compareFunction: Comparator<K, V> = Collection.defaultSort) {
+    const entries = [...this.entries()];
+    entries.sort((a, b): number => compareFunction(a[1], b[1], a[0], b[0]));
+
+    super.clear();
+
+    entries.forEach(([key, value]) => super.set(key, value));
+
+    return this;
+  }
+
+  sorted(compareFunction: Comparator<K, V> = Collection.defaultSort) {
+    return new this.constructor[Symbol.species](this)
+      .sort((av, bv, ak, bk) => compareFunction(av, bv, ak, bk));
   }
 
   merge<T, R>(
