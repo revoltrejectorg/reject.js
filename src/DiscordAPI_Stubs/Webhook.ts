@@ -1,7 +1,7 @@
 import {
   ChannelWebhookCreateOptions as DiscordChannelWebhookCreateOptions,
-  MessageOptions,
-  WebhookMessageOptions,
+  BaseMessageOptions,
+  WebhookEditMessageOptions,
   WebhookType,
 } from "discord.js";
 import { msgParamsConverter } from "../Utils/DiscordAPI";
@@ -77,7 +77,7 @@ export class Webhook extends baseClass {
   }
 
   // FIXME: Needs masquerade permissions to work properly
-  async send(message: string | MessageOptions | WebhookMessageOptions) {
+  async send(message: string | BaseMessageOptions) {
     const params = await msgParamsConverter(message, this.rejectClient.revoltClient);
 
     const masq = {

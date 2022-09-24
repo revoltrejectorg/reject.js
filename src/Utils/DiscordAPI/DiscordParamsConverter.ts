@@ -1,8 +1,15 @@
 import {
-  AttachmentPayload, JSONEncodable, MessageEditOptions, MessageOptions, APIEmbed,
+  AttachmentPayload, JSONEncodable, MessageEditOptions,
+  APIEmbed,
+  MessageCreateOptions,
+  BufferResolvable,
+  APIAttachment,
+  Attachment,
+  AttachmentBuilder,
 } from "discord.js";
 import { API, Client as RevoltClient } from "revolt.js";
 import axios from "axios";
+import internal from "stream";
 import { discordJSColorToHex, rgbToHex } from "../colorTils";
 import { UploadFile } from "../UploadFile";
 
@@ -53,15 +60,20 @@ export async function embedConvert(
   };
 }
 
-export async function convertAttachment(attachment: JSONEncodable<AttachmentPayload>) {
-  const attachmentJSON = attachment.toJSON();
-
+// FIXME: Very borked
+export async function convertAttachment(attachment:
+  AttachmentPayload |
+  BufferResolvable |
+  internal.Stream |
+  JSONEncodable<APIAttachment> |
+  Attachment |
+  AttachmentBuilder) {
   // FIXME: strings are currently unhandled
-  if (!Buffer.isBuffer(attachmentJSON.attachment)) return;
+  if (!Buffer.isBuffer(attachment)) return;
 
   const res = await UploadFile({
-    name: attachmentJSON.name ?? "attachment",
-    file: attachmentJSON.attachment,
+    name: "attachment",
+    file: attachment,
   });
 
   return res;
@@ -74,7 +86,7 @@ export async function convertAttachment(attachment: JSONEncodable<AttachmentPayl
  * to revolt params
  * */
 export async function msgParamsConverter(
-  params: MessageOptions | MessageEditOptions | string,
+  params: MessageCreateOptions | MessageEditOptions | string,
   client?: RevoltClient,
 ) {
   if (typeof params === "string") return params;
@@ -84,8 +96,8 @@ export async function msgParamsConverter(
     content: params.content ?? " ",
     embeds: params.embeds ? await Promise
       .all(params.embeds.map((embed) => embedConvert(embed))) : undefined,
-    attachments: params.attachments ? (await Promise
-      .all(params.attachments.map((attachment) => convertAttachment(attachment))))
+    attachments: params.files ? (await Promise
+      .all(params.files.map((file) => convertAttachment(file))))
       .filter((attachment): attachment is string => attachment !== undefined) : undefined,
   };
 

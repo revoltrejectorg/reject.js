@@ -15,7 +15,7 @@ export class BaseClient extends EventEmitter implements RejectBase {
    * or force bots to use revolt's rest
   */
   get api() {
-    return this.revoltClient.api;
+    return null;
   }
 
   get options() { return this.revoltClient.options; }

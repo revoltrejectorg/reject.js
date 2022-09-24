@@ -3,7 +3,7 @@ import {
   ImageURLOptions,
   PresenceData,
   UserMention as DiscordUserMention,
-  MessageOptions,
+  BaseMessageOptions,
 } from "discord.js";
 import { API, User as revoltUser } from "revolt.js";
 import { statusConvert } from "../Utils/DiscordAPI";
@@ -122,7 +122,7 @@ export class User extends baseClass {
     return this.revoltUser.generateAvatarURL(options);
   }
 
-  async send(content: string | MessageOptions) {
+  async send(content: string | BaseMessageOptions) {
     const ch = await this.createDM();
     const msg = await ch!.send(content);
 

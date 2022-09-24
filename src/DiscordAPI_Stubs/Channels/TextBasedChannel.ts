@@ -1,4 +1,4 @@
-import { MessageOptions } from "discord.js";
+import { BaseMessageOptions } from "discord.js";
 import { msgParamsConverter } from "../../Utils/DiscordAPI";
 import { MessageManager } from "../Managers";
 import { Message } from "../Message";
@@ -22,7 +22,7 @@ export class TextBasedChannel extends BaseChannel {
     return this.revoltChannel.last_message_id;
   }
 
-  async send(content: string | MessageOptions): Promise<Message> {
+  async send(content: string | BaseMessageOptions): Promise<Message> {
     const convertedParams = await msgParamsConverter(content, this.revoltChannel.client);
 
     const msg = await this.revoltChannel.sendMessage(convertedParams);

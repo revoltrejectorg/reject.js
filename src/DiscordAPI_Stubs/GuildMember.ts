@@ -3,7 +3,7 @@ import {
   BanOptions,
   GuildMemberEditData,
   ImageURLOptions,
-  MessageOptions,
+  BaseMessageOptions,
   UserMention as DiscordUserMention,
 } from "discord.js";
 import { baseClass } from "./Base";
@@ -181,7 +181,7 @@ export class GuildMember extends baseClass {
     this.revoltMember.kick();
   }
 
-  send(content: string | MessageOptions) {
+  send(content: string | BaseMessageOptions) {
     return this.user?.send(content);
   }
 
