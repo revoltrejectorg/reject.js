@@ -44,7 +44,11 @@ export async function embedConvert(
         str += `\n\n**${field.name}**\n\n${field.value}`;
       });
 
-      return str;
+      if (discordEmbed.footer) {
+        str += `\n\n${discordEmbed.footer.text}`;
+      }
+
+      return str.slice(0, 2048);
     })(),
     // FIXME: Highly inefficient
     media: discordEmbed.image?.url ? await UploadFile({
