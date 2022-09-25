@@ -1,7 +1,8 @@
-import { BaseMessageOptions } from "discord.js";
+import { BaseMessageOptions, MessageComponentCollectorOptions } from "discord.js";
 import { msgParamsConverter } from "../../Utils/DiscordAPI";
 import { MessageManager } from "../Managers";
 import { Message } from "../Message";
+import { InteractionCollector } from "../structures";
 import { BaseChannel } from "./BaseChannel";
 
 export class TextBasedChannel extends BaseChannel {
@@ -20,6 +21,11 @@ export class TextBasedChannel extends BaseChannel {
 
   get lastMessageId() {
     return this.revoltChannel.last_message_id;
+  }
+
+  // FIXME
+  createMessageComponentCollector(options: MessageComponentCollectorOptions<any> = {}) {
+    return new InteractionCollector(this.client, options);
   }
 
   async send(content: string | BaseMessageOptions): Promise<Message> {
