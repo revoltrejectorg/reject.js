@@ -29,14 +29,14 @@ export class BaseClient extends EventEmitter implements RejectBase {
     this.revoltClient.logout(true);
   }
 
-  private incrementMaxListeners() {
+  incrementMaxListeners() {
     const maxListeners = this.getMaxListeners();
     if (maxListeners !== 0) {
       this.setMaxListeners(maxListeners + 1);
     }
   }
 
-  private decrementMaxListeners() {
+  decrementMaxListeners() {
     const maxListeners = this.getMaxListeners();
     if (maxListeners !== 0) {
       this.setMaxListeners(maxListeners - 1);
