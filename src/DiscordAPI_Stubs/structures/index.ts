@@ -7,3 +7,4 @@ export * from "./GuildEmoji";
 export * from "./ReactionEmoji";
 export * from "./MessageReaction";
 export * from "./InteractionCollector";
+export * from "./MessageCollector";
