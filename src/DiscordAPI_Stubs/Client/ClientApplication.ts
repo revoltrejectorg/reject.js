@@ -7,7 +7,7 @@ export class ClientApplication extends Application {
 
   get botRequireCodeGrant() { return false; }
 
-  commands = new ApplicationCommandManager(this.revoltClient, false);
+  commands = new ApplicationCommandManager(this.rejectClient, false);
 
   // FIXME: No clue what this is for
   flags = this.revoltClient.user?.flags;
@@ -17,7 +17,7 @@ export class ClientApplication extends Application {
     if (!ownerId) return null;
 
     const owner = this.revoltClient.users.$get(ownerId);
-    return new User(owner);
+    return new User(owner, this.rejectClient);
   }
 
   get cover() {

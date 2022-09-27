@@ -6,12 +6,12 @@ import { CachedManager } from "./CachedManager";
 
 export class GuildChannelManager extends CachedManager<GuildChannel> {
   constructor(guild: Guild, iterable = false) {
-    super(guild.client.revoltClient, GuildChannel as any, iterable);
+    super(guild.client, GuildChannel as any, iterable);
 
     guild.revoltServer.channels.forEach((channel) => {
       if (!channel) return;
 
-      const guildChannel = createChannelfromRevolt(channel);
+      const guildChannel = createChannelfromRevolt(channel, guild.rejectClient);
 
       if (guildChannel.type === ChannelType.DM) return;
 

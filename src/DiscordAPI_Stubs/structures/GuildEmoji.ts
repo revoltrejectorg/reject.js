@@ -7,7 +7,7 @@ export class GuildEmoji extends BaseGuildEmoji {
 
   get author() {
     if (!this.rEmoji.creator) return null;
-    return new User(this.rEmoji.creator);
+    return new User(this.rEmoji.creator, this.rejectClient);
   }
 
   get deletable() {

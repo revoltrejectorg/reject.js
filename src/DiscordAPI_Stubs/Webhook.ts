@@ -35,7 +35,7 @@ export class Webhook extends baseClass {
     if (!ownerId) return null;
 
     const owner = this.rejectClient.revoltClient.users.$get(ownerId);
-    return new User(owner);
+    return new User(owner, this.rejectClient);
   }
 
   readonly url = "https://FIXME";
@@ -96,7 +96,7 @@ export class Webhook extends baseClass {
 
     const msg = await this.sourceChannel.revoltChannel.sendMessage(masqueradedParams);
 
-    return new Message(msg);
+    return new Message(msg, this.rejectClient);
   }
 
   /** FIXME: Literally all of these need stubs */

@@ -6,7 +6,7 @@ export class ReactionManager extends CachedManager<MessageReaction> {
   message: Message;
 
   constructor(message: Message, iterable = false) {
-    super(message.client.revoltClient, MessageReaction as any, iterable);
+    super(message.client, MessageReaction as any, iterable);
 
     this.message = message;
   }

@@ -1,3 +1,4 @@
+import { Events } from "discord.js";
 import EventEmitter from "events";
 import { Client } from "./Client";
 
@@ -38,6 +39,6 @@ export class WebSocketManager extends EventEmitter {
 
     this.client.readyTimestamp = Date.now();
 
-    this.client.emit("ready", this.client);
+    this.client.emit(Events.ClientReady, this.client);
   }
 }

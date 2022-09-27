@@ -1,8 +1,8 @@
-import { Client as RevoltClient } from "revolt.js";
+import { Client } from "../Client";
 import { CachedManager } from "./CachedManager";
 
 export class RoleManager extends CachedManager<any> {
-  constructor(client: RevoltClient, iterable = false) {
+  constructor(client: Client, iterable = false) {
     super(client, null as any, iterable);
   }
 }

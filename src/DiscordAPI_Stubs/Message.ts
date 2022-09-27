@@ -30,12 +30,12 @@ export class Message extends baseClass {
   }
 
   get author() {
-    return new User(this.revoltMsg.author!);
+    return new User(this.revoltMsg.author!, this.rejectClient);
   }
 
   get member() {
     if (!this.revoltMsg.member) return null;
-    return new GuildMember(this.revoltMsg.member);
+    return new GuildMember(this.revoltMsg.member, this.rejectClient);
   }
 
   get url() {
@@ -107,14 +107,14 @@ export class Message extends baseClass {
 
   get guild() {
     if (!this.revoltMsg.channel?.server) return;
-    return new Guild(this.revoltMsg.channel.server);
+    return new Guild(this.revoltMsg.channel.server, this.rejectClient);
   }
 
-  constructor(rMsg: revoltMessage) {
-    super(new Client(rMsg.client));
+  constructor(rMsg: revoltMessage, client: Client) {
+    super(client);
     this.revoltMsg = rMsg;
 
-    if (rMsg.channel) this.channel = createChannelfromRevolt(rMsg.channel);
+    if (rMsg.channel) this.channel = createChannelfromRevolt(rMsg.channel, this.rejectClient);
   }
 
   async reply(content: string | MessageCreateOptions, mention?: boolean | undefined) {
@@ -122,7 +122,7 @@ export class Message extends baseClass {
 
     const msg = await this.revoltMsg.reply(convertedParams, mention);
 
-    return new Message(msg!);
+    return new Message(msg!, this.rejectClient);
   }
 
   async delete() {

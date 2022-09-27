@@ -1,4 +1,5 @@
 import { Events } from "discord.js";
+import { Client as RevoltClient } from "revolt.js";
 import { User } from "../User";
 import { GuildManager } from "../Managers/GuildManager";
 import { ClientApplication } from "./ClientApplication";
@@ -6,16 +7,19 @@ import { BaseClient } from "./BaseClient";
 import { WebSocketManager } from "./WebSocketManager";
 import { ClientVoiceManager } from "./ClientVoiceManager";
 import { BaseGuildEmojiManager, ChannelManager } from "../Managers";
+import { Message } from "../Message";
+import { createChannelfromRevolt } from "../../Utils/DiscordAPI";
+import { Guild } from "../Guild";
 
 export class Client extends BaseClient {
-  get application() { return new ClientApplication(this.revoltClient); }
+  get application() { return new ClientApplication(this); }
 
   get channels() {
-    return new ChannelManager(this.revoltClient, false);
+    return new ChannelManager(this, false);
   }
 
   get emojis() {
-    const emojis = new BaseGuildEmojiManager(this.revoltClient, false);
+    const emojis = new BaseGuildEmojiManager(this, false);
     this.guilds.cache.forEach((guild) => {
       if (guild.available) {
         guild.emojis.cache.forEach((emoji) => {
@@ -27,7 +31,7 @@ export class Client extends BaseClient {
   }
 
   get guilds() {
-    return new GuildManager(this.revoltClient);
+    return new GuildManager(this);
   }
 
   get readyAt() { return new Date(this.readyTimestamp); }
@@ -49,7 +53,7 @@ export class Client extends BaseClient {
   }
 
   get user() {
-    if (this.revoltClient.user) return new User(this.revoltClient.user);
+    if (this.revoltClient.user) return new User(this.revoltClient.user, this);
     return null;
   }
 
@@ -99,5 +103,24 @@ export class Client extends BaseClient {
   // FIXME: simulate ws and rest destruction??
   destroy() {
     super.destroy();
+  }
+
+  constructor(rClient: RevoltClient) {
+    super(rClient);
+
+    rClient.on("message", (msg) => this.emit(Events.MessageCreate, new Message(msg, this)));
+    rClient.on("message/delete", (msg) => this.emit(Events.Debug, "FIXME: message/delete"));
+    rClient.on("message/update", (msg) => this.emit(Events.MessageUpdate, new Message(msg, this)));
+
+    rClient.on("channel/create", (ch) => this.emit(Events.ChannelCreate, createChannelfromRevolt(ch, this)));
+    rClient.on("channel/update", (ch) => this.emit(Events.ChannelUpdate, createChannelfromRevolt(ch, this)));
+    rClient.on("channel/delete", (ch) => this.emit(Events.Debug, "FIXME: channel/delete"));
+
+    rClient.on("server/update", (s) => this.emit(Events.GuildUpdate, new Guild(s, this)));
+    rClient.on("server/delete", (s) => this.emit(Events.Debug, "FIXME: server/delete"));
+
+    rClient.on("dropped", () => this.emit(Events.ShardDisconnect));
+
+    rClient.on("ready", () => this.emit(Events.ClientReady, this));
   }
 }

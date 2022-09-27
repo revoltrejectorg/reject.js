@@ -1,13 +1,14 @@
 import { Client as RevoltClient } from "revolt.js";
 import { CachedManager } from "./CachedManager";
 import { Guild } from "../Guild";
+import { Client } from "../Client";
 
 export class GuildManager extends CachedManager<Guild> {
-  constructor(client: RevoltClient, iterable = false) {
+  constructor(client: Client, iterable = false) {
     super(client, Guild as any, iterable);
     // FIXME: May cause performance issues with uncached guilds.
     this.revoltClient.servers.forEach((server, key) => {
-      this._add(new Guild(server), true, { id: key });
+      this._add(new Guild(server, this.client), true, { id: key });
     });
   }
 
@@ -18,6 +19,6 @@ export class GuildManager extends CachedManager<Guild> {
     });
     if (this.cache.has(srv._id)) return this.cache.get(srv._id);
 
-    return this._add(new Guild(srv), true, { id: srv._id });
+    return this._add(new Guild(srv, this.client), true, { id: srv._id });
   }
 }

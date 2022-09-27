@@ -77,8 +77,8 @@ export class BaseChannel extends baseClass {
     return `<#${this.id}>`;
   }
 
-  constructor(channel: revoltChannel) {
-    super(new Client(channel.client));
+  constructor(channel: revoltChannel, client: Client) {
+    super(client);
     this.revoltChannel = channel;
 
     this.type = convertChannelType(this.revoltChannel.channel_type, false);

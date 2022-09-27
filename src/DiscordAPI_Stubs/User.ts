@@ -107,8 +107,8 @@ export class User extends baseClass {
 
   get username() { return this.revoltUser.username; }
 
-  constructor(rUser: revoltUser) {
-    super(new Client(rUser.client));
+  constructor(rUser: revoltUser, client: Client) {
+    super(client);
     this.revoltUser = rUser;
   }
 
@@ -131,14 +131,14 @@ export class User extends baseClass {
 
   async createDM(force = false) {
     const dm = await this.revoltUser.openDM();
-    return new DMChannel(dm);
+    return new DMChannel(dm, this.rejectClient);
   }
 
   // FIXME: stub
   async deleteDM() {
     const dm = await this.revoltUser.openDM();
 
-    return new DMChannel(dm);
+    return new DMChannel(dm, this.rejectClient);
   }
 
   // FIXME: Need APIUser stub

@@ -1,6 +1,7 @@
 import { User as RevoltUser } from "revolt.js";
 import { baseClass } from "../Base";
 import { Collection } from "../DiscordJS_Stubs";
+import { GuildMember } from "../GuildMember";
 import { Message } from "../Message";
 import { User } from "../User";
 
@@ -16,6 +17,8 @@ export class MessageMentions extends baseClass {
   static ChannelsPattern = /<#(\d{17,19})>/g;
 
   users = new Collection<string, User>();
+
+  members = new Collection<string, GuildMember>();
 
   private message: Message;
 
@@ -43,7 +46,7 @@ export class MessageMentions extends baseClass {
     this.revoltUsers = this.message.revoltMsg.mentions;
     this.revoltUsers?.forEach((user) => {
       if (!user) return;
-      this.users.set(user._id, new User(user));
+      this.users.set(user._id, new User(user, this.rejectClient));
     });
   }
 }

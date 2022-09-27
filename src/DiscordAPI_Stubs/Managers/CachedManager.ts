@@ -1,4 +1,4 @@
-import { Client } from "revolt.js";
+import { Client } from "../Client";
 import { baseClass } from "../Base";
 import { Collection } from "../DiscordJS_Stubs";
 import { DataManager } from "./DataManager";

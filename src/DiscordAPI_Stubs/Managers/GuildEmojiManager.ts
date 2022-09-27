@@ -9,7 +9,7 @@ export class GuildEmojiManager extends BaseGuildEmojiManager {
   protected emojis: GuildEmoji[];
 
   constructor(guild: Guild, iterable: boolean) {
-    super(guild.rejectClient.revoltClient, iterable);
+    super(guild.rejectClient, iterable);
 
     this.guild = guild;
 

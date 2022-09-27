@@ -56,8 +56,8 @@ export class BaseGuild extends baseClass {
     return this.name;
   }
 
-  constructor(rServer: revoltServer) {
-    super(new Client(rServer.client));
+  constructor(rServer: revoltServer, client: Client) {
+    super(client);
     this.revoltServer = rServer;
   }
 }
@@ -165,7 +165,7 @@ export class Guild extends AnonymousGuild {
   */
   get me() {
     if (!this.revoltServer.member) return;
-    return new GuildMember(this.revoltServer.member);
+    return new GuildMember(this.revoltServer.member, this.rejectClient);
   }
 
   /** FIXME: cant get member count without interrupting stuff */
@@ -198,7 +198,7 @@ export class Guild extends AnonymousGuild {
   readonly publicUpdatesChannelId?: string;
 
   /** FIXME: No roles class */
-  roles = new RoleManager(this.rejectClient.revoltClient);
+  roles = new RoleManager(this.rejectClient);
 
   rulesChannelId?: string;
 

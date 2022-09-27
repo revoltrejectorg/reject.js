@@ -1,5 +1,6 @@
 import { ChannelType, TextBasedChannelTypes } from "discord.js";
 import { Channel as revoltChannel } from "revolt.js";
+import { Client } from "../Client";
 import { Guild } from "../Guild";
 import { BaseChannel } from "./BaseChannel";
 
@@ -36,10 +37,10 @@ export class GuildChannel extends BaseChannel {
 
   readonly viewable = true;
 
-  constructor(channel: revoltChannel) {
+  constructor(channel: revoltChannel, client: Client) {
     if (!channel.server) throw new Error("Expected channel to have server");
-    super(channel);
+    super(channel, client);
 
-    this.guild = new Guild(channel.server);
+    this.guild = new Guild(channel.server, client);
   }
 }

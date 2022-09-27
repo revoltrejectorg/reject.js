@@ -1,16 +1,15 @@
-import { Client as revoltClient } from "revolt.js";
+import { Client as RevoltClient } from "revolt.js";
 import { Client } from "../Client/Client";
 
 export class BaseManager {
-  revoltClient: revoltClient;
-
   isRevolt = true;
 
-  constructor(rClient: revoltClient) {
-    this.revoltClient = rClient;
-  }
+  client: Client;
 
-  get client() {
-    return new Client(this.revoltClient);
+  revoltClient: RevoltClient;
+
+  constructor(client: Client) {
+    this.client = client;
+    this.revoltClient = client.revoltClient;
   }
 }

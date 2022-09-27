@@ -62,7 +62,7 @@ export class GuildMember extends baseClass {
 
   get guild() {
     if (!this.revoltMember.server) return;
-    return new Guild(this.revoltMember.server);
+    return new Guild(this.revoltMember.server, this.rejectClient);
   }
 
   get id() { return this.user?.id; }
@@ -101,7 +101,7 @@ export class GuildMember extends baseClass {
 
   get user() {
     if (!this.revoltMember.user) return;
-    return new User(this.revoltMember.user);
+    return new User(this.revoltMember.user, this.rejectClient);
   }
 
   // TODO: also add a polyfill for this. insert pls help idk how voicechat api works.
@@ -110,8 +110,8 @@ export class GuildMember extends baseClass {
     return new VoiceState(this);
   }
 
-  constructor(member: revoltMember) {
-    super(new Client(member.client));
+  constructor(member: revoltMember, client: Client) {
+    super(client);
     this.revoltMember = member;
   }
 

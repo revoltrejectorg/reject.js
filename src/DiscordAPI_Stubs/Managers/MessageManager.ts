@@ -11,7 +11,7 @@ export class MessageManager extends CachedManager<Message> {
   }
 
   constructor(channel: BaseChannel, iterable: boolean) {
-    super(channel.rejectClient.revoltClient, Message as any, iterable);
+    super(channel.rejectClient, Message as any, iterable);
 
     this.rejectChannel = channel;
   }

@@ -25,11 +25,10 @@ export class Application extends RejectBase {
 
   get name() { return this.rejectClient.user?.username; }
 
-  constructor(rClient: revoltClient) {
+  constructor(client: Client) {
     super();
-    this.revoltClient = rClient;
-    // eslint-disable-next-line no-use-before-define
-    this.rejectClient = new Client(this.revoltClient);
+    this.rejectClient = client;
+    this.revoltClient = client.revoltClient;
   }
 
   coverURL() {

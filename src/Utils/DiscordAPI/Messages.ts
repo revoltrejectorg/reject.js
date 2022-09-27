@@ -1,4 +1,4 @@
-import { ChannelType } from "discord.js";
+import { ChannelType, Events } from "discord.js";
 import { Channel } from "../../DiscordAPI_Stubs";
 import { replaceAll } from "../js";
 

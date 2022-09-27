@@ -16,14 +16,14 @@ export class GuildMemberManager extends CachedManager<GuildMember> {
   }
 
   constructor(guild: Guild) {
-    super(guild.client.revoltClient, GuildMember as any, false);
+    super(guild.client, GuildMember as any, false);
 
     this.guild = guild;
 
     // FIXME: causes a copius amount of requests sometimes. may need refactoring
     this.guild.revoltServer.fetchMembers().then((revoltMembers) => {
       revoltMembers.members.forEach((revoltMember) => {
-        this._add(new GuildMember(revoltMember));
+        this._add(new GuildMember(revoltMember, this.client));
       });
     });
   }

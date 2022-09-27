@@ -16,7 +16,7 @@ export class TextBasedChannel extends BaseChannel {
 
   get lastMessage() {
     if (!this.revoltChannel.last_message) return;
-    return new Message(this.revoltChannel.last_message);
+    return new Message(this.revoltChannel.last_message, this.rejectClient);
   }
 
   get lastMessageId() {
@@ -38,7 +38,7 @@ export class TextBasedChannel extends BaseChannel {
     const msg = await this.revoltChannel.sendMessage(convertedParams);
     this._stopTyping();
 
-    return new Message(msg);
+    return new Message(msg, this.rejectClient);
   }
 
   async sendTyping(timeout: number = 5000) {

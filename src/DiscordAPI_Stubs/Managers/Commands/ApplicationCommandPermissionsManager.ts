@@ -5,7 +5,7 @@ export class ApplicationCommandPermissionsManager extends BaseManager {
   private manager: ApplicationCommandManager;
 
   constructor(manager: ApplicationCommandManager) {
-    super(manager.revoltClient);
+    super(manager.client);
 
     this.manager = manager;
   }

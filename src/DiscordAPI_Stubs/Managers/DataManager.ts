@@ -1,4 +1,4 @@
-import { Client } from "revolt.js";
+import { Client } from "../Client";
 import { Collection } from "../DiscordJS_Stubs";
 import { BaseManager } from "./BaseManager";
 
@@ -13,8 +13,8 @@ export class DataManager<T> extends BaseManager {
     throw new Error("Not implemented");
   }
 
-  constructor(rClient: Client, holds: any) {
-    super(rClient);
+  constructor(client: Client, holds: any) {
+    super(client);
     this.holds = holds;
   }
 

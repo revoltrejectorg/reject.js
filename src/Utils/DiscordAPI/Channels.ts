@@ -4,7 +4,7 @@ import { ChannelType } from "discord.js";
 import { API, Channel as revoltChannel } from "revolt.js";
 import {
   BaseChannel,
-  BaseGuildTextChannel, DMChannel, TextBasedChannels, VoiceChannel,
+  BaseGuildTextChannel, Client, DMChannel, TextBasedChannels, VoiceChannel,
 } from "../../DiscordAPI_Stubs";
 import { swap } from "../js";
 
@@ -58,26 +58,26 @@ export function convertChannelType(channelType: channelTypeParams, toRevolt: boo
 }
 
 export function createChannelfromRevolt<T extends revoltChannel>(
-  channel: T
+  channel: T, client: Client
 ) : T["channel_type"] extends "VoiceChannel" ? VoiceChannel : TextBasedChannels
-export function createChannelfromRevolt(channel: revoltChannel) {
+export function createChannelfromRevolt(channel: revoltChannel, client: Client) {
   let rejectChannel: BaseChannel;
 
   switch (channel.channel_type) {
     case "TextChannel": {
-      rejectChannel = new BaseGuildTextChannel(channel);
+      rejectChannel = new BaseGuildTextChannel(channel, client);
       break;
     }
     case "VoiceChannel": {
-      rejectChannel = new VoiceChannel(channel);
+      rejectChannel = new VoiceChannel(channel, client);
       break;
     }
     case "DirectMessage": {
-      rejectChannel = new DMChannel(channel);
+      rejectChannel = new DMChannel(channel, client);
       break;
     }
     default: {
-      rejectChannel = new BaseGuildTextChannel(channel);
+      rejectChannel = new BaseGuildTextChannel(channel, client);
     }
   }
 
