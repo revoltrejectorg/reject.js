@@ -1,6 +1,7 @@
 import { BanOptions } from "discord.js";
 import { Guild } from "../Guild";
 import { GuildMember } from "../GuildMember";
+import { Message } from "../Message";
 import { User } from "../User";
 import { CachedManager } from "./CachedManager";
 
@@ -20,12 +21,25 @@ export class GuildMemberManager extends CachedManager<GuildMember> {
 
     this.guild = guild;
 
-    // FIXME: causes a copius amount of requests sometimes. may need refactoring
-    this.guild.revoltServer.fetchMembers().then((revoltMembers) => {
-      revoltMembers.members.forEach((revoltMember) => {
-        this._add(new GuildMember(revoltMember, this.client));
-      });
+    this.revoltClient.members.forEach((member) => {
+      if (member.server?._id !== this.guild.id) return;
+
+      this._add(new GuildMember(member, this.client));
     });
+  }
+
+  _add(data: GuildMember, cache = true) {
+    return super._add(data, cache, { id: data.user?.id, extras: [this.guild] });
+  }
+
+  resolve(member: GuildMember | User | string | Message) {
+    const memberResolvable = super.resolve(member);
+    if (memberResolvable) return memberResolvable;
+
+    const userResolvable = this.client.users.resolveId(member);
+    if (userResolvable) return super.resolve(userResolvable);
+
+    return null;
   }
 
   // FIXME: make this NOT use the any type
