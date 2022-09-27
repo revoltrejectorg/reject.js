@@ -11,3 +11,4 @@ export * from "./GuildEmojiManager";
 export * from "./ChannelManager";
 export * from "./RoleManager";
 export * from "./ReactionManager";
+export * from "./UserManager";

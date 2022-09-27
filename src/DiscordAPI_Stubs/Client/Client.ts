@@ -6,7 +6,7 @@ import { ClientApplication } from "./ClientApplication";
 import { BaseClient } from "./BaseClient";
 import { WebSocketManager } from "./WebSocketManager";
 import { ClientVoiceManager } from "./ClientVoiceManager";
-import { BaseGuildEmojiManager, ChannelManager } from "../Managers";
+import { BaseGuildEmojiManager, ChannelManager, UserManager } from "../Managers";
 import { Message } from "../Message";
 import { createChannelfromRevolt } from "../../Utils/DiscordAPI";
 import { Guild } from "../Guild";
@@ -57,7 +57,9 @@ export class Client extends BaseClient {
     return null;
   }
 
-  get users() { return this.revoltClient.users; }
+  get users() {
+    return new UserManager(this);
+  }
 
   // TODO
   voice = new ClientVoiceManager(this);
