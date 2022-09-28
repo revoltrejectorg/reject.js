@@ -10,6 +10,7 @@ import { BaseGuildEmojiManager, ChannelManager, UserManager } from "../Managers"
 import { Message } from "../Message";
 import { createChannelfromRevolt } from "../../Utils/DiscordAPI";
 import { Guild } from "../Guild";
+import { GuildMember } from "../GuildMember";
 
 export class Client extends BaseClient {
   get application() { return new ClientApplication(this); }
@@ -124,5 +125,9 @@ export class Client extends BaseClient {
     rClient.on("dropped", () => this.emit(Events.ShardDisconnect));
 
     rClient.on("ready", () => this.emit(Events.ClientReady, this));
+
+    rClient.on("member/join", (m) => this.emit(Events.GuildMemberAdd, new GuildMember(m, this)));
+    rClient.on("member/update", (m) => this.emit(Events.GuildMemberUpdate, new GuildMember(m, this)));
+    rClient.on("member/leave", (m) => this.emit(Events.GuildMemberRemove, new GuildMember(this.revoltClient.members.$get(m), this)));
   }
 }

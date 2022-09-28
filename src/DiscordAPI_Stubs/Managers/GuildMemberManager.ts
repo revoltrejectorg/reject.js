@@ -1,7 +1,7 @@
 import { BanOptions } from "discord.js";
 import { Guild } from "../Guild";
 import { GuildMember } from "../GuildMember";
-import { Message } from "../Message";
+import { GuildMemberResolvable, Snowflake } from "../types";
 import { User } from "../User";
 import { CachedManager } from "./CachedManager";
 
@@ -32,7 +32,7 @@ export class GuildMemberManager extends CachedManager<GuildMember> {
     return super._add(data, cache, { id: data.user?.id, extras: [this.guild] });
   }
 
-  resolve(member: GuildMember | User | string | Message) {
+  resolve(member: GuildMemberResolvable) {
     const memberResolvable = super.resolve(member);
     if (memberResolvable) return memberResolvable;
 
@@ -40,6 +40,16 @@ export class GuildMemberManager extends CachedManager<GuildMember> {
     if (userResolvable) return super.resolve(userResolvable);
 
     return null;
+  }
+
+  resolveId(member: GuildMemberResolvable): Snowflake | null {
+    const memberResolvable = super.resolveId(member);
+    if (memberResolvable) return memberResolvable;
+
+    const userResolvable = this.client.users.resolveId(member);
+    if (!userResolvable) return null;
+
+    return this.cache.has(userResolvable) ? userResolvable : null;
   }
 
   // FIXME: make this NOT use the any type

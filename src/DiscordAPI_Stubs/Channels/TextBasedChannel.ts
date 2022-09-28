@@ -1,4 +1,6 @@
-import { BaseMessageOptions, MessageCollectorOptions, MessageComponentCollectorOptions } from "discord.js";
+import {
+  MessageCollectorOptions, MessageComponentCollectorOptions, MessageCreateOptions,
+} from "discord.js";
 import { msgParamsConverter } from "../../Utils/DiscordAPI";
 import { MessageManager } from "../Managers";
 import { Message } from "../Message";
@@ -32,7 +34,7 @@ export class TextBasedChannel extends BaseChannel {
     return new InteractionCollector(this.client, options);
   }
 
-  async send(content: string | BaseMessageOptions): Promise<Message> {
+  async send(content: string | MessageCreateOptions): Promise<Message> {
     const convertedParams = await msgParamsConverter(content, this.revoltChannel.client);
 
     const msg = await this.revoltChannel.sendMessage(convertedParams);

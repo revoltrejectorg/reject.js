@@ -10,7 +10,11 @@ export class DMChannel extends TextBasedChannel {
   }
 
   get recipient() {
-    if (!this.revoltChannel.recipient) return null as any;
+    if (!this.revoltChannel.recipient) return null;
     return new User(this.revoltChannel.recipient, this.rejectClient);
+  }
+
+  get recipientId() {
+    return this.recipient?.id;
   }
 }

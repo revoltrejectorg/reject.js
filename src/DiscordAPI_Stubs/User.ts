@@ -11,6 +11,7 @@ import { fixme, rgbToHex } from "../Utils";
 import { baseClass } from "./Base";
 import { DMChannel } from "./Channels";
 import { Client } from "./Client";
+import { Snowflake } from "./types";
 
 /**
  * @see https://discord.js.org/#/docs/discord.js/stable/class/User
@@ -52,7 +53,9 @@ export class User extends baseClass {
 
   readonly hexAccentColor = rgbToHex(this.accentColor);
 
-  get id() { return this.revoltUser._id; }
+  get id() {
+    return this.revoltUser._id;
+  }
 
   get partial() {
     return (typeof this.username !== "string") as false;

@@ -8,3 +8,4 @@ export * from "./structures";
 export * from "./Managers";
 export * from "./Client";
 export * from "./ApplicationCommand";
+export * from "./types";
