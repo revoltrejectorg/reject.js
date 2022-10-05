@@ -6,11 +6,12 @@ import { GuildMember } from "./GuildMember";
 import { Guild } from "./Guild";
 import { baseClass } from "./Base";
 import {
-  cleanContent, createChannelfromRevolt, msgEditConvert, msgParamsConverter,
+  cleanContent, createChannelfromRevolt, msgEditConvert, msgParamsConverter, revoltEmbedToDiscord,
 } from "../Utils/DiscordAPI";
 import { Client } from "./Client";
 import { Emoji, MessageMentions, MessageReaction } from "./structures";
 import { ReactionManager } from "./Managers";
+import { Collection } from "./DiscordJS_Stubs";
 
 /**
  * reference https://discord.js.org/#/docs/discord.js/stable/class/Message
@@ -55,11 +56,11 @@ export class Message extends baseClass {
   reactions = new ReactionManager(this);
 
   get embeds() {
-    return this.revoltMsg.embeds;
+    return this.revoltMsg.embeds?.map((embed) => revoltEmbedToDiscord(embed)) ?? [];
   }
 
   get attachments() {
-    return this.revoltMsg.attachments;
+    return new Collection();
   }
 
   get editedTimestamp() {

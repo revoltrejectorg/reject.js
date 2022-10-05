@@ -64,6 +64,19 @@ export async function embedConvert(
   };
 }
 
+export function revoltEmbedToDiscord(embed: API.Embed): APIEmbed | undefined {
+  if (embed.type !== "Text") return;
+
+  return {
+    title: embed.title ?? undefined,
+    description: embed.description ?? undefined,
+    url: embed.url ?? undefined,
+    thumbnail: embed.icon_url ? {
+      url: embed.icon_url,
+    } : undefined,
+  };
+}
+
 // FIXME: Very borked
 export async function convertAttachment(attachment:
   AttachmentPayload |
