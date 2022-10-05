@@ -15,8 +15,8 @@ export class BaseGuildTextChannel extends Mixin(GuildChannel, TextBasedChannel) 
 
   get description() { return this.revoltChannel.description; }
 
-  async createWebhook(name: string, options?: DiscordChannelWebhookCreateOptions) {
-    return new Webhook(name, this, options);
+  async createWebhook(options: DiscordChannelWebhookCreateOptions) {
+    return new Webhook(this, options);
   }
 
   async bulkDelete(amount: number) {

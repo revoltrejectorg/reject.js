@@ -1,8 +1,7 @@
 import {
   ChannelWebhookCreateOptions as DiscordChannelWebhookCreateOptions,
-  BaseMessageOptions,
-  WebhookEditMessageOptions,
   WebhookType,
+  MessageCreateOptions,
 } from "discord.js";
 import { msgParamsConverter } from "../Utils/DiscordAPI";
 import { baseClass } from "./Base";
@@ -45,12 +44,11 @@ export class Webhook extends baseClass {
   sourceGuild?: Guild;
 
   constructor(
-    name: string,
     channel: BaseGuildTextChannel,
-    options?: DiscordChannelWebhookCreateOptions,
+    options: DiscordChannelWebhookCreateOptions,
   ) {
     super(channel.rejectClient);
-    this.name = name ?? "REJECTFIXME";
+    this.name = options.name;
 
     this.channelId = channel.id;
     this.guildId = channel.guild?.id ?? "0";
@@ -59,10 +57,8 @@ export class Webhook extends baseClass {
     this.sourceGuild = channel.guild;
 
     // FIXME: Currently only supports URLs
-    if (options?.avatar) {
-      if (typeof options.avatar === "string") {
-        this.avatar = options.avatar;
-      }
+    if (options.avatar && typeof options.avatar === "string") {
+      this.avatar = options.avatar;
     }
   }
 
@@ -77,7 +73,7 @@ export class Webhook extends baseClass {
   }
 
   // FIXME: Needs masquerade permissions to work properly
-  async send(message: string | BaseMessageOptions) {
+  async send(message: string | MessageCreateOptions) {
     const params = await msgParamsConverter(message, this.rejectClient.revoltClient);
 
     const masq = {
