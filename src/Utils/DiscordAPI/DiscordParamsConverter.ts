@@ -2,15 +2,11 @@ import {
   AttachmentPayload, JSONEncodable, MessageEditOptions,
   APIEmbed,
   MessageCreateOptions,
-  BufferResolvable,
-  APIAttachment,
   Attachment,
-  AttachmentBuilder,
   BaseMessageOptions,
 } from "discord.js";
 import { API, Client as RevoltClient } from "revolt.js";
 import axios from "axios";
-import internal from "stream";
 import {
   discordJSColorToHex, hexToRgbCode, rgbToHex,
 } from "../colorTils";
@@ -101,6 +97,15 @@ export async function convertFiles(files: BaseMessageOptions["files"]) {
       const img = await UploadFile({
         name: data.name ?? "file",
         file: data.attachment,
+      });
+
+      return img;
+    }
+
+    if (!Buffer.isBuffer(file) && Buffer.isBuffer((file as Attachment).attachment)) {
+      const img = await UploadFile({
+        name: (file as Attachment).name ?? "File",
+        file: (file as Attachment).attachment as Buffer,
       });
 
       return img;
