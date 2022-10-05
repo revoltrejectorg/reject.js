@@ -6,13 +6,13 @@ import {
   APIAttachment,
   Attachment,
   AttachmentBuilder,
-  WebhookCreateMessageOptions,
-  MessagePayload,
 } from "discord.js";
 import { API, Client as RevoltClient } from "revolt.js";
 import axios from "axios";
 import internal from "stream";
-import { discordJSColorToHex, rgbToHex } from "../colorTils";
+import {
+  discordJSColorToHex, hexToRgbCode, rgbToHex,
+} from "../colorTils";
 import { UploadFile } from "../UploadFile";
 
 export type revoltMessagePayload = any;
@@ -76,6 +76,7 @@ export function revoltEmbedToDiscord(embed: API.Embed): APIEmbed | undefined {
     thumbnail: embed.icon_url ? {
       url: embed.icon_url,
     } : undefined,
+    color: embed.colour ? hexToRgbCode(embed.colour) : undefined,
   };
 }
 
