@@ -6,6 +6,8 @@ import {
   APIAttachment,
   Attachment,
   AttachmentBuilder,
+  WebhookCreateMessageOptions,
+  MessagePayload,
 } from "discord.js";
 import { API, Client as RevoltClient } from "revolt.js";
 import axios from "axios";
@@ -116,6 +118,8 @@ export async function msgParamsConverter(
     attachments: params.files ? (await Promise
       .all(params.files.map((file) => convertAttachment(file))))
       .filter((attachment): attachment is string => attachment !== undefined) : undefined,
+    // @ts-ignore
+    nonce: (params as any).options?.nonce ? (params as any).options.nonce : undefined,
   };
 
   return revoltParams;

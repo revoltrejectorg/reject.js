@@ -2,7 +2,9 @@ import {
   ChannelWebhookCreateOptions as DiscordChannelWebhookCreateOptions,
   WebhookType,
   MessageCreateOptions,
+  WebhookCreateMessageOptions,
 } from "discord.js";
+import { RawMessagePayloadData } from "discord.js/typings/rawDataTypes";
 import { msgParamsConverter } from "../Utils/DiscordAPI";
 import { baseClass } from "./Base";
 import { BaseGuildTextChannel } from "./Channels";
@@ -73,7 +75,7 @@ export class Webhook extends baseClass {
   }
 
   // FIXME: Needs masquerade permissions to work properly
-  async send(message: string | MessageCreateOptions) {
+  async send(message: string | MessageCreateOptions | WebhookCreateMessageOptions) {
     const params = await msgParamsConverter(message, this.rejectClient.revoltClient);
 
     const masq = {
