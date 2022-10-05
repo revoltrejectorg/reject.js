@@ -1,4 +1,4 @@
-import { ChannelType, Events } from "discord.js";
+import { ChannelType } from "discord.js";
 import { Channel } from "../../DiscordAPI_Stubs";
 import { replaceAll } from "../js";
 
@@ -14,11 +14,8 @@ export function cleanContent(str: string, channel: Channel) {
           }
         }
 
-        return match;
-
-        // FIXME: Need UserManager
-        // const user = channel.client.users.cache.get(id);
-        // return user ? `@${user.username}` : match;
+        const user = channel.client.users.cache.get(id);
+        return user ? `@${user.username}` : match;
       }
       case "@&": {
         if (channel.type !== ChannelType.GuildText) return match;
