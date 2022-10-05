@@ -6,6 +6,7 @@ import {
   APIAttachment,
   Attachment,
   AttachmentBuilder,
+  BaseMessageOptions,
 } from "discord.js";
 import { API, Client as RevoltClient } from "revolt.js";
 import axios from "axios";
@@ -81,22 +82,32 @@ export function revoltEmbedToDiscord(embed: API.Embed): APIEmbed | undefined {
 }
 
 // FIXME: Very borked
-export async function convertAttachment(attachment:
-  AttachmentPayload |
-  BufferResolvable |
-  internal.Stream |
-  JSONEncodable<APIAttachment> |
-  Attachment |
-  AttachmentBuilder) {
-  // FIXME: strings are currently unhandled
-  if (!Buffer.isBuffer(attachment)) return;
+export async function convertFiles(files: BaseMessageOptions["files"]) {
+  return Promise.all(files!.map(async (file) => {
+    if (Buffer.isBuffer(file)) {
+      const img = await UploadFile({
+        name: "file",
+        file,
+      });
 
-  const res = await UploadFile({
-    name: "attachment",
-    file: attachment,
-  });
+      return img;
+    }
 
-  return res;
+    if (isJSONEncodable(file)) {
+      const data = (file as JSONEncodable<AttachmentPayload>).toJSON();
+
+      if (!Buffer.isBuffer(data.attachment)) return;
+
+      const img = await UploadFile({
+        name: data.name ?? "file",
+        file: data.attachment,
+      });
+
+      return img;
+    }
+
+    return;
+  }));
 }
 
 /**
@@ -116,9 +127,8 @@ export async function msgParamsConverter(
     content: params.content ?? " ",
     embeds: params.embeds ? await Promise
       .all(params.embeds.map((embed) => embedConvert(embed))) : undefined,
-    attachments: params.files ? (await Promise
-      .all(params.files.map((file) => convertAttachment(file))))
-      .filter((attachment): attachment is string => attachment !== undefined) : undefined,
+    attachments: params.files ? (await convertFiles(params.files))
+      .filter((f): f is string => f !== undefined) : undefined,
     // @ts-ignore
     nonce: (params as any).options?.nonce ? (params as any).options.nonce : undefined,
   };
