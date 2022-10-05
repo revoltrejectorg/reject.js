@@ -1,5 +1,6 @@
 import axios from "axios";
 import FormData from "form-data";
+import { constants } from "..";
 
 type AttachmentTag = "attachments";
 
@@ -11,12 +12,13 @@ export async function UploadFile(
   file: { name: string; file: Buffer },
   contentType?: string,
   type: AttachmentTag = "attachments",
+  autumnURL = constants.AutumnURL,
 ) {
   const data = new FormData();
   data.append("file", file.file, { filename: file.name, contentType });
 
   const response = (await axios.post(
-    `https://autumn.revolt.chat/${type}`,
+    `${autumnURL}/${type}`,
     data,
     { headers: data.getHeaders() },
   )).data as unknown as revoltAttachmentResponse;
