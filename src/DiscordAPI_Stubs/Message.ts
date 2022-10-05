@@ -1,5 +1,7 @@
 import { Message as revoltMessage } from "revolt.js";
-import { ChannelType, MessageEditOptions, MessageCreateOptions } from "discord.js";
+import {
+  ChannelType, MessageEditOptions, MessageCreateOptions, Attachment,
+} from "discord.js";
 import { TextBasedChannels } from "./Channels";
 import { User } from "./User";
 import { GuildMember } from "./GuildMember";
@@ -12,6 +14,8 @@ import { Client } from "./Client";
 import { Emoji, MessageMentions, MessageReaction } from "./structures";
 import { ReactionManager } from "./Managers";
 import { Collection } from "./DiscordJS_Stubs";
+import { Snowflake } from "./types";
+import { AutumnURL } from "../constants";
 
 /**
  * reference https://discord.js.org/#/docs/discord.js/stable/class/Message
@@ -60,7 +64,29 @@ export class Message extends baseClass {
   }
 
   get attachments() {
-    return new Collection();
+    const revoltAttachments = this.revoltMsg.attachments;
+
+    const attachments: Collection<Snowflake, Attachment> = new Collection();
+
+    revoltAttachments?.forEach((attachment) => {
+      attachments.set(attachment._id, {
+        attachment: null as any,
+        contentType: null,
+        description: null,
+        ephemeral: false,
+        height: null,
+        id: attachment._id,
+        name: attachment.filename,
+        proxyURL: `${AutumnURL}/attachments/${attachment._id}`,
+        size: attachment.size,
+        spoiler: false,
+        url: `${AutumnURL}/attachments/${attachment._id}`,
+        width: null,
+        toJSON: () => "" as any,
+      });
+    });
+
+    return attachments;
   }
 
   get editedTimestamp() {
