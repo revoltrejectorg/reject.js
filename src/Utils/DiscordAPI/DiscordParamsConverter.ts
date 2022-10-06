@@ -11,6 +11,7 @@ import {
   discordJSColorToHex, hexToRgbCode, rgbToHex,
 } from "../colorTils";
 import { UploadFile } from "../UploadFile";
+import { AutumnURL } from "../../constants";
 
 export type revoltMessagePayload = any;
 
@@ -74,6 +75,9 @@ export function revoltEmbedToDiscord(embed: API.Embed): APIEmbed | undefined {
       url: embed.icon_url,
     } : undefined,
     color: embed.colour ? hexToRgbCode(embed.colour) : undefined,
+    image: embed.media?._id ? {
+      url: `${AutumnURL}/attachments/${embed.media._id}`,
+    } : undefined,
   };
 }
 
@@ -129,7 +133,17 @@ export async function msgParamsConverter(
 
   const revoltParams: Omit<API.DataMessageSend, "nonce"> = {
     // Revolt doesn't like blank messages.
-    content: params.content ?? " ",
+    content: params.content?.replace(
+      /!!.+!!/g,
+      (match) => `!\u200b!${match.substring(2, match.length - 2)}!!`,
+    )
+    // Translate ||Discord spoilers|| to !!Revite spoilers!!,
+    // while making sure multiline spoilers continue working
+      .replace(/\|\|.+\|\|/gs, (match) => match
+        .substring(2, match.length - 2)
+        .split("\n")
+        .map((line) => `!!${line.replace(/!!/g, "!\u200b!")}!!`)
+        .join("\n")) ?? " ",
     embeds: params.embeds ? await Promise
       .all(params.embeds.map((embed) => embedConvert(embed))) : undefined,
     attachments: params.files ? (await convertFiles(params.files))
