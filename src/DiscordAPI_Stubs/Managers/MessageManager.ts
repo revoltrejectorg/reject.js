@@ -16,11 +16,23 @@ export class MessageManager extends CachedManager<Message> {
     this.rejectChannel = channel;
   }
 
-  _add(data: Collection<string, Message>, cache: any) {
+  _add(data: Message, cache: any) {
     return super._add(data, cache);
   }
 
   // #region methods
+
+  async fetch(options: string) {
+    return this._fetchSingle({ message: options });
+  }
+
+  async _fetchSingle({ message }: { message: string }) {
+    const rMsg = await this.rejectChannel.revoltChannel.fetchMessage(message);
+    if (!rMsg) return;
+
+    const msg = new Message(rMsg, this.client);
+    return msg;
+  }
 
   // STUB
   async fetchPinned() {

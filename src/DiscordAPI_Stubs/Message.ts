@@ -25,7 +25,15 @@ export class Message extends baseClass {
 
   get applicationId() { return this.revoltMsg.client.user?._id ?? null; }
 
-  get content() { return this.revoltMsg.content?.toString() ?? "fixme"; }
+  get content() {
+    return this.revoltMsg.content
+      ?.replace(/\|\|.+\|\|/gs, (match) => `\\${match}`)
+      // Translate !!Revite spoilers!! to ||Discord spoilers||
+      .replace(
+        /!!.+!!/g,
+        (match) => `||${match.substring(2, match.length - 2)}||`,
+      ) ?? "fixme";
+  }
 
   // FIXME: potential for the message to be a system message
   channel?: TextBasedChannels;

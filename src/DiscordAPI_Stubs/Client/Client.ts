@@ -112,7 +112,12 @@ export class Client extends BaseClient {
     super(rClient);
 
     rClient.on("message", (msg) => this.emit(Events.MessageCreate, new Message(msg, this)));
-    rClient.on("message/delete", (msg) => this.emit(Events.Debug, "FIXME: message/delete"));
+    rClient.on("message/delete", (msg) => {
+      const targetMessage = this.revoltClient.messages.get(msg);
+      if (targetMessage) {
+        this.emit(Events.MessageDelete, new Message(targetMessage, this));
+      }
+    });
     rClient.on("message/update", (msg) => this.emit(Events.MessageUpdate, new Message(msg, this)));
 
     rClient.on("channel/create", (ch) => this.emit(Events.ChannelCreate, createChannelfromRevolt(ch, this)));
