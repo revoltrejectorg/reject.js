@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-dupe-class-members */
 declare type Keep<V> = {
   keep: true;
@@ -162,7 +163,6 @@ export class Collection<K, V> extends Map<K, V> {
     fn: (value: V, key: K, collection: this) => boolean,
     thisArg?: unknown,
   ): V | undefined {
-    // eslint-disable-next-line no-param-reassign
     if (typeof thisArg !== "undefined") fn = fn.bind(thisArg);
     this.forEach((value, key) => {
       if (fn(value, key, this)) return value;
@@ -172,8 +172,47 @@ export class Collection<K, V> extends Map<K, V> {
     return undefined;
   }
 
+  // eslint-disable-next-line max-len
+  public filter<K2 extends K>(fn: (value: V, key: K, collection: this) => key is K2): Collection<K2, V>;
+
+  // eslint-disable-next-line max-len
+  public filter<V2 extends V>(fn: (value: V, key: K, collection: this) => value is V2): Collection<K, V2>;
+
+  public filter(fn: (value: V, key: K, collection: this) => unknown): Collection<K, V>;
+
+  public filter<This, K2 extends K>(
+    fn: (this: This, value: V, key: K, collection: this) => key is K2,
+    thisArg: This,
+  ): Collection<K2, V>;
+
+  public filter<This, V2 extends V>(
+    fn: (this: This, value: V, key: K, collection: this) => value is V2,
+    thisArg: This,
+  ): Collection<K, V2>;
+
+  public filter<This>
+  (fn: (this: This,
+    value: V,
+    key: K,
+    collection: this
+  ) => unknown, thisArg: This): Collection<K, V>;
+
+  public filter(
+    fn: (value: V, key: K, collection: this) => unknown,
+    thisArg?: unknown,
+  ): Collection<K, V> {
+    if (typeof fn !== "function") throw new TypeError(`${fn} is not a function`);
+    if (typeof thisArg !== "undefined") fn = fn.bind(thisArg);
+    const results = new this.constructor[Symbol.species]<K, V>();
+    // eslint-disable-next-line no-restricted-syntax
+    for (const [key, val] of this) {
+      if (fn(val, key, this)) results.set(key, val);
+    }
+
+    return results;
+  }
+
   findKey(fn: (value: V, key: K, collection: this) => boolean, thisArg?: unknown): K | undefined {
-    // eslint-disable-next-line no-param-reassign
     if (typeof thisArg !== "undefined") fn = fn.bind(thisArg);
     this.forEach((value, key) => {
       if (fn(value, key, this)) return key;
@@ -187,7 +226,6 @@ export class Collection<K, V> extends Map<K, V> {
   sweep<T>(fn: (this: T, value: V, key: K, collection: this) => boolean, thisArg: T): number;
 
   sweep(fn: (value: V, key: K, collection: this) => boolean, thisArg?: unknown): number {
-    // eslint-disable-next-line no-param-reassign
     if (typeof thisArg !== "undefined") fn = fn.bind(thisArg);
     const previousSize = this.size;
     this.forEach((value, key) => {
@@ -197,7 +235,6 @@ export class Collection<K, V> extends Map<K, V> {
   }
 
   some(fn: (value: V, key: K, collection: this) => boolean, thisArg?: unknown): boolean {
-    // eslint-disable-next-line no-param-reassign
     if (typeof thisArg !== "undefined") fn = fn.bind(thisArg);
     this.forEach((value, key) => {
       if (fn(value, key, this)) return true;
@@ -238,7 +275,6 @@ export class Collection<K, V> extends Map<K, V> {
   ) => boolean, thisArg: This): boolean;
 
   every(fn: (value: V, key: K, collection: this) => boolean, thisArg?: unknown): boolean {
-    // eslint-disable-next-line no-param-reassign
     if (typeof thisArg !== "undefined") fn = fn.bind(thisArg);
     this.forEach((value, key) => {
       if (!fn(value, key, this)) return false;
@@ -289,7 +325,7 @@ export class Collection<K, V> extends Map<K, V> {
 
   tap(fn: (collection: this) => void, thisArg?: unknown): this {
     if (typeof fn !== "function") throw new TypeError(`${fn} is not a function`);
-    // eslint-disable-next-line no-param-reassign
+
     if (typeof thisArg !== "undefined") fn = fn.bind(thisArg);
     fn(this);
     return this;
@@ -305,7 +341,7 @@ export class Collection<K, V> extends Map<K, V> {
 
   map<T>(fn: (value: V, key: K, collection: this) => T, thisArg?: unknown): T[] {
     if (typeof fn !== "function") throw new TypeError("Map requires a function");
-    // eslint-disable-next-line no-param-reassign
+
     if (typeof thisArg !== "undefined") fn = fn.bind(thisArg);
     const iter = this.entries();
     return Array.from({ length: this.size }, (): T => {
