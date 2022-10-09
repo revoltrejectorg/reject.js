@@ -1,6 +1,6 @@
 import { Message as revoltMessage } from "revolt.js";
 import {
-  ChannelType, MessageEditOptions, MessageCreateOptions, Attachment,
+  ChannelType, MessageEditOptions, MessageCreateOptions, Attachment, MessageReference,
 } from "discord.js";
 import { TextBasedChannels } from "./Channels";
 import { User } from "./User";
@@ -145,11 +145,22 @@ export class Message extends baseClass {
     return new Guild(this.revoltMsg.channel.server, this.rejectClient);
   }
 
+  reference?: MessageReference;
+
   constructor(rMsg: revoltMessage, client: Client) {
     super(client);
     this.revoltMsg = rMsg;
 
     if (rMsg.channel) this.channel = createChannelfromRevolt(rMsg.channel, this.rejectClient);
+
+    if (rMsg.reply_ids && rMsg.reply_ids[0]) {
+      this.reference = {
+        channelId: this.channelId!,
+        guildId: this.guild?.id,
+        // WONTFIX: Revolt can have multiple replies, but Discord only allows one.
+        messageId: rMsg.reply_ids[0],
+      };
+    }
   }
 
   async reply(content: string | MessageCreateOptions, mention?: boolean | undefined) {
