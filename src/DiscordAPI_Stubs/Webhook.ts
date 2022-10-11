@@ -3,13 +3,18 @@ import {
   WebhookType,
   MessageCreateOptions,
   WebhookCreateMessageOptions,
+  WebhookEditData,
+  BufferResolvable,
 } from "discord.js";
 import { RawMessagePayloadData } from "discord.js/typings/rawDataTypes";
+import { AutumnURL } from "../constants";
+import { UploadFile } from "../Utils";
 import { msgParamsConverter } from "../Utils/DiscordAPI";
 import { baseClass } from "./Base";
 import { BaseGuildTextChannel } from "./Channels";
 import { Guild } from "./Guild";
 import { Message } from "./Message";
+import { Snowflake } from "./types";
 import { User } from "./User";
 
 /**
@@ -58,10 +63,7 @@ export class Webhook extends baseClass {
     this.sourceChannel = channel;
     this.sourceGuild = channel.guild;
 
-    // FIXME: Currently only supports URLs
-    if (options.avatar && typeof options.avatar === "string") {
-      this.avatar = options.avatar;
-    }
+    if (options.avatar) this.__setAvatar(options.avatar);
   }
 
   createdTimestamp = Date.now();
@@ -97,28 +99,48 @@ export class Webhook extends baseClass {
     return new Message(msg, this.rejectClient);
   }
 
-  /** FIXME: Literally all of these need stubs */
   async delete() {}
 
   avatarURL() {
-    return "https://FIXME";
+    return this.avatar;
   }
 
   async deleteMessage() {}
 
-  async edit() {
-    return null as any;
+  async edit({
+    name = this.name, avatar, channel, reason,
+  }: WebhookEditData) {
+    if (avatar) this.__setAvatar(avatar);
+
+    this.name = name;
+
+    return this;
   }
 
   async editMessage() {
     return null as any;
   }
 
-  async fetchMessage() {
+  async fetchMessage(message: Snowflake) {
     return null as any;
   }
 
-  isChannelFollower() { return false; }
+  isChannelFollower() {
+    return false;
+  }
 
-  isIncoming() { return false; }
+  isIncoming() {
+    return false;
+  }
+
+  private async __setAvatar(avatar: BufferResolvable) {
+    if (typeof avatar !== "string") {
+      const imgId = await UploadFile({
+        name: "avatar",
+        file: avatar,
+      });
+      const imgUrl = `${AutumnURL}/attachments/${imgId}`;
+      this.avatar = imgUrl;
+    } else this.avatar = avatar;
+  }
 }
