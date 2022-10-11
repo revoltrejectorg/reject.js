@@ -32,6 +32,7 @@
         "url": "https://github.com/revoltrejectorg/reject.js.git"
     },
     "dependencies": {
+        "@discordjs/voice": "^0.11.0",
         "axios": "^0.27.2",
         "discord-api-types": "^0.37.5",
         "discord.js": "^14.3.0",

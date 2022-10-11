@@ -60,7 +60,10 @@ interface clientEvents {
 /**
  * @see https://discord.js.org/#/docs/discord.js/stable/class/BaseClient
 */
-export class BaseClient extends Mixin(TypedEmitter<clientEvents>, RejectBase) {
+export class BaseClient extends Mixin(
+TypedEmitter<clientEvents>,
+RejectBase,
+) {
   revoltClient: revoltClient;
 
   /**
@@ -71,7 +74,11 @@ export class BaseClient extends Mixin(TypedEmitter<clientEvents>, RejectBase) {
     return null;
   }
 
-  get options() { return this.revoltClient.options; }
+  get options() { return this.revoltClient.options as any; }
+
+  get rest() {
+    return null as any;
+  }
 
   constructor(rClient: revoltClient) {
     super();
