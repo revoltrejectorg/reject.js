@@ -1,9 +1,13 @@
 import { EventEmitter } from "events";
 import { CreateVoiceConnectionOptions, JoinConfig } from "@discordjs/voice";
+// @ts-ignore
+import RevoiceModule from "revoice.js";
+
+const { Revoice, MediaPlayer } = RevoiceModule;
 
 // TODO
 export class VoiceConnection extends EventEmitter {
-  private revoice: any;
+  private revoice: typeof Revoice;
 
   rejoinAttempts = 0;
 
@@ -20,5 +24,5 @@ export class VoiceConnection extends EventEmitter {
 }
 
 export function createVoiceConnection(joinConfig: JoinConfig, options: any) {
-
+  return new VoiceConnection(joinConfig, options);
 }
