@@ -1,6 +1,11 @@
 # reject.js
 <a href="https://www.npmjs.com/package/revolt-reject.js"><img src="https://img.shields.io/npm/v/revolt-reject.js" /><a/>
 
+# IMPORTANT NOTICE!
+Reject.js is EOL and will not receive any further updates.
+
+For developers wishing to still port their bot to Revolt, it is recommended you use [Reflectcord](https://github.com/V3L0C1T13S/reflectcord) instead. It features higher performance is constantly updated, and supports features that Reject could never support (ex. low level gateway and api operations)
+
 **Reject** is a compatibility layer for Discord.js developers wanting to port their bots to Revolt. It provides a fast, simple wrapper to simplify moving your code over without any loss in speed.
 
 ## Project Status
